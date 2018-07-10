@@ -36,4 +36,11 @@ Once this is done, cd into the parent class_util folder and run ```python manage
 
 *note: the server needs to have been run at least once and migrations must be made and applied before loading*
 
-The website to view the database has not yet been implemented. However, you can always use tools like the great [DB Browser for SQLite](https://sqlitebrowser.org/) to view the data (in the distributions_section table) in the db.sqlite3 file in the root of the project.
+The website to view the database is WIP. However, you can always use tools like the great [DB Browser for SQLite](https://sqlitebrowser.org/) to view the data (in the distributions_section table) in the db.sqlite3 file in the root of the project.
+
+### Usage
+With the server running, you can navigate to the following pages
+| link          | Description        | Example  |
+| ------------- |-------------  | -----|
+|127.0.0.1:8000| a table of all imported sections||
+|127.0.0.1:8000/course/dddd+####| all sections of course number '####' in department of abbreviation 'dddd'|127.0.0.1:8000/course/math+2204 = all math 2204 sections|

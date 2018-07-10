@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block content %}
+<div>
+    <table>
+        <tr>
+            <th>term</th>
+            <th>year</th>
+            <th>department</th>
+            <th>Course Number</th>
+            <th>Course Title</th>
+            <th>Credit Hours</th>
+            <th>CRN</th>
+            <th>instructor</th>
+            <th>average GPA</th>
+            <th>As</th>
+            <th>Bs</th>
+            <th>Cs</th>
+            <th>Ds</th>
+            <th>Fs</th>
+            <th>withdrawals</th>
+            <th>class size</th>
+        </tr>
+        {% for s in sections%}
+        <tr>
+            <td>{{ s.term }}</td>
+            <td>{{ s.year }}</td>
+            <td>{{ s.department }}</td>
+            <td>{{ s.course_number }}</td>
+            <td>{{ s.course_title }}</td>
+            <td>{{ s.credit_hours }}</td>
+            <td>{{ s.CRN }}</td>
+            <td>{{ s.instructor }}</td>
+            <td>{{ s.average_GPA }}</td>
+            <td>{{ s.As }}</td>
+            <td>{{ s.Bs }}</td>
+            <td>{{ s.Cs }}</td>
+            <td>{{ s.Ds }}</td>
+            <td>{{ s.Fs }}</td>
+            <td>{{ s.withdrawals }}</td>
+            <td>{{ s.class_size }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
