@@ -1,0 +1,4 @@
+env
+db.sqlite*
+*.pyc
+distributions/migrations/0*
