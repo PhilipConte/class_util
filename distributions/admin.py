@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import Section
+from . import models as m
 
-@admin.register(Section)
+@admin.register(m.Section)
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ['term', 'year', 'department', 'course_number',
-        'course_title', 'credit_hours', 'CRN', 'instructor', 'average_GPA',
+    list_display = ['term', 'course', 'CRN', 'instructor', 'average_GPA',
         'As', 'Bs', 'Cs', 'Ds', 'Fs', 'withdrawals', 'class_size']

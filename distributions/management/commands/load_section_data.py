@@ -1,7 +1,7 @@
 from pathlib import Path
 from csv import DictReader
 from django.core.management import BaseCommand
-from distributions.models import Section
+from distributions.models import Term, Course, Section
 
 ALREADY_LOADED_ERROR_MESSAGE = """
 If you need to reload the section data from the CSV file,
@@ -31,10 +31,10 @@ class Command(BaseCommand):
                 continue
 
             filename = path.parts[-1].split('.')[0]
-            term = filename[:-4]
+            semester = filename[:-4]
             year = filename[-4:]
-            if term not in ['fall', 'spring']:
-                print('invalid term in csv: ' + path_str)
+            if semester not in ['fall', 'spring']:
+                print('invalid semester in csv: ' + path_str)
                 print(INVALID_CSV_NAME_ERROR_MESSAGE)
                 continue
             if year.isdigit():
@@ -44,6 +44,11 @@ class Command(BaseCommand):
                 print(INVALID_CSV_NAME_ERROR_MESSAGE)
                 continue
 
+            term = Term()
+            term.semester = semester
+            term.year = year
+            term.save()
+
             table = []
             with open(path, encoding='utf-8-sig') as file:
                 for row in DictReader(file):
@@ -51,12 +56,15 @@ class Command(BaseCommand):
 
             for row in table:
                 section = Section()
+
                 section.term = term
-                section.year = year
-                section.department = row['department']
-                section.course_number = row['course_number_1']
-                section.course_title = row['course_title']
-                section.credit_hours = row['credit_hours']
+
+                section.course, created = Course.objects.get_or_create(
+                    department = row['department'],
+                    number = row['course_number_1'],
+                    title = row['course_title'],
+                    hours = row['credit_hours'])
+
                 section.CRN = row['course_ei']
                 section.instructor = row['faculty']
                 section.average_GPA = row['qca']

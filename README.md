@@ -43,5 +43,5 @@ With the server running, you can navigate to the following pages:
 
 | link          | Description | Example |
 | ------------- | ------------- | ------------- |
-| 127.0.0.1:8000  | a table of all imported sections  | |
-| 127.0.0.1:8000/course/dddd+####  | all sections of course number '####' in department of abbreviation 'dddd'  | 127.0.0.1:8000/course/math+2204 = all math 2204 sections |
+| 127.0.0.1:8000/distributions  | a table of all imported sections  | |
+| 127.0.0.1:8000/distributions/course/dddd+####  | all sections of course number '####' in department of abbreviation 'dddd'  | 127.0.0.1:8000/distributions/course/math+2204 = all math 2204 sections |
