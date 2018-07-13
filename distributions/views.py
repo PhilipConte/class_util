@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+import django_tables2
 from .models import Course, Section
 from .tables import SectionTable
 from .filters import SectionFilter
-import django_tables2
+from .utils import gen_link
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
@@ -15,6 +16,7 @@ class FilteredSingleTableView(django_tables2.SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(FilteredSingleTableView, self).get_context_data(**kwargs)
         context['filter'] = self.filter
+        context['header'] = 'Filter'
         return context
 
 class SectionFilteredSingleTableView(FilteredSingleTableView):
@@ -49,11 +51,15 @@ def course(request, department, number, title, hours):
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
     sections = Section.objects.all().filter(course=course)
     table = SectionTable(sections, exclude=['id', 'course'], request=request)
-    return render(request, 'course.html', {'course': course, 'table': table})
+    return render(request, 'course.html', {'header': course.short(),'course': course, 'sections': sections, 'table': table})
 
 def course_instructor(request, department, number, title ,hours, instructor):
     department = department.upper()
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    sections = Section.objects.all().filter(course=course, instructor=instructor)
+    course_sections = Section.objects.all().filter(course=course)
+    sections = course_sections.filter(instructor=instructor)
     table = SectionTable(sections, exclude=['id', 'course', 'instructor'], request=request)
-    return render(request, 'course_instructor.html', {'course': course, 'instructor': instructor, 'table': table})
+    header = gen_link(course.short(), course.get_absolute_url()) + '/' + instructor
+    return render(request, 'course_instructor.html',
+        {'header': header, 'course': course, 'instructor': instructor,
+        'table': table, 'sections': sections, 'course_sections': course_sections})

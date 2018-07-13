@@ -1,8 +1,17 @@
 {% extends "base.html" %}
+{% load distributions_tags %}
 {% load django_tables2 %}
+
+{% block header %}
+/{{ header|safe }}
+{% endblock %}
+
 {% block content %}
 <div>
-    <h1>{{ course }}: {{ instructor }}</h1>
+    <div style="display: flex; justify-content: space-evenly;">
+        {% average_sections course_sections course.short %}
+        {% average_sections sections instructor %}
+    </div>
     {% render_table table %}
 </div>
 {% endblock %}

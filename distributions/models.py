@@ -17,10 +17,11 @@ class Course(models.Model):
     def get_absolute_url(self):
         return reverse('course', args=[self.department, self.number, self.title, self.hours])
 
+    def short(self):
+        return '{} {}'.format(self.department, self.number)
+
     def __str__(self):
-        return '{} {}: {} ({} credits)'.format(
-            self.department, self.number,
-            self.title, self.hours)
+        return self.short()+': {} ({} credits)'.format(self.title, self.hours)
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE)

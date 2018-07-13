@@ -1,0 +1,11 @@
+<div>
+    <h2>{{ title }}</h2>
+    <ul class="list-group" style="max-width: 30vw;">
+            {% for key, value in stats.items %} 
+                <li class="list-group-item">
+                    {{ key|upper }}:
+                    <span class="badge">{{ value|floatformat:2 }}</span>
+                </li>
+            {% endfor %}
+    </ul>
+</div>
