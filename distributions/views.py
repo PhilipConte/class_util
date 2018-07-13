@@ -2,11 +2,38 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Course, Section
 from .tables import SectionTable
+from .filters import SectionFilter
+import django_tables2
 
-def table(request):
-    sections = Section.objects.all()
-    table = SectionTable(sections, request=request)
-    return render(request, 'table.html', {'table': table})
+class FilteredSingleTableView(django_tables2.SingleTableView):
+    filter_class = None
+
+    def get_table_data(self):
+        data = super(FilteredSingleTableView, self).get_table_data()
+        self.filter = self.filter_class(self.request.GET, queryset=data)
+        return self.filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super(FilteredSingleTableView, self).get_context_data(**kwargs)
+        context['filter'] = self.filter
+        return context
+
+class SectionFilteredSingleTableView(FilteredSingleTableView):
+    model = Section
+    table_class = SectionTable
+    filter_class = SectionFilter
+    template_name='section_table.html'
+
+class SectionSingleTableView(django_tables2.SingleTableView):
+    model = Section
+    table_class = SectionTable
+    template_name='section_table.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SectionSingleTableView, self).get_context_data(**kwargs)
+        context['header'] = 'All Sections'
+        return context
+
 
 def course_shortcut(request, department, number):
     department = department.upper()

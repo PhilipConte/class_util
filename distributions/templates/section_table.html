@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% if header %}
+{% block header %}
+/{{ header }}
+{%endblock %}
+{% endif %}
+
+{% block content %}
+{% if filter %}
+<form method='GET'>
+    {{ filter.form }}
+    <input type='submit' value='Filter' />
+    |Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items.|
+    <a href='{{ request.path }}' >Clear</a>
+</form>
+{% else %}
+<h1>Want to filter? <a href={% url "filterable" %}>click here!</a></h1>
+{% endif %}
+{% if table %}
+    {% render_table table %}
+{% endif %}
+{% endblock %}
