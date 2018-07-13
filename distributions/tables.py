@@ -4,9 +4,6 @@ from django_tables2.utils import A
 import django_tables2 as tables
 from . import models as m
 
-def link_format(value, link):
-    return format_html('<a href={} target="_blank">{}</a>', link, value)
-
 class CourseTable(tables.Table):
     class Meta:
         model = m.Course
@@ -21,6 +18,5 @@ class SectionTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         exclude= 'id'
 
-    course = tables.Column()
-    def render_course(self, value):
-        return link_format(value, value.get_absolute_url())
+    course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
+    instructor = tables.LinkColumn('course_instructor', args=[A('course.department'), A('course.number'), A('course.title'), A('course.hours'), A('instructor')])
