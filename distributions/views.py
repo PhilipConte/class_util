@@ -1,4 +1,3 @@
-from urllib.parse import unquote
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django_tables2 import RequestConfig
@@ -24,7 +23,6 @@ def course_shortcut(request, department, number):
 
 def course(request, department, number, title, hours):
     department = department.upper()
-    title = unquote(title)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
     sections = Section.objects.all().filter(course=course)
     table = SectionTable(sections, exclude=['id', 'course'])
@@ -33,8 +31,6 @@ def course(request, department, number, title, hours):
 
 def course_instructor(request, department, number, title ,hours, instructor):
     department = department.upper()
-    title = unquote(title)
-    instructor = unquote(instructor)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
     sections = Section.objects.all().filter(course=course, instructor=instructor)
     table = SectionTable(sections, exclude=['id', 'course', 'instructor'])

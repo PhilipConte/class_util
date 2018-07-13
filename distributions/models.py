@@ -1,5 +1,3 @@
-from urllib.parse import quote
-
 from django.db import models
 from django.urls import reverse
 
@@ -17,7 +15,7 @@ class Course(models.Model):
     hours = models.PositiveIntegerField()
 
     def get_absolute_url(self):
-        return reverse('course', args=[self.department, self.number, quote(self.title), self.hours])
+        return reverse('course', args=[self.department, self.number, self.title, self.hours])
 
     def __str__(self):
         return '{} {}: {} ({} credits)'.format(
