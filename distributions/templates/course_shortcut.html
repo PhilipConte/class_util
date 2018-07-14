@@ -2,7 +2,7 @@
 {% load django_tables2 %}
 
 {% block header %}
-{{ department }} {{ number }}
+{{ header|safe }}
 {% endblock %}
 
 {% block title %}

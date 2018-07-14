@@ -7,9 +7,9 @@
 
 {% block title %}
 {% if filter %}
-    Filtered Sections
+    Filtered Courses
     {% else %}
-    All Sections
+    All Courses
 {% endif %}
 {% endblock %}
 
@@ -23,7 +23,7 @@
         <a href='{{ request.path }}' >Clear</a>
     </form>
     {% else %}
-        <h3>Want to filter? <a href={% url "sections_filterable" %}>click here!</a></h3>
+        <h3>Want to filter? <a href={% url "courses_filterable" %}>click here!</a> | View all sections? <a href={% url "sections" %}>click here!</a></h3>
 {% endif %}
 
 {% if table %}

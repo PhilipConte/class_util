@@ -19,7 +19,7 @@ ie: fall 2017 would be fall2017.csv
 4. Once this is done, cd into the parent class_util folder and run ```python manage.py load_section_data```
 
 ### Usage
-With the server running, you can get started by navigating to [127.0.0.1:8000/distributions](http://127.0.0.1:8000/distributions)
+With the server running, you can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
 ## Installation
 Requires Python 3, pip, and preferably virtualenv

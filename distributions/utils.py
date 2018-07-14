@@ -1,7 +1,10 @@
 from django.utils.html import format_html
+from django.urls import reverse
 
 def gen_link(value, link):
     return format_html('<a href={}>{}</a>', link, value)
+
+def link_reverse(value): return gen_link(value, reverse(value.lower()))
 
 def sections_stats(sections):
     students = sum([s.class_size for s in sections])

@@ -1,5 +1,16 @@
-from .models import Section
+from .models import Course, Section
 import django_filters
+
+class CourseFilter(django_filters.FilterSet):
+    class Meta:
+        model = Course
+        fields = {
+            'department': ['icontains'],
+            'number': ['contains'],
+            'title': ['icontains'],
+            'hours': ['exact'],
+        }
+
 
 class SectionFilter(django_filters.FilterSet):
     class Meta:
