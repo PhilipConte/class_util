@@ -7,25 +7,22 @@
 </head>
 
 <body>
+    <header>
+        <h1>Class Util/<a href={% url "table" %}>Distributions</a>/{% block header %}{% endblock %}</h1>
+    </header>
+    <hr>
+    <h2>{% block title %} {% endblock %}</h2>
     <div>
-        <header>
-            <h1>Class Util/<a href={% url "table" %}>Distributions</a>{% block header %} {% endblock %}</h1>
-        </header>
-        <div>
-            <hr>
-            <div>
-                {% block content %} {% endblock %}
-            </div>
-            <hr>
-        </div>
-        <footer>
-            <div>
-                <p>Learn more on the
-                    <a href="https://github.com/PhilipConte/class_util" target="_blank">project's site</a>
-                </p>
-            </div>
-        </footer>
+        {% block content %} {% endblock %}
     </div>
+    <hr>
+    <footer>
+        <div>
+            <p>Learn more on the
+                <a href="https://github.com/PhilipConte/class_util" target="_blank">project's site</a>
+            </p>
+        </div>
+    </footer>
 </body>
 
 </html>

@@ -3,15 +3,17 @@
 {% load django_tables2 %}
 
 {% block header %}
-/{{ header|safe }}
+{{ header|safe }}
+{% endblock %}
+
+{% block title %}
+<b>{{ course.no_credits }}:</b> stats for <i>{{ instructor }}</i>
 {% endblock %}
 
 {% block content %}
-<div>
-    <div style="display: flex; justify-content: space-evenly;">
-        {% average_sections course_sections course.short %}
-        {% average_sections sections instructor %}
-    </div>
-    {% render_table table %}
+<div style="display: flex; justify-content: space-evenly;">
+    {% average_sections course_sections course.short %}
+    {% average_sections sections instructor %}
 </div>
+{% render_table table %}
 {% endblock %}

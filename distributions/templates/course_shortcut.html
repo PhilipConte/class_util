@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% load django_tables2 %}
+
+{% block header %}
+{{ department }} {{ number }}
+{% endblock %}
+
+{% block title %}
+Courses matching <i>"{{ department }} {{ number }}"</i>
+{% endblock %}
+
 {% block content %}
-<div>
-    <h1>{{ department }} {{ number }}</h1>
-    {% render_table table %}
-</div>
+{% render_table table %}
 {% endblock %}

@@ -20,8 +20,11 @@ class Course(models.Model):
     def short(self):
         return '{} {}'.format(self.department, self.number)
 
+    def no_credits(self):
+        return self.short() + ': {}'.format(self.title)
+
     def __str__(self):
-        return self.short()+': {} ({} credits)'.format(self.title, self.hours)
+        return self.no_credits() + ' ({} credits)'.format(self.hours)
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
