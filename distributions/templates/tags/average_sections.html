@@ -3,8 +3,8 @@
     <ul class="list-group" style="max-width: 30vw;">
             {% for key, value in stats.items %} 
                 <li class="list-group-item">
-                    {{ key|upper }}:
-                    <span class="badge">{{ value|floatformat:2 }}</span>
+                    {{ key }}:
+                    <span class="badge">{{ value }}</span>
                 </li>
             {% endfor %}
     </ul>

@@ -4,13 +4,21 @@ from django_tables2.utils import A
 import django_tables2 as tables
 from . import models as m
 
+from .utils import pretty_dict, removekey, gen_link, quote
+
 class CourseTable(tables.Table):
     class Meta:
         model = m.Course
         template_name = 'django_tables2/bootstrap.html'
         exclude = 'id'
     
-    Link = tables.LinkColumn(None, text='link')
+    link = tables.LinkColumn(None, text='link')
+
+    gpa = tables.Column(verbose_name='Average GPA')
+    stats = tables.Column(orderable=False)
+
+    def render_stats(self, record):
+        return pretty_dict(removekey(record.stats, 'GPA'))
 
 class SectionTable(tables.Table):
     class Meta:
@@ -19,4 +27,6 @@ class SectionTable(tables.Table):
         exclude= 'id'
 
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
-    instructor = tables.LinkColumn('course_instructor', args=[A('course.department'), A('course.number'), A('course.title'), A('course.hours'), A('instructor')])
+    instructor = tables.Column()
+    def render_instructor(self, record, value):
+        return gen_link(value, reverse('course_instructor', args=[*record.course.url_args, quote(record.instructor)]))

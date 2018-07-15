@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from .utils import sections_stats, quote
 
 class Term(models.Model):
     semester = models.CharField(max_length=10)
@@ -14,8 +15,24 @@ class Course(models.Model):
     title = models.CharField(max_length=50)
     hours = models.PositiveIntegerField()
 
+    @property
+    def url_args(self):
+        return [self.department, self.number, quote(self.title), self.hours]
+
     def get_absolute_url(self):
-        return reverse('course', args=[self.department, self.number, self.title, self.hours])
+        return reverse('course', args=self.url_args)
+
+    @property    
+    def sections(self):
+        return Section.objects.all().filter(course=self)
+
+    @property
+    def stats(self):
+        return sections_stats(self.sections)
+
+    @property
+    def gpa(self):
+        return self.stats['GPA']
 
     def short(self):
         return '{} {}'.format(self.department, self.number)

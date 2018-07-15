@@ -1,3 +1,5 @@
+from urllib.parse import unquote
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 import django_tables2
@@ -17,7 +19,6 @@ class FilteredSingleTableView(django_tables2.SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(FilteredSingleTableView, self).get_context_data(**kwargs)
         context['filter'] = self.filter
-        context['header'] = 'Filter'
         return context
 
 class SectionFilteredSingleTableView(FilteredSingleTableView):
@@ -47,6 +48,10 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
     filter_class = CourseFilter
     template_name='course_table.html'
 
+    def get_table_data(self):
+        data = super(CourseFilteredSingleTableView, self).get_table_data()
+        return list(data)
+
     def get_context_data(self, **kwargs):
         context = super(CourseFilteredSingleTableView, self).get_context_data(**kwargs)
         context['header'] = link_reverse('Courses') + '/Filter'
@@ -56,6 +61,10 @@ class CourseSingleTableView(django_tables2.SingleTableView):
     model = Course
     table_class = CourseTable
     template_name='course_table.html'
+
+    def get_table_data(self):
+        data = super(CourseSingleTableView, self).get_table_data()
+        return list(data)
 
     def get_context_data(self, **kwargs):
         context = super(CourseSingleTableView, self).get_context_data(**kwargs)
@@ -75,16 +84,19 @@ def course_shortcut(request, department, number):
 
 def course(request, department, number, title, hours):
     department = department.upper()
+    title=unquote(title)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    sections = Section.objects.all().filter(course=course)
+    sections = course.sections
     table = SectionTable(sections, exclude=['id', 'course'], request=request)
     header = link_reverse('Courses') + '/' + course.short()
     return render(request, 'course.html', {'header': header,'course': course, 'sections': sections, 'table': table})
 
 def course_instructor(request, department, number, title ,hours, instructor):
     department = department.upper()
+    title=unquote(title)
+    instructor=unquote(instructor)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    course_sections = Section.objects.all().filter(course=course)
+    course_sections = course.sections
     sections = course_sections.filter(instructor=instructor)
     table = SectionTable(sections, exclude=['id', 'course', 'instructor'], request=request)
     header = link_reverse('Courses') + '/' + gen_link(course.short(), course.get_absolute_url()) + '/' + instructor
