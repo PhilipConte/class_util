@@ -12,8 +12,8 @@
 
 {% block content %}
 <div style="display: flex; justify-content: space-evenly;">
-    {% average_sections course_sections course.short %}
-    {% average_sections sections instructor %}
+    {% stat_view course_sections.stats course.short %}
+    {% stat_view sections.stats instructor %}
 </div>
 {% render_table table %}
 {% endblock %}

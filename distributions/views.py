@@ -86,7 +86,7 @@ def course(request, department, number, title, hours):
     department = department.upper()
     title=unquote(title)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    sections = course.sections
+    sections = course.sections.all()
     table = SectionTable(sections, exclude=['id', 'course'], request=request)
     header = link_reverse('Courses') + '/' + course.short()
     return render(request, 'course.html', {'header': header,'course': course, 'sections': sections, 'table': table})
@@ -96,7 +96,7 @@ def course_instructor(request, department, number, title ,hours, instructor):
     title=unquote(title)
     instructor=unquote(instructor)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    course_sections = course.sections
+    course_sections = course.sections.all()
     sections = course_sections.filter(instructor=instructor)
     table = SectionTable(sections, exclude=['id', 'course', 'instructor'], request=request)
     header = link_reverse('Courses') + '/' + gen_link(course.short(), course.get_absolute_url()) + '/' + instructor

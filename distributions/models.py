@@ -1,6 +1,7 @@
 from django.db import models
+from django.db.models import F, Sum, Avg
 from django.urls import reverse
-from .utils import sections_stats, quote
+from .utils import quote
 
 class Term(models.Model):
     semester = models.CharField(max_length=10)
@@ -9,11 +10,17 @@ class Term(models.Model):
     def __str__(self):
         return '{} {}'.format(self.semester, self.year)
 
+class CourseManager(models.Manager):
+    def all(self):
+        return self.get_queryset().annotate(average_GPA=Avg('sections__average_GPA'))
+
 class Course(models.Model):
     department = models.CharField(max_length=8)
     number = models.PositiveIntegerField()
     title = models.CharField(max_length=50)
     hours = models.PositiveIntegerField()
+    
+    objects = CourseManager()
 
     @property
     def url_args(self):
@@ -22,17 +29,9 @@ class Course(models.Model):
     def get_absolute_url(self):
         return reverse('course', args=self.url_args)
 
-    @property    
-    def sections(self):
-        return Section.objects.all().filter(course=self)
-
     @property
     def stats(self):
-        return sections_stats(self.sections)
-
-    @property
-    def gpa(self):
-        return self.stats['GPA']
+        return self.sections.stats()
 
     def short(self):
         return '{} {}'.format(self.department, self.number)
@@ -43,10 +42,24 @@ class Course(models.Model):
     def __str__(self):
         return self.no_credits() + ' ({} credits)'.format(self.hours)
 
-class Section(models.Model):
-    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+class SectionQueryset(models.QuerySet):
+    def stats(self):
+        def safe_round(val):
+            return round(val, 2) if (type(val) is float) else val
+        
+        data = self.aggregate(
+            GPA=Avg('average_GPA'),
+            A=Avg('As'), B=Avg('Bs'),
+            C=Avg('Cs'), D=Avg('Ds'), F=Avg('Fs'),
+            students=Sum('class_size'),
+            withdrawals=Sum('withdrawals'))
+        
+        return {key: safe_round(value) for key, value in data.items()}
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+class Section(models.Model):
+    term = models.ForeignKey(Term, on_delete=models.CASCADE, related_name='sections')
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
     
     CRN = models.PositiveIntegerField()
     instructor = models.CharField(max_length=30)
@@ -58,6 +71,8 @@ class Section(models.Model):
     Fs = models.DecimalField(max_digits=4, decimal_places=1)
     withdrawals = models.PositiveIntegerField()
     class_size = models.PositiveIntegerField()
+
+    objects = SectionQueryset.as_manager()
 
     def get_absolute_url(self):
         return reverse('section_id', args=[self.id])

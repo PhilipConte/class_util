@@ -14,8 +14,11 @@ class CourseTable(tables.Table):
     
     link = tables.LinkColumn(None, text='link')
 
-    gpa = tables.Column(verbose_name='Average GPA')
+    average_GPA = tables.Column()
     stats = tables.Column(orderable=False)
+
+    def render_average_GPA(self, value):
+        return round(value, 2)
 
     def render_stats(self, record):
         return pretty_dict(removekey(record.stats, 'GPA'))
