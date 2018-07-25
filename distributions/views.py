@@ -48,10 +48,6 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
     filter_class = CourseFilter
     template_name='course_table.html'
 
-    def get_table_data(self):
-        data = super(CourseFilteredSingleTableView, self).get_table_data()
-        return list(data)
-
     def get_context_data(self, **kwargs):
         context = super(CourseFilteredSingleTableView, self).get_context_data(**kwargs)
         context['header'] = link_reverse('Courses') + '/Filter'
@@ -61,10 +57,6 @@ class CourseSingleTableView(django_tables2.SingleTableView):
     model = Course
     table_class = CourseTable
     template_name='course_table.html'
-
-    def get_table_data(self):
-        data = super(CourseSingleTableView, self).get_table_data()
-        return list(data)
 
     def get_context_data(self, **kwargs):
         context = super(CourseSingleTableView, self).get_context_data(**kwargs)
