@@ -8,8 +8,8 @@ def gen_link(value, link):
 
 def link_reverse(value): return gen_link(value, reverse(value.lower()))
 
-def pretty_dict(dict):
-    return '    '.join([(str(key) + ': ' + str(dict[key]))  for key in dict])
+def pretty_dict(dic):
+    return '    '.join([(str(key) + ': ' + str(dic[key]))  for key in dic])
 
 def removekey(d, key):
     r = dict(d)

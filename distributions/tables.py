@@ -20,8 +20,8 @@ class CourseTable(tables.Table):
     def render_average_GPA(self, value):
         return round(value, 2)
 
-    def render_stats(self, record):
-        return pretty_dict(removekey(record.stats, 'GPA'))
+    def render_stats(self, value):
+        return pretty_dict(removekey(value, 'GPA'))
 
 class SectionTable(tables.Table):
     class Meta:
