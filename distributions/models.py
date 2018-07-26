@@ -1,13 +1,14 @@
 from django.db import models
 from django.db.models import F, Sum, Avg
 from django.urls import reverse
-from .utils import quote
+from .utils import quote, dict_pop
 
-stats_dict = {'average_GPA': Avg('average_GPA'),
-            'As': Avg('As'), 'Bs': Avg('Bs'),
-            'Cs': Avg('Cs'), 'Ds': Avg('Ds'), 'Fs': Avg('Fs'),
-            'students': Sum('class_size'),
-            'withdrawals': Sum('withdrawals')}
+raw_stats = {'average_GPA': (Avg,'average_GPA'),
+            'As': (Avg,'As'), 'Bs': (Avg,'Bs'),
+            'Cs': (Avg,'Cs'), 'Ds': (Avg,'Ds'), 'Fs': (Avg,'Fs'),
+            'students': (Sum,'class_size'),
+            'withdrawals': (Sum,'withdrawals')}
+stats_dict = {key: t[0](t[1]) for key, t in raw_stats.items()}
 
 class Term(models.Model):
     semester = models.CharField(max_length=10)
@@ -18,7 +19,9 @@ class Term(models.Model):
 
 class CourseManager(models.Manager):
     def all(self):
-        return self.get_queryset().annotate(average_GPA=Avg('sections__average_GPA'))
+        base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
+        to_annotate = {k: t[0]('sections__'+t[1]) for k, t in base_dict.items()}
+        return self.get_queryset().annotate(**to_annotate)
 
 class Course(models.Model):
     department = models.CharField(max_length=8)

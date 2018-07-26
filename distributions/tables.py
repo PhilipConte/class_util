@@ -21,7 +21,11 @@ class CourseTable(tables.Table):
     
     title = tables.LinkColumn(None)
     average_GPA = RoundColumn(2)
-    stats = tables.Column(orderable=False)
+    As = RoundColumn()
+    Bs = RoundColumn()
+    Cs = RoundColumn()
+    Ds = RoundColumn()
+    Fs = RoundColumn()
 
     def render_stats(self, value):
         return pretty_dict(dict_pop(value, 'average_GPA'))
