@@ -13,12 +13,12 @@ class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
 
     def get_table_data(self):
-        data = super(FilteredSingleTableView, self).get_table_data()
+        data = super().get_table_data()
         self.filter = self.filter_class(self.request.GET, queryset=data)
         return self.filter.qs
 
     def get_context_data(self, **kwargs):
-        context = super(FilteredSingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['filter'] = self.filter
         return context
 
@@ -29,7 +29,7 @@ class SectionFilteredSingleTableView(FilteredSingleTableView):
     template_name='section_table.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SectionFilteredSingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = link_reverse('Sections') + '/Filter'
         return context
 
@@ -39,7 +39,7 @@ class SectionSingleTableView(django_tables2.SingleTableView):
     template_name='section_table.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SectionSingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = 'Sections'
         return context
 
@@ -50,7 +50,7 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
     template_name='course_table.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CourseFilteredSingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = link_reverse('Courses') + '/Filter'
         return context
 
@@ -60,7 +60,7 @@ class CourseSingleTableView(django_tables2.SingleTableView):
     template_name='course_table.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CourseSingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['header'] = 'Courses'
         return context
 

@@ -7,7 +7,7 @@ from . import models as m
 from .utils import pretty_dict, removekey, gen_link, quote
 
 class RoundColumn(tables.Column):
-    def __init__(self,decimals=1):
+    def __init__(self, decimals=1):
         super().__init__()
         self.decimals = decimals
     def render(self, value):
@@ -20,11 +20,8 @@ class CourseTable(tables.Table):
         exclude = 'id'
     
     title = tables.LinkColumn(None)
-    average_GPA = tables.Column()
+    average_GPA = RoundColumn(2)
     stats = tables.Column(orderable=False)
-
-    def render_average_GPA(self, value):
-        return round(value, 2)
 
     def render_stats(self, value):
         return pretty_dict(removekey(value, 'GPA'))
@@ -45,7 +42,7 @@ class GroupedSectionTable(tables.Table):
 
     def __init__(self, *args, **kwargs):
         temp_course_args = kwargs.pop("course_args")
-        super(GroupedSectionTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.course_args = temp_course_args
     
     class Meta:
