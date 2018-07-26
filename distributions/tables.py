@@ -7,9 +7,10 @@ from . import models as m
 from .utils import pretty_dict, dict_pop, gen_link, quote
 
 class RoundColumn(tables.Column):
-    def __init__(self, decimals=1):
-        super().__init__()
+    def __init__(self, decimals=1, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.decimals = decimals
+
     def render(self, value):
         return round(value, self.decimals)
 
@@ -21,11 +22,11 @@ class CourseTable(tables.Table):
     
     title = tables.LinkColumn(None)
     average_GPA = RoundColumn(2)
-    As = RoundColumn()
-    Bs = RoundColumn()
-    Cs = RoundColumn()
-    Ds = RoundColumn()
-    Fs = RoundColumn()
+    As = RoundColumn(verbose_name='A%')
+    Bs = RoundColumn(verbose_name='B%')
+    Cs = RoundColumn(verbose_name='C%')
+    Ds = RoundColumn(verbose_name='D%')
+    Fs = RoundColumn(verbose_name='F%')
 
     def render_stats(self, value):
         return pretty_dict(dict_pop(value, 'average_GPA'))
@@ -56,10 +57,10 @@ class GroupedSectionTable(tables.Table):
     instructor = tables.Column()
     sections_taught = tables.Column()
     average_GPA = RoundColumn(2)
-    As = RoundColumn()
-    Bs = RoundColumn()
-    Cs = RoundColumn()
-    Ds = RoundColumn()
-    Fs = RoundColumn()
+    As = RoundColumn(verbose_name='A%')
+    Bs = RoundColumn(verbose_name='B%')
+    Cs = RoundColumn(verbose_name='C%')
+    Ds = RoundColumn(verbose_name='D%')
+    Fs = RoundColumn(verbose_name='F%')
     def render_instructor(self, value):
         return gen_link(value, reverse('course_instructor', args=[*self.course_args, quote(value)]))
