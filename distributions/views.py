@@ -66,12 +66,13 @@ class CourseSingleTableView(django_tables2.SingleTableView):
 
 def course_shortcut(request, department, number):
     department = department.upper()
+    number = str(number)
     try:
         course = Course.objects.get(department=department, number=number)
         return redirect(course)
     except Course.MultipleObjectsReturned:
         courses = Course.objects.all().filter(department=department, number=number)
-        table = CourseTable(sections, request=request)
+        table = CourseTable(courses, request=request)
         header = link_reverse('Courses') + '/' + department + ' ' + number
         return render(request, 'course_shortcut.html', {'header': header, 'department': department, 'number': number, 'table': table})
 
