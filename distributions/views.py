@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db.models import Count, Sum, Avg, Value, CharField, PositiveIntegerField
 import django_tables2
-from .models import Course, Section
+from .models import Course, Section, stats_dict
 from .tables import SectionTable, CourseTable, GroupedSectionTable
 from .filters import SectionFilter, CourseFilter
-from .utils import gen_link, link_reverse
+from .utils import gen_link, link_reverse, dict_pop
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
@@ -81,10 +81,9 @@ def course(request, department, number, title, hours):
     title=unquote(title)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
     sections = course.sections.all()
-    group = course.sections.values('instructor').annotate(
-            num=Count('instructor'), withdrawals=Sum('withdrawals'),
-            average_GPA=Avg('average_GPA'), As=Avg('As'), Bs=Avg('Bs'),
-            Cs=Avg('Cs'), Ds=Avg('Ds'), Fs=Avg('Fs'))#,
+    stats = dict_pop(stats_dict, 'students')
+    stats['sections_taught'] = Count('instructor')
+    group = course.sections.values('instructor').annotate(**stats)
     table = GroupedSectionTable(group, request=request, course_args=course.url_args)
     context = {'header': link_reverse('Courses') + '/' + course.short(),
         'course': course, 'sections': sections, 'table': table,}

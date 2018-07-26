@@ -4,7 +4,7 @@ from django_tables2.utils import A
 import django_tables2 as tables
 from . import models as m
 
-from .utils import pretty_dict, removekey, gen_link, quote
+from .utils import pretty_dict, dict_pop, gen_link, quote
 
 class RoundColumn(tables.Column):
     def __init__(self, decimals=1):
@@ -24,7 +24,7 @@ class CourseTable(tables.Table):
     stats = tables.Column(orderable=False)
 
     def render_stats(self, value):
-        return pretty_dict(removekey(value, 'GPA'))
+        return pretty_dict(dict_pop(value, 'average_GPA'))
 
 class SectionTable(tables.Table):
     class Meta:
@@ -46,9 +46,11 @@ class GroupedSectionTable(tables.Table):
     class Meta:
         template_name = 'django_tables2/bootstrap.html'
         model = m.Section
-        exclude= ['id', 'course', 'class_size', 'CRN', 'term']
+        exclude = ['id', 'course', 'class_size', 'CRN', 'term']
+        sequence = ['instructor', 'sections_taught', 'withdrawals', 'average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs', '...']
     
     instructor = tables.Column()
+    sections_taught = tables.Column()
     average_GPA = RoundColumn(2)
     As = RoundColumn()
     Bs = RoundColumn()

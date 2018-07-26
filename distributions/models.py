@@ -3,6 +3,12 @@ from django.db.models import F, Sum, Avg
 from django.urls import reverse
 from .utils import quote
 
+stats_dict = {'average_GPA': Avg('average_GPA'),
+            'As': Avg('As'), 'Bs': Avg('Bs'),
+            'Cs': Avg('Cs'), 'Ds': Avg('Ds'), 'Fs': Avg('Fs'),
+            'students': Sum('class_size'),
+            'withdrawals': Sum('withdrawals')}
+
 class Term(models.Model):
     semester = models.CharField(max_length=10)
     year = models.PositiveIntegerField()
@@ -47,12 +53,7 @@ class SectionQueryset(models.QuerySet):
         def safe_round(val):
             return round(val, 2) if (type(val) is float) else val
         
-        data = self.aggregate(
-            GPA=Avg('average_GPA'),
-            A=Avg('As'), B=Avg('Bs'),
-            C=Avg('Cs'), D=Avg('Ds'), F=Avg('Fs'),
-            students=Sum('class_size'),
-            withdrawals=Sum('withdrawals'))
+        data = self.aggregate(**stats_dict)
         
         return {key: safe_round(value) for key, value in data.items()}
 
