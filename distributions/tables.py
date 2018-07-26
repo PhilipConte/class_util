@@ -19,8 +19,7 @@ class CourseTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         exclude = 'id'
     
-    link = tables.LinkColumn(None, text='link')
-
+    title = tables.LinkColumn(None)
     average_GPA = tables.Column()
     stats = tables.Column(orderable=False)
 
