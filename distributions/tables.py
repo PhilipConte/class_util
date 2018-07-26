@@ -38,8 +38,6 @@ class SectionTable(tables.Table):
         return gen_link(value, reverse('course_instructor', args=[*record.course.url_args, quote(record.instructor)]))
 
 class GroupedSectionTable(tables.Table):
-    course_args = None
-
     def __init__(self, *args, **kwargs):
         temp_course_args = kwargs.pop("course_args")
         super().__init__(*args, **kwargs)
