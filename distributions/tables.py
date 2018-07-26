@@ -37,6 +37,7 @@ class SectionTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         exclude= 'id'
 
+    term = tables.Column(order_by=('term__year', '-term__semester'))
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
     instructor = tables.Column()
     def render_instructor(self, record, value):
@@ -54,6 +55,7 @@ class GroupedSectionTable(tables.Table):
         exclude = ['id', 'course', 'class_size', 'CRN', 'term']
         sequence = ['instructor', 'sections_taught', 'withdrawals', 'average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs', '...']
     
+    term = tables.Column(order_by=('term__year', '-term__semester'))
     instructor = tables.Column()
     sections_taught = tables.Column()
     average_GPA = RoundColumn(2)
