@@ -8,8 +8,9 @@
 </head>
 
 <body>
-    <header>
-        <h1>Class Util/<a href={% url "index" %}>Distributions</a>/{% block header %}{% endblock %}</h1>
+    <header style="display: flex; justify-content: flex-start;">
+        <h1  style="padding-left: 20px; padding-right: 20px;">Class Util/<a href={% url "index" %}>Distributions</a>/{% block header %}{% endblock %}</h1>
+        <h1 style="padding-left: 20px; padding-right: 20px;"><a href={% url 'courses_search' %}>Search</a></h1>
     </header>
     <hr>
     <h2>{% block title %} {% endblock %}</h2>

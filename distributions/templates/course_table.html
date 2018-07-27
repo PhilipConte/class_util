@@ -26,6 +26,10 @@
         <h3>Want to filter? <a href={% url "courses_filterable" %}>click here!</a> | View all sections? <a href={% url "sections" %}>click here!</a></h3>
 {% endif %}
 
+{% if filter.qs.count != filter.queryset.count %}
+<h3>Courses matching <i>"{{ filter.data.multi }}"</i></h3>
+{% endif %}
+
 {% if table %}
     {% render_table table %}
 {% endif %}

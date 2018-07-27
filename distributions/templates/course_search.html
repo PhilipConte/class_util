@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block header %}
+{{ header|safe }}
+{% endblock %}
+
+{% block content %}
+<div class="center-block" style="display: flex; align-items: center; justify-content: center; height: 75vh">
+    <div style="max-width: 50%; display: flex; flex-direction: column; align-items: center">
+        <h2>Search All Courses</h2>
+        <form method='GET'>
+            {{ filter.form }}
+            <input type='submit' value='Search' />
+        </form>
+        <div>
+            <h3>looking for a different way to browse?</h3>
+            <h4><a href={% url 'courses' %}>browse all courses</a></h4>
+            <h4><a href={% url 'sections' %}>browse all sections</a></h4>
+        </div>
+    </div>
+</div>
+{% endblock %}

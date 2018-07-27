@@ -3,10 +3,12 @@ from urllib.parse import unquote
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db.models import Count, Sum, Avg, Value, CharField, PositiveIntegerField
+from django.views.generic import ListView, TemplateView
+from django.http import HttpResponseRedirect
 import django_tables2
 from .models import Course, Section, stats_dict
 from .tables import SectionTable, CourseTable, GroupedSectionTable
-from .filters import SectionFilter, CourseFilter
+from .filters import SectionFilter, CourseFilter, CourseFilterMulti
 from .utils import gen_link, link_reverse, dict_pop
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
@@ -26,7 +28,7 @@ class SectionFilteredSingleTableView(FilteredSingleTableView):
     model = Section
     table_class = SectionTable
     filter_class = SectionFilter
-    template_name='section_table.html'
+    template_name = 'section_table.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,7 +38,7 @@ class SectionFilteredSingleTableView(FilteredSingleTableView):
 class SectionSingleTableView(django_tables2.SingleTableView):
     model = Section
     table_class = SectionTable
-    template_name='section_table.html'
+    template_name = 'section_table.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,7 +49,7 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
     model = Course
     table_class = CourseTable
     filter_class = CourseFilter
-    template_name='course_table.html'
+    template_name ='course_table.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -57,12 +59,40 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
 class CourseSingleTableView(django_tables2.SingleTableView):
     model = Course
     table_class = CourseTable
-    template_name='course_table.html'
+    template_name = 'course_table.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = 'Courses'
         return context
+
+class CourseMultiFilteredSingleTableView(CourseFilteredSingleTableView):
+    filter_class = CourseFilterMulti
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = link_reverse('Courses') + '/Search Results'
+        return context
+
+class CourseSearch(TemplateView):
+    template_name = 'course_search.html'
+    filter_class = CourseFilterMulti
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = link_reverse('Courses') + '/Search'
+        context['filter'] = self.filter_class(self.request.GET, queryset=Course.objects.all())
+        return context
+
+    def get(self, request):
+        def custom_redirect(url_name, *args, **kwargs):
+            import urllib
+            url = reverse(url_name, args = args)
+            params = urllib.parse.urlencode(kwargs)
+            return HttpResponseRedirect(url + "?%s" % params)
+        if (len(request.GET) and len([c for c in request.GET.values()][0])):
+            return custom_redirect('courses_search_results', **request.GET.dict())
+        return super().get(self, request)
 
 def course_shortcut(request, department, number):
     department = department.upper()
