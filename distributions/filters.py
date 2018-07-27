@@ -1,6 +1,7 @@
 import itertools
 
 from django.db.models import Q
+from django import forms
 from .models import Course, Section
 import django_filters
 
@@ -31,7 +32,9 @@ class SectionFilter(django_filters.FilterSet):
         }
 
 class CourseFilterMulti(django_filters.FilterSet):
-    multi = django_filters.CharFilter(label='Multi-filter', method='filter_multi')
+    multi = django_filters.CharFilter(label='', method='filter_multi', widget=
+        forms.TextInput(attrs={'placeholder': 'Search', 
+            'style': 'flex-grow:2; border:none;'}))
     search_fields = ['department', 'number', 'title']
 
     def filter_multi(self, qs, name, value):

@@ -68,6 +68,7 @@ class CourseSingleTableView(django_tables2.SingleTableView):
 
 class CourseMultiFilteredSingleTableView(CourseFilteredSingleTableView):
     filter_class = CourseFilterMulti
+    template_name = 'course_search_results.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

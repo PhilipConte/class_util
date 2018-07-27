@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block header %}
+{{ header|safe }}
+{% endblock %}
+
+{% block content %}
+
+<form method='GET' style="display: inline-flex; flex-direction:row; border:1px solid grey; padding:2px;">
+        {{ filter.form }}
+        <label for="mySubmit" class="btn"><span class="glyphicon glyphicon-search"></span></label>
+        <input id="mySubmit" type="submit" value="Go" class="hidden" />
+</form>
+
+{% if filter.data.multi and filter.qs.count != filter.queryset.count %}
+<h4>{{ filter.qs.count }} courses out of {{ filter.queryset.count }} matching <i>"{{ filter.data.multi }}"</i> | <a href='{{ request.path }}' >Clear</a></h4>
+{% endif %}
+
+{% render_table table %}
+
+{% endblock %}
