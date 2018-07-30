@@ -2,7 +2,6 @@ from urllib.parse import unquote
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.db.models import Count, Sum, Avg, Value, CharField, PositiveIntegerField
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
 import django_tables2
