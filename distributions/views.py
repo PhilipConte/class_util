@@ -23,7 +23,7 @@ class FilteredSingleTableView(django_tables2.SingleTableView):
         context['filter'] = self.filter
         return context
 
-class SectionFilteredSingleTableView(FilteredSingleTableView):
+class SectionFilteredListView(FilteredSingleTableView):
     model = Section
     table_class = SectionTable
     filter_class = SectionFilter
@@ -34,7 +34,7 @@ class SectionFilteredSingleTableView(FilteredSingleTableView):
         context['header'] = link_reverse('Sections') + '/Filter'
         return context
 
-class SectionSingleTableView(django_tables2.SingleTableView):
+class SectionListView(django_tables2.SingleTableView):
     model = Section
     table_class = SectionTable
     template_name = 'section_table.html'
@@ -44,7 +44,7 @@ class SectionSingleTableView(django_tables2.SingleTableView):
         context['header'] = 'Sections'
         return context
 
-class CourseFilteredSingleTableView(FilteredSingleTableView):
+class CourseFilteredListView(FilteredSingleTableView):
     model = Course
     table_class = CourseTable
     filter_class = CourseFilter
@@ -55,7 +55,7 @@ class CourseFilteredSingleTableView(FilteredSingleTableView):
         context['header'] = link_reverse('Courses') + '/Filter'
         return context
 
-class CourseSingleTableView(django_tables2.SingleTableView):
+class CourseListView(django_tables2.SingleTableView):
     model = Course
     table_class = CourseTable
     template_name = 'course_table.html'
@@ -65,7 +65,7 @@ class CourseSingleTableView(django_tables2.SingleTableView):
         context['header'] = 'Courses'
         return context
 
-class CourseMultiFilteredSingleTableView(CourseFilteredSingleTableView):
+class CourseMultiFilteredListView(CourseFilteredListView):
     filter_class = CourseFilterMulti
     template_name = 'course_search_results.html'
 
@@ -74,7 +74,7 @@ class CourseMultiFilteredSingleTableView(CourseFilteredSingleTableView):
         context['header'] = link_reverse('Courses') + '/Search Results'
         return context
 
-class CourseSearch(TemplateView):
+class CourseSearchView(TemplateView):
     template_name = 'course_search.html'
     filter_class = CourseFilterMulti
 
@@ -94,7 +94,7 @@ class CourseSearch(TemplateView):
             return custom_redirect('courses_search_results', **request.GET.dict())
         return super().get(self, request)
 
-class CourseDetail(django_tables2.SingleTableView):
+class CourseDetailView(django_tables2.SingleTableView):
     model = Section
     table_class = GroupedSectionTable
     template_name = 'course.html'    
