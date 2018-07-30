@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Sum, Avg
+from django.db.models import F, Sum, Avg, Count
 from django.urls import reverse
 from .utils import quote, dict_pop
 
@@ -59,6 +59,11 @@ class SectionQueryset(models.QuerySet):
         data = self.aggregate(**stats_dict)
         
         return {key: safe_round(value) for key, value in data.items()}
+    
+    def group_by_instructor(self):
+        stats = dict_pop(stats_dict, 'students')
+        stats['sections_taught'] = Count('instructor')
+        return self.values('instructor').annotate(**stats)
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE, related_name='sections')

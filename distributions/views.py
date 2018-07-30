@@ -100,9 +100,7 @@ def course(request, department, number, title, hours):
     title=unquote(title)
     course = Course.objects.get(department=department, number=number, title=title, hours=hours)
     sections = course.sections.all()
-    stats = dict_pop(stats_dict, 'students')
-    stats['sections_taught'] = Count('instructor')
-    group = course.sections.values('instructor').annotate(**stats)
+    group = sections.group_by_instructor()
     table = GroupedSectionTable(group, request=request, course_args=course.url_args)
     context = {'header': link_reverse('Courses') + '/' + course.short(),
         'course': course, 'sections': sections, 'table': table,}
