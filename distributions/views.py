@@ -94,26 +94,65 @@ class CourseSearch(TemplateView):
             return custom_redirect('courses_search_results', **request.GET.dict())
         return super().get(self, request)
 
-def course(request, department, number, title, hours):
-    department = department.upper()
-    title=unquote(title)
-    course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    sections = course.sections.all()
-    group = sections.group_by_instructor()
-    table = GroupedSectionTable(group, request=request, course_args=course.url_args)
-    context = {'header': link_reverse('Courses') + '/' + course.short(),
-        'course': course, 'sections': sections, 'table': table,}
-    return render(request, 'course.html', context)
+class CourseDetail(django_tables2.SingleTableView):
+    model = Section
+    table_class = GroupedSectionTable
+    template_name = 'course.html'    
 
-def course_instructor(request, department, number, title ,hours, instructor):
-    department = department.upper()
-    title=unquote(title)
-    instructor=unquote(instructor)
-    course = Course.objects.get(department=department, number=number, title=title, hours=hours)
-    course_sections = course.sections.all()
-    sections = course_sections.filter(instructor=instructor)
-    table = SectionTable(sections, exclude=['id', 'course', 'instructor'], request=request)
-    header = link_reverse('Courses') + '/' + gen_link(course.short(), course.get_absolute_url()) + '/' + instructor
-    return render(request, 'course_instructor.html',
-        {'header': header, 'course': course, 'instructor': instructor,
-        'table': table, 'sections': sections, 'course_sections': course_sections})
+    def parse_params(self):
+        self.course = get_object_or_404(Course,
+            department=self.kwargs['department'].upper(),
+            number=self.kwargs['number'],
+            title=unquote(self.kwargs['title']), hours=self.kwargs['hours'])
+        self.sections = self.course.sections.all()
+
+    def get_table_data(self):
+        return self.sections.group_by_instructor()
+
+    def get_table_kwargs(self):
+        return {
+            'request': self.request,
+            'course_args': self.course.url_args}
+
+    def get_context_data(self, **kwargs):
+        self.parse_params()
+
+        context = super().get_context_data(**kwargs)
+        context['header'] = link_reverse('Courses') + '/' + self.course.short()
+        context['course'] =  self.course
+        context['sections'] =  self.sections
+        return context
+
+class CourseInstructorDetailView(django_tables2.SingleTableView):
+    model = Section
+    table_class = SectionTable
+    template_name = 'course_instructor.html'    
+
+    def parse_params(self):
+        self.course = get_object_or_404(Course,
+            department=self.kwargs['department'].upper(),
+            number=self.kwargs['number'],
+            title=unquote(self.kwargs['title']), hours=self.kwargs['hours'])
+        self.course_sections = self.course.sections.all()
+        self.instructor = unquote(self.kwargs['instructor'])
+        self.sections = self.course_sections.filter(
+            instructor=self.instructor)
+
+    def get_table_data(self):
+        return self.sections
+
+    def get_table_kwargs(self):
+        return {
+            'request': self.request,
+            'exclude': ['id', 'course', 'instructor']}
+
+    def get_context_data(self, **kwargs):
+        self.parse_params()
+
+        context = super().get_context_data(**kwargs)
+        context['header'] = link_reverse('Courses') + '/' + gen_link(self.course.short(), self.course.get_absolute_url()) + '/' + self.instructor
+        context['course'] =  self.course
+        context['course_sections'] = self.course_sections
+        context['instructor'] = self.instructor
+        context['sections'] =  self.sections
+        return context

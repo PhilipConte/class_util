@@ -10,6 +10,6 @@ urlpatterns = [
     path('courses/search', views.CourseSearch.as_view(), name = 'courses_search'),
     path('courses/search_results', views.CourseMultiFilteredSingleTableView.as_view(), name = 'courses_search_results'),
     path('courses/filterable', views.CourseFilteredSingleTableView.as_view(), name = 'courses_filterable'),
-    path('courses/department=<str:department>+number=<int:number>+title=<str:title>+hours=<int:hours>', views.course, name='course'),
-    path('courses/department=<str:department>+number=<int:number>+title=<str:title>+hours=<int:hours>/<str:instructor>', views.course_instructor, name='course_instructor'),
+    path('courses/department=<str:department>+number=<int:number>+title=<str:title>+hours=<int:hours>', views.CourseDetail.as_view(), name='course'),
+    path('courses/department=<str:department>+number=<int:number>+title=<str:title>+hours=<int:hours>/<str:instructor>', views.CourseInstructorDetailView.as_view(), name='course_instructor'),
 ]
