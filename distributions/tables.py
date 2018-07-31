@@ -41,7 +41,7 @@ class SectionTable(tables.Table):
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
     instructor = tables.Column()
     def render_instructor(self, record, value):
-        return gen_link(value, reverse('course_instructor', args=[*record.course.url_args, quote(record.instructor)]))
+        return gen_link(value, reverse('course_instructor_detail', args=[*record.course.url_args, quote(record.instructor)]))
 
 class GroupedSectionTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -65,4 +65,4 @@ class GroupedSectionTable(tables.Table):
     Ds = RoundColumn(verbose_name='D%')
     Fs = RoundColumn(verbose_name='F%')
     def render_instructor(self, value):
-        return gen_link(value, reverse('course_instructor', args=[*self.course_args, quote(value)]))
+        return gen_link(value, reverse('course_instructor_detail', args=[*self.course_args, quote(value)]))

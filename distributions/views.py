@@ -27,51 +27,33 @@ class SectionFilteredListView(FilteredSingleTableView):
     model = Section
     table_class = SectionTable
     filter_class = SectionFilter
-    template_name = 'section_table.html'
+    template_name = 'filtered_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Sections') + '/Filter'
-        return context
-
-class SectionListView(django_tables2.SingleTableView):
-    model = Section
-    table_class = SectionTable
-    template_name = 'section_table.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header'] = 'Sections'
+        context['header'] = 'Sections/Filter'
+        context['title'] = 'Filtered Sections'
         return context
 
 class CourseFilteredListView(FilteredSingleTableView):
     model = Course
     table_class = CourseTable
     filter_class = CourseFilter
-    template_name ='course_table.html'
+    template_name ='filtered_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Courses') + '/Filter'
+        context['header'] = gen_link('Courses', reverse('course_list'))  + '/Filter'
+        context['title'] = 'Filtered Courses'
         return context
 
-class CourseListView(django_tables2.SingleTableView):
-    model = Course
-    table_class = CourseTable
-    template_name = 'course_table.html'
+class CourseListView(CourseFilteredListView):
+    filter_class = CourseFilterMulti
+    template_name = 'course_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = 'Courses'
-        return context
-
-class CourseMultiFilteredListView(CourseFilteredListView):
-    filter_class = CourseFilterMulti
-    template_name = 'course_search_results.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Courses') + '/Search Results'
         return context
 
 class CourseSearchView(TemplateView):
@@ -80,7 +62,7 @@ class CourseSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Courses') + '/Search'
+        context['header'] = gen_link('Courses', reverse('course_list')) + '/Search'
         context['filter'] = self.filter_class(self.request.GET, queryset=Course.objects.all())
         return context
 
@@ -91,7 +73,7 @@ class CourseSearchView(TemplateView):
             params = urllib.parse.urlencode(kwargs)
             return HttpResponseRedirect(url + "?%s" % params)
         if (len(request.GET) and len([c for c in request.GET.values()][0])):
-            return custom_redirect('courses_search_results', **request.GET.dict())
+            return custom_redirect('course_list', **request.GET.dict())
         return super().get(self, request)
 
 class CourseDetailView(django_tables2.SingleTableView):
@@ -118,7 +100,7 @@ class CourseDetailView(django_tables2.SingleTableView):
         self.parse_params()
 
         context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Courses') + '/' + self.course.short()
+        context['header'] = gen_link('Courses', reverse('course_list')) + '/' + self.course.short()
         context['course'] =  self.course
         context['sections'] =  self.sections
         return context
@@ -150,7 +132,7 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
         self.parse_params()
 
         context = super().get_context_data(**kwargs)
-        context['header'] = link_reverse('Courses') + '/' + gen_link(self.course.short(), self.course.get_absolute_url()) + '/' + self.instructor
+        context['header'] = gen_link('Courses', reverse('course_list')) + '/' + gen_link(self.course.short(), self.course.get_absolute_url()) + '/' + self.instructor
         context['course'] =  self.course
         context['course_sections'] = self.course_sections
         context['instructor'] = self.instructor
