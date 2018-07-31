@@ -8,22 +8,28 @@
 </head>
 
 <body>
-    <header style="display: flex; justify-content: flex-start;">
+    <header class="page-header" style="position: absolute; display: flex; justify-content: flex-start; overflow: hidden;">
         <h1  style="padding-left: 20px; padding-right: 20px;">Class Util/<a href={% url "index" %}>Distributions</a>/{% block header %}{% endblock %}</h1>
         <h1 style="padding-left: 20px; padding-right: 20px;"><a href={% url 'courses_search' %}>Search</a></h1>
     </header>
-    <hr>
-    <h2>{% block title %} {% endblock %}</h2>
-    <div>
-        {% block content %} {% endblock %}
-    </div>
-    <hr>
-    <footer>
+    <div style="position:absolute; top:139px; bottom:40px; left:0px; right:0px; overflow:auto;">
+        <h2>{% block title %} {% endblock %}</h2>
         <div>
-            <p>Learn more on the
-                <a href="https://github.com/PhilipConte/class_util" target="_blank">project's site</a>
-            </p>
+            {% block content %} {% endblock %}
         </div>
+    </div>
+    <footer style="
+        position: absolute;
+        height: 40px;
+        margin-bottom: 0;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid lightgrey;
+        overflow: hidden;"
+    >
+        <p>Learn more on the
+            <a href="https://github.com/PhilipConte/class_util" target="_blank">project's site</a>
+        </p>
     </footer>
 </body>
 
