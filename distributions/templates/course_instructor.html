@@ -14,6 +14,7 @@
 <div style="display: flex; justify-content: space-evenly;">
     {% stat_view course_sections.stats course.short %}
     {% stat_view sections.stats instructor %}
+    {% stat_view sections.group_by_term 'Term' %}
 </div>
 {% render_table table %}
 {% endblock %}

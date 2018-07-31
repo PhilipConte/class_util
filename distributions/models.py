@@ -18,10 +18,10 @@ class Term(models.Model):
         return '{} {}'.format(self.semester, self.year)
 
 class CourseManager(models.Manager):
-    def all(self):
+    def get_queryset(self, **kwargs):
         base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
         to_annotate = {k: t[0]('sections__'+t[1]) for k, t in base_dict.items()}
-        return self.get_queryset().annotate(**to_annotate)
+        return super().get_queryset(**kwargs).annotate(**to_annotate)
 
 class Course(models.Model):
     department = models.CharField(max_length=8)
@@ -64,6 +64,23 @@ class SectionQueryset(models.QuerySet):
         stats = dict_pop(stats_dict, 'students')
         stats['sections_taught'] = Count('instructor')
         return self.values('instructor').annotate(**stats)
+
+    def group_by_term(self):
+        group = self.values('term').annotate(
+            average_GPA=stats_dict['average_GPA'],
+            year=F('term__year'),
+            semester=F('term__semester'))
+        
+        for item in group:
+            item['average_GPA'] = round(item['average_GPA'], 2)
+            item['term'] = Term.objects.get(
+                year=item['year'],
+                semester=item['semester'])
+            del item['semester']
+            del item['year']
+        
+        group = {item['term']: item['average_GPA'] for item in group}
+        return group
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE, related_name='sections')

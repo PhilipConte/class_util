@@ -12,5 +12,6 @@
 
 {% block content %}
 {% stat_view sections.stats course.short %}
+{% stat_view sections.group_by_term 'Term' %}
 {% render_table table %}
 {% endblock %}
