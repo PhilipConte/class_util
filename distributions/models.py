@@ -17,6 +17,9 @@ class Term(models.Model):
     def __str__(self):
         return '{} {}'.format(self.semester, self.year)
 
+    class Meta:
+        ordering = ['year', '-semester']
+
 class CourseManager(models.Manager):
     def get_queryset(self, **kwargs):
         base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
@@ -50,6 +53,9 @@ class Course(models.Model):
 
     def __str__(self):
         return self.no_credits() + ' ({} credits)'.format(self.hours)
+
+    class Meta:
+        ordering = ['department', 'number', 'title', 'hours']
 
 class SectionQueryset(models.QuerySet):
     def stats(self):
@@ -102,3 +108,6 @@ class Section(models.Model):
 
     def __str__(self):
         return '{}: CRN: {} ({})'.format(self.course, self.CRN, self.term)
+    
+    class Meta:
+        ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
