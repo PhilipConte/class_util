@@ -73,17 +73,11 @@ class SectionQueryset(models.QuerySet):
 
     def group_by_term(self):
         group = self.values('term').annotate(
-            average_GPA=stats_dict['average_GPA'],
-            year=F('term__year'),
-            semester=F('term__semester'))
+            average_GPA=stats_dict['average_GPA'])
         
         for item in group:
             item['average_GPA'] = round(item['average_GPA'], 2)
-            item['term'] = Term.objects.get(
-                year=item['year'],
-                semester=item['semester'])
-            del item['semester']
-            del item['year']
+            item['term'] = Term.objects.get(pk=item['term'])
         
         group = {item['term']: item['average_GPA'] for item in group}
         return group
