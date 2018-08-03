@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='distributions', permanent=False), name='index'),
     path('distributions/', include('distributions.urls', namespace='distributions')),
+    path('api/distributions/', include('distributions.api.urls', namespace='distributions-api'))
 ]

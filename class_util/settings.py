@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'distributions',
     'django_tables2',
     'django_filters',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
