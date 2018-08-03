@@ -49,7 +49,7 @@ class Course(models.Model):
         return [self.department, self.number, quote(self.title), self.hours]
 
     def get_absolute_url(self):
-        return reverse('course_detail', args=self.url_args)
+        return reverse('distributions:course_detail', args=self.url_args)
 
     @property
     def stats(self):

@@ -43,7 +43,7 @@ class CourseFilteredListView(FilteredSingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = gen_link('Courses', reverse('course_list'))  + '/Filter'
+        context['header'] = gen_link('Courses', reverse('distributions:course_list'))  + '/Filter'
         context['title'] = 'Filtered Courses'
         return context
 
@@ -62,7 +62,7 @@ class CourseSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = gen_link('Courses', reverse('course_list')) + '/Search'
+        context['header'] = gen_link('Courses', reverse('distributions:course_list')) + '/Search'
         context['filter'] = self.filter_class(self.request.GET, queryset=Course.objects.all())
         return context
 
@@ -73,7 +73,7 @@ class CourseSearchView(TemplateView):
             params = urllib.parse.urlencode(kwargs)
             return HttpResponseRedirect(url + "?%s" % params)
         if (len(request.GET) and len([c for c in request.GET.values()][0])):
-            return custom_redirect('course_list', **request.GET.dict())
+            return custom_redirect('distributions:course_list', **request.GET.dict())
         return super().get(self, request)
 
 class CourseDetailView(django_tables2.SingleTableView):
@@ -100,7 +100,7 @@ class CourseDetailView(django_tables2.SingleTableView):
         self.parse_params()
 
         context = super().get_context_data(**kwargs)
-        context['header'] = gen_link('Courses', reverse('course_list')) + '/' + self.course.short()
+        context['header'] = gen_link('Courses', reverse('distributions:course_list')) + '/' + self.course.short()
         context['course'] =  self.course
         context['sections'] =  self.sections
         return context
@@ -132,7 +132,7 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
         self.parse_params()
 
         context = super().get_context_data(**kwargs)
-        context['header'] = gen_link('Courses', reverse('course_list')) + '/' + gen_link(self.course.short(), self.course.get_absolute_url()) + '/' + self.instructor
+        context['header'] = gen_link('Courses', reverse('distributions:course_list')) + '/' + gen_link(self.course.short(), self.course.get_absolute_url()) + '/' + self.instructor
         context['course'] =  self.course
         context['course_sections'] = self.course_sections
         context['instructor'] = self.instructor

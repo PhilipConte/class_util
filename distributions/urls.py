@@ -2,6 +2,8 @@ from django.urls import include, path
 from django.views.generic.base import RedirectView
 from . import views
 
+app_name = 'distributions'
+
 urlpatterns = [
     path('', RedirectView.as_view(url='courses/search/', permanent=False), name='index'),
     path('sections/', views.SectionFilteredListView.as_view(), name='section_filtered_list'),
