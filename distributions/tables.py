@@ -4,7 +4,7 @@ from django_tables2.utils import A
 import django_tables2 as tables
 from . import models as m
 
-from .utils import pretty_dict, dict_pop, gen_link, quote
+from .utils import gen_link, quote
 
 class RoundColumn(tables.Column):
     def __init__(self, decimals=1, *args, **kwargs):
@@ -27,9 +27,6 @@ class CourseTable(tables.Table):
     Cs = RoundColumn(verbose_name='C%')
     Ds = RoundColumn(verbose_name='D%')
     Fs = RoundColumn(verbose_name='F%')
-
-    def render_stats(self, value):
-        return pretty_dict(dict_pop(value, 'average_GPA'))
 
 class SectionTable(tables.Table):
     class Meta:
