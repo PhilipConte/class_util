@@ -79,7 +79,7 @@ class CourseSearchView(TemplateView):
 class CourseDetailView(django_tables2.SingleTableView):
     model = Section
     table_class = GroupedSectionTable
-    template_name = 'course.html'    
+    template_name = 'course_detail.html'    
 
     def parse_params(self):
         self.course = get_object_or_404(Course,
@@ -108,7 +108,7 @@ class CourseDetailView(django_tables2.SingleTableView):
 class CourseInstructorDetailView(django_tables2.SingleTableView):
     model = Section
     table_class = SectionTable
-    template_name = 'course_instructor.html'    
+    template_name = 'course_instructor_detail.html'    
 
     def parse_params(self):
         self.course = get_object_or_404(Course,
