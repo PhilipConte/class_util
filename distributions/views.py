@@ -83,9 +83,7 @@ class CourseDetailView(django_tables2.SingleTableView):
 
     def parse_params(self):
         self.course = get_object_or_404(Course,
-            department=self.kwargs['department'].upper(),
-            number=self.kwargs['number'],
-            title=unquote(self.kwargs['title']), hours=self.kwargs['hours'])
+            slug=self.kwargs['slug'])
         self.sections = self.course.sections.all()
 
     def get_table_data(self):
@@ -94,7 +92,7 @@ class CourseDetailView(django_tables2.SingleTableView):
     def get_table_kwargs(self):
         return {
             'request': self.request,
-            'course_args': self.course.url_args}
+            'course_args': [self.course.slug]}
 
     def get_context_data(self, **kwargs):
         self.parse_params()
@@ -112,9 +110,7 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
 
     def parse_params(self):
         self.course = get_object_or_404(Course,
-            department=self.kwargs['department'].upper(),
-            number=self.kwargs['number'],
-            title=unquote(self.kwargs['title']), hours=self.kwargs['hours'])
+            slug=self.kwargs['slug'])
         self.course_sections = self.course.sections.all()
         self.instructor = unquote(self.kwargs['instructor'])
         self.sections = self.course_sections.filter(

@@ -14,3 +14,4 @@ class CourseListAPIView(ListAPIView):
 class CourseDetailAPIView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    lookup_field = 'slug'
