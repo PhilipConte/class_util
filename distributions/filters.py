@@ -3,9 +3,9 @@ import itertools
 from django.db.models import Q
 from django import forms
 from .models import Course, Section
-import django_filters
+from django_filters import rest_framework as filters
 
-class CourseFilter(django_filters.FilterSet):
+class CourseFilter(filters.FilterSet):
     class Meta:
         model = Course
         fields = {
@@ -16,7 +16,7 @@ class CourseFilter(django_filters.FilterSet):
         }
 
 
-class SectionFilter(django_filters.FilterSet):
+class SectionFilter(filters.FilterSet):
     class Meta:
         model = Section
         fields = {
@@ -31,8 +31,8 @@ class SectionFilter(django_filters.FilterSet):
             'term__year': ['exact'],
         }
 
-class CourseFilterMulti(django_filters.FilterSet):
-    multi = django_filters.CharFilter(label='', method='filter_multi', widget=
+class CourseFilterMulti(filters.FilterSet):
+    multi = filters.CharFilter(label='', method='filter_multi', widget=
         forms.TextInput(attrs={'placeholder': 'Search', 
             'style': 'flex-grow:2; border:none;'}))
     search_fields = ['department', 'number', 'title']
