@@ -11,8 +11,17 @@ With that being said, if you have a PID login to access VT's single sign-on serv
 ### Setup
 1. See: [Installation](#Installation)
 
-2. CSVs should be labeled in the format [fall/spring]YYYY.csv  
-ie: fall 2017 would be fall2017.csv
+2. CSVs should be labeled in the format YYYY_SEMESTER.csv  
+    ie: fall 2018 would be 2018_fall.csv
+    valid semester names:
+
+    1. spring
+    1. summer1
+    1. summer2
+    1. fall
+    1. winter
+
+    you can add your override the defaults in  the `SEMESTER_DICT` constant defined in `load_section_data.py`
 
 3. The Desired CSVs should be placed in the /distributions/data folder.
 

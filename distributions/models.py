@@ -10,15 +10,25 @@ raw_stats = {'average_GPA': (Avg,'average_GPA'),
             'withdrawals': (Sum,'withdrawals')}
 stats_dict = {key: t[0](t[1]) for key, t in raw_stats.items()}
 
+class Semester(models.Model):
+    name = models.CharField(max_length=20)
+    ordering = models.PositiveIntegerField()
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        ordering = ['ordering']
+
 class Term(models.Model):
-    semester = models.CharField(max_length=10)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     year = models.PositiveIntegerField()
 
     def __str__(self):
         return '{} {}'.format(self.semester, self.year)
 
     class Meta:
-        ordering = ['year', '-semester']
+        ordering = ['year', 'semester']
 
 class CourseManager(models.Manager):
     def get_queryset(self, **kwargs):

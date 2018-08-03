@@ -27,7 +27,7 @@ class SectionFilter(django_filters.FilterSet):
             'instructor': ['icontains'],
             'CRN': ['contains'],
             'average_GPA': ['exact', 'lt', 'gt'],
-            'term__semester': ['iexact'],
+            'term__semester__name': ['iexact'],
             'term__year': ['exact'],
         }
 

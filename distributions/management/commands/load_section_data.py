@@ -1,7 +1,10 @@
 from pathlib import Path
 from csv import DictReader
 from django.core.management import BaseCommand
-from distributions.models import Term, Course, Section
+from distributions.models import Term, Course, Section, Semester
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+
+SEMESTER_DICT = {'winter': 1, 'spring': 2, 'summer1': 3, 'summer2': 4, 'fall': 5}
 
 ALREADY_LOADED_ERROR_MESSAGE = """
 If you need to reload the section data from the CSV file,
@@ -10,9 +13,13 @@ Then, run `python manage.py migrate` for a new empty
 database with tables\n"""
 
 INVALID_CSV_NAME_ERROR_MESSAGE = """
-CSVs must be in the format [fall/spring]YYYY.csv
-eg: fall 2018 would be fall2018.csv
-non-fall/spring semesters are not supported at this time\n"""
+CSVs must be in the format YYYY_SEMESTER.csv
+ie: fall 2018 would be 2018_fall.csv
+valid semesters are defined by the SEMESTER_DICT constant
+(defined in load_section_data.py)\n"""
+
+INVALID_SEMESTER_DICT_ERROR_MESSAGE = """
+Semester names must be unique in the current implementation\n"""
 
 class Command(BaseCommand):
     help = "Loads data from distributions/data/*.csv into the Sections model"
@@ -23,20 +30,35 @@ class Command(BaseCommand):
             print(ALREADY_LOADED_ERROR_MESSAGE)
             return
 
-        duplicates = 0
+        for name, ordering in SEMESTER_DICT.items():
+            semester = Semester()
+            semester.name = name
+            semester.ordering = ordering
+            semester.save()
+
         print("Loading section data...\n")
         for path in Path('distributions/data').iterdir():
             path_str = str(path).lower()
             if path_str[-4:] != '.csv':
                 continue
+            
+            print('loading ' + path_str)
 
             filename = path.parts[-1].split('.')[0]
-            semester = filename[:-4]
-            year = filename[-4:]
-            if semester not in ['fall', 'spring']:
+            year = filename.split('_')[0]
+            semester = filename.split('_')[1]
+
+            try:
+                semester = Semester.objects.get(name=semester)
+            except ObjectDoesNotExist:
                 print('invalid semester in csv: ' + path_str)
                 print(INVALID_CSV_NAME_ERROR_MESSAGE)
                 continue
+            except MultipleObjectsReturned:
+                print('invalid semester in csv: ' + path_str)
+                print(INVALID_SEMESTER_DICT_ERROR_MESSAGE)
+                continue
+            
             if year.isdigit():
                 year = int(year)
             else:
