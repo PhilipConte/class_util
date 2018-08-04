@@ -32,7 +32,7 @@ class SectionTable(tables.Table):
     class Meta:
         model = m.Section
         template_name = 'django_tables2/bootstrap.html'
-        exclude= 'id'
+        exclude= ['id', 'slug']
 
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
     instructor = tables.LinkColumn()

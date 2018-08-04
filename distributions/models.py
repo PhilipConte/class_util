@@ -3,6 +3,7 @@ from django.db.models import F, Sum, Avg, Count
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
+from django.dispatch import receiver
 from .utils import quote, dict_pop
 
 raw_stats = {'average_GPA': (Avg,'average_GPA'),
@@ -108,6 +109,8 @@ class Section(models.Model):
     withdrawals = models.PositiveIntegerField()
     class_size = models.PositiveIntegerField()
 
+    slug = models.SlugField(unique=True)
+
     objects = SectionQueryset.as_manager()
 
     def get_absolute_url(self):
@@ -119,18 +122,32 @@ class Section(models.Model):
     class Meta:
         ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
 
-def create_slug(instance, new_slug=None):
-    slug = slugify('_'.join([instance.department, instance.number, instance.title, instance.hours]))
-    if new_slug is not None:
-        slug = new_slug
-    qs = Course.objects.filter(slug=slug).order_by("-id")
-    if qs.exists():
-        new_slug = '{}-{}'.format(slug, qs.first().id)
-        return create_slug(instance, new_slug=new_slug)
-    return slug
-
+@receiver(pre_save, sender=Course)
 def pre_save_course_receiver(sender, instance, *args, **kwargs):
+    def create_slug(instance, new_slug=None):
+        slug = slugify('_'.join([instance.department, instance.number, instance.title, instance.hours]))
+        if new_slug is not None:
+            slug = new_slug
+        qs = sender.objects.filter(slug=slug).order_by("-id")
+        if qs.exists():
+            new_slug = '{}-{}'.format(slug, qs.first().id)
+            return create_slug(instance, new_slug=new_slug)
+        return slug
+    
     if not instance.slug:
         instance.slug = create_slug(instance)
 
-pre_save.connect(pre_save_course_receiver, sender=Course)
+@receiver(pre_save, sender=Section)
+def pre_save_section_receiver(sender, instance, *args, **kwargs):
+    def create_slug(instance, new_slug=None):
+        slug = slugify('_'.join([str(instance.term), instance.course.short(), instance.instructor, str(instance.CRN)]))
+        if new_slug is not None:
+            slug = new_slug
+        qs = sender.objects.filter(slug=slug).order_by("-id")
+        if qs.exists():
+            new_slug = '{}-{}'.format(slug, qs.first().id)
+            return create_slug(instance, new_slug=new_slug)
+        return slug
+    
+    if not instance.slug:
+        instance.slug = create_slug(instance)

@@ -122,7 +122,7 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
     def get_table_kwargs(self):
         return {
             'request': self.request,
-            'exclude': ['id', 'course', 'instructor']}
+            'exclude': ['id', 'course', 'instructor', 'slug']}
 
     def get_context_data(self, **kwargs):
         self.parse_params()
