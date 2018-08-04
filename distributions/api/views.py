@@ -43,7 +43,7 @@ class CourseInstructorDetailAPIView(ListAPIView):
         course = get_object_or_404(Course, slug=slug)
         return course.sections.filter(instructor=instructor)
 
-class _SectionsRetrieveyAPIView(RetrieveAPIView):
+class _SectionsRetrieveAPIView(RetrieveAPIView):
     def get_queryset(self, **kwargs):
         course = get_object_or_404(Course, slug=kwargs.get('slug'))
         if kwargs.get('instructor'):
@@ -53,11 +53,11 @@ class _SectionsRetrieveyAPIView(RetrieveAPIView):
         
         return sections
 
-class StatsAPIView(_SectionsRetrieveyAPIView):    
+class StatsAPIView(_SectionsRetrieveAPIView):    
     def get(self, request, **kwargs):
         return Response(self.get_queryset(**kwargs).stats())
 
-class HistoryAPIView(_SectionsRetrieveyAPIView):    
+class HistoryAPIView(_SectionsRetrieveAPIView):    
     def get(self, request, **kwargs):
         data = self.get_queryset(**kwargs).group_by_term()
         data = {str(key): value for key, value in data.items()}
