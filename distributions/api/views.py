@@ -1,4 +1,6 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 from distributions.models import Section, Course
 from distributions.filters import SectionFilter, CourseFilter
@@ -16,6 +18,8 @@ class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     filterset_class = CourseFilter
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    search_fields = ['department', 'number', 'title', 'hours']
     pagination_class = DistributionsLimitOffsetPaginator
 
 class CourseDetailAPIView(RetrieveAPIView):
