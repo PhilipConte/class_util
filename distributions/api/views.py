@@ -14,6 +14,10 @@ class SectionListAPIView(ListAPIView):
     filterset_class = SectionFilter
     pagination_class = DistributionsLimitOffsetPaginator
 
+class SectionDetailAPIView(RetrieveAPIView):
+    queryset = Section.objects.all()
+    serializer_class = SectionSerializer
+    lookup_field = 'slug'
 
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()

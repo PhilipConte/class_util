@@ -1,19 +1,21 @@
-from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
+import decimal
+from rest_framework.serializers import (
+    ModelSerializer,
+    HyperlinkedIdentityField,
+    SerializerMethodField,
+    SlugRelatedField,
+    DecimalField,
+    CharField,
+)
 
 from distributions.models import Term, Section, Course
 
 class TermSerializer(ModelSerializer):
-    semester = SerializerMethodField()
+    semester = CharField(source='semester.name', read_only=True)
 
     class Meta:
         model = Term
-        fields = [
-            'year',
-            'semester',
-        ]
-    
-    def get_semester(self, obj):
-        return obj.semester.name
+        fields = ['year', 'semester']
 
 class SectionBaseSerializer(ModelSerializer):
     term = TermSerializer()
@@ -67,8 +69,7 @@ class SectionInstructorSerializer(SectionBaseSerializer):
         ]
 
 class SectionSerializer(SectionBaseSerializer):
-    course = CourseBaseSerializer()
-
+    course = SlugRelatedField(read_only=True, slug_field='slug')
     class Meta:
         model = Section
         fields = [
@@ -87,13 +88,13 @@ class SectionSerializer(SectionBaseSerializer):
         ]
 
 class CourseSerializer(CourseBaseSerializer):
-    average_GPA = SerializerMethodField()
-    As = SerializerMethodField()
-    Bs = SerializerMethodField()
-    Cs = SerializerMethodField()
-    Ds = SerializerMethodField()
-    Fs = SerializerMethodField()
-    sections = SectionBaseSerializer(many=True, read_only=True)
+    average_GPA = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    As = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    Bs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    Cs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    Ds = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    Fs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    sections = SlugRelatedField(many=True, read_only=True, slug_field='slug')
 
     class Meta:
         model = Course
@@ -111,21 +112,3 @@ class CourseSerializer(CourseBaseSerializer):
             'sections',
             'url',
         ]
-
-    def get_average_GPA(self, obj):
-        return round(obj.average_GPA, 2)
-
-    def get_As(self, obj):
-        return round(obj.As, 1)
-    
-    def get_Bs(self, obj):
-        return round(obj.Bs, 1)
-
-    def get_Cs(self, obj):
-        return round(obj.Cs, 1)
-    
-    def get_Ds(self, obj):
-        return round(obj.Ds, 1)
-
-    def get_Fs(self, obj):
-        return round(obj.Fs, 1)
