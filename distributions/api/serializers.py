@@ -50,6 +50,22 @@ class CourseBaseSerializer(ModelSerializer):
             'url',
         ]
 
+class SectionInstructorSerializer(SectionBaseSerializer):
+    class Meta:
+        model = Section
+        fields = [
+            'term',
+            'CRN',
+            'average_GPA',
+            'As',
+            'Bs',
+            'Cs',
+            'Ds',
+            'Fs',
+            'withdrawals',
+            'class_size',
+        ]
+
 class SectionSerializer(SectionBaseSerializer):
     course = CourseBaseSerializer()
 
