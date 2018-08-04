@@ -11,5 +11,5 @@ urlpatterns = [
     path('courses/search/', views.CourseSearchView.as_view(), name = 'course_search'),
     path('courses/', views.CourseFilteredListView.as_view(), name = 'course_filtered_list'),
     path('courses/<str:slug>/', views.CourseDetailView.as_view(), name='course_detail'),
-    path('courses/<str:slug>/<str:instructor>/', views.CourseInstructorDetailView.as_view(), name='course_instructor_detail'),
+    path('courses/<str:slug>/instructor/<str:instructor>/', views.CourseInstructorDetailView.as_view(), name='course_instructor_detail'),
 ]
