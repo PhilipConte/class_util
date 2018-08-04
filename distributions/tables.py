@@ -20,7 +20,7 @@ class CourseTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         exclude = ['id', 'slug']
     
-    title = tables.LinkColumn(None)
+    title = tables.LinkColumn()
     average_GPA = RoundColumn(2)
     As = RoundColumn(verbose_name='A%')
     Bs = RoundColumn(verbose_name='B%')
@@ -35,9 +35,7 @@ class SectionTable(tables.Table):
         exclude= 'id'
 
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
-    instructor = tables.Column()
-    def render_instructor(self, record, value):
-        return gen_link(value, reverse('distributions:course_instructor_detail', args=[record.course.slug, quote(record.instructor)]))
+    instructor = tables.LinkColumn()
 
 class GroupedSectionTable(tables.Table):
     def __init__(self, *args, **kwargs):

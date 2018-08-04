@@ -110,6 +110,9 @@ class Section(models.Model):
 
     objects = SectionQueryset.as_manager()
 
+    def get_absolute_url(self):
+        return reverse('distributions:course_instructor_detail', args=[self.course.slug, self.instructor])
+
     def __str__(self):
         return '{}: CRN: {} ({})'.format(self.course, self.CRN, self.term)
     
