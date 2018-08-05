@@ -37,15 +37,19 @@ Requires Python 3, pip, and preferably virtualenv
 git clone https://github.com/PhilipConte/class_util
 cd class_util
 
-#install packages
+# Using virtualenv is recommended but not required
 virtualenv env
-source env/bin/activate
+source env/bin/activate # *nix
+# OR
+env\Scripts\activate # Windows
+
+# Install packages
 pip install -r requirements.txt
 
-#start the server
+# Start the server
 python manage.py runserver
 
-#migrate (note: server needs to be run at least once prior to migration)
+# Migrate (note: server needs to be run at least once prior to migration)
 python manage.py makemigrations
 python manage.py migrate
 ```
