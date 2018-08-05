@@ -1,0 +1,132 @@
+<div>
+    <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script
+        src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <script src="https://github.com/ciprianciurea/chartjs-plugin-doughnutlabel/releases/download/2.0.1/chartjs-plugin-doughnutlabel.min.js"></script>
+    <script>
+var horizontalLinePlugin = {
+    afterDraw: function(chartInstance) {
+        var yValue, index, line, style;
+
+        var yScale = chartInstance.scales["y-axis-0"];
+        var canvas = chartInstance.chart;
+        var ctx = canvas.ctx;
+    
+        if (chartInstance.options.horizontalLine) {
+            for (index = 0; index < chartInstance.options.horizontalLine.length; index++) {
+                line = chartInstance.options.horizontalLine[index];
+        
+                if (!line.style) {
+                    style = "rgba(169,169,169, .6)";
+                } else {
+                    style = line.style;
+                }
+        
+                if (line.y) {
+                    yValue = yScale.getPixelForValue(line.y);
+                } else {
+                    yValue = 0;
+                }
+        
+                ctx.lineWidth = 3;
+        
+                if (yValue) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, yValue);
+                    ctx.lineTo(canvas.width, yValue);
+                    ctx.strokeStyle = style;
+                    ctx.stroke();
+                }
+        
+                if (line.text) {
+                    ctx.fillStyle = style;
+                    ctx.fillText(line.text, 0, yValue + ctx.lineWidth);
+                }
+            }
+            return;
+        }
+    }
+};
+Chart.pluginService.register(horizontalLinePlugin);
+
+$(document).ready(function(){
+    $('.templateTagChart').each(function(i, obj) {
+        $.ajax({
+            method: 'GET',
+            url: obj.getAttribute("url-path"),
+            success: function(data_obj) {
+                labels = data_obj.labels || []
+                data = data_obj.data || []
+                setChart(obj, data_obj.chartType, labels, data, data_obj.average_GPA || null)
+            }, error: function(error_info) {
+                console.log('error:')
+                console.log(error_info)
+            },
+        });
+    });
+});
+
+function setChart(tag_obj, chartType, labels, data, average_GPA){
+    dynamicBase = () => {
+        let r = Math.floor(Math.random() * 255);
+        let g = Math.floor(Math.random() * 255);
+        let b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b;
+    };
+
+    colArr = data.map(d => dynamicBase())
+
+    switch(chartType) {
+        case "doughnut":
+            options = {
+                plugins: {
+                    doughnutlabel: { labels: [
+                            {
+                                text: 'Average GPA',
+                                font: { size: '50' }
+                            }, {
+                                text: average_GPA,
+                                font: { size: '60' },
+                            }
+                    ] }
+                }		
+            };
+            break;
+        case "bar":
+            options = {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{ ticks: { beginAtZero: true } }]
+                },
+                horizontalLine: [{
+                    y: average_GPA
+                }]
+            };
+            break
+        default:
+            options = {};
+            break;
+    }
+
+    var ctx = tag_obj;
+    var myChart = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colArr.map(c => c + ', 0.2)'),
+                borderColor: colArr.map(c => c + ', 1)'),
+                borderWidth: 1
+            }]
+        },
+        options: options
+    });
+}
+    </script>
+</div>

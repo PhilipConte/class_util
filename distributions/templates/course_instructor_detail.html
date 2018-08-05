@@ -12,9 +12,10 @@
 
 {% block content %}
 <div style="display: flex; justify-content: space-evenly;">
-    {% stat_view course_sections.stats course.short %}
-    {% stat_view sections.stats instructor %}
-    {% stat_view sections.group_by_term 'Term' %}
+    {% chart 'Overall Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA'%}
+    {% chart 'Grade Distribution for '|add:instructor 'distributions-api:course_instructor_stats' course.slug instructor subtitle=sections.stats.average_GPA|floatformat:2|add:' Average GPA' %}
+    {% chart 'Grade History for '|add:instructor 'distributions-api:course_instructor_history' course.slug instructor %}
 </div>
 {% render_table table %}
+{% chart_loader %}
 {% endblock %}

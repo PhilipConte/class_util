@@ -55,10 +55,33 @@ class _SectionsRetrieveAPIView(RetrieveAPIView):
 
 class StatsAPIView(_SectionsRetrieveAPIView):    
     def get(self, request, **kwargs):
-        return Response(self.get_queryset(**kwargs).stats())
+        data = self.get_queryset(**kwargs).stats()
+        average_GPA = data.pop('average_GPA')
+        students = data.pop('students')
+        withdrawals = data.pop('withdrawals')
+
+        keys, values = data.keys(), data.values()
+
+        out_dict = dict()
+        out_dict['labels'] = keys
+        out_dict['data'] = values
+        out_dict['average_GPA'] = average_GPA
+        out_dict['chartType'] = 'doughnut'
+
+        return Response(out_dict)
 
 class HistoryAPIView(_SectionsRetrieveAPIView):    
     def get(self, request, **kwargs):
-        data = self.get_queryset(**kwargs).group_by_term()
-        data = {str(key): value for key, value in data.items()}
-        return Response(data)
+        sections = self.get_queryset(**kwargs)
+        data = sections.group_by_term()
+
+        
+        keys, values = data.keys(), data.values()
+
+        out_dict = dict()
+        out_dict['labels'] = [str(key) for key in keys]
+        out_dict['data'] = values
+        out_dict['average_GPA'] = sections.stats()['average_GPA']
+        out_dict['chartType'] = 'bar'
+
+        return Response(out_dict)

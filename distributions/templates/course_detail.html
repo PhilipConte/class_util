@@ -11,7 +11,10 @@
 {% endblock %}
 
 {% block content %}
-{% stat_view sections.stats course.short %}
-{% stat_view sections.group_by_term 'Term' %}
+<div style="display: flex; justify-content: space-evenly;">
+    {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA' %}
+    {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
+</div>
 {% render_table table %}
+{% chart_loader %}
 {% endblock %}
