@@ -80,7 +80,7 @@ class SectionQueryset(models.QuerySet):
     def group_by_instructor(self):
         stats = dict_pop(stats_dict, 'students')
         stats['sections_taught'] = Count('instructor')
-        return self.values('instructor').annotate(**stats)
+        return self.values('instructor').annotate(**stats).order_by('instructor')
 
     def group_by_term(self):
         group = self.values('term').annotate(
