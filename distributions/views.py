@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 import django_tables2
 from .models import Course, Section
 from .tables import SectionTable, CourseTable, GroupedSectionTable
-from .filters import SectionFilter, CourseFilter, CourseFilterMulti
+from .filters import SectionFilter, CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
 from .utils import gen_link
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
@@ -84,9 +84,10 @@ class CourseSearchView(TemplateView):
             return custom_redirect('distributions:course_list', **request.GET.dict())
         return super().get(self, request)
 
-class CourseDetailView(django_tables2.SingleTableView):
+class CourseDetailView(FilteredSingleTableView):
     model = Section
     table_class = GroupedSectionTable
+    filter_class = SectionGroupedByInstructorFilter
     template_name = 'course_detail.html'    
 
     def parse_params(self):
@@ -95,7 +96,9 @@ class CourseDetailView(django_tables2.SingleTableView):
         self.sections = self.course.sections.all()
 
     def get_table_data(self):
-        return self.sections.group_by_instructor()
+        data = self.sections.group_by_instructor()
+        self.filter = self.filter_class(self.request.GET, queryset=data)
+        return self.filter.qs
 
     def get_table_kwargs(self):
         return {

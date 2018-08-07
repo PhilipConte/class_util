@@ -18,6 +18,10 @@ class CourseFilter(filters.FilterSet):
             'hours': ['exact'],
         }
 
+class SectionGroupedByInstructorFilter(filters.FilterSet):
+    instructor = filters.CharFilter(field_name='instructor', label='', lookup_expr='icontains', widget=
+        forms.TextInput(attrs={'placeholder': 'Instructor Search', 
+            'style': 'flex-grow:2; border:none;'}))
 
 class SectionFilter(filters.FilterSet):
     class Meta:
