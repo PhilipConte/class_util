@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.dispatch import receiver
-from .utils import quote, dict_pop
+from .utils import dict_pop
 
 raw_stats = {'average_GPA': (Avg,'average_GPA'),
             'As': (Avg,'As'), 'Bs': (Avg,'Bs'),

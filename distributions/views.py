@@ -1,14 +1,14 @@
 from urllib.parse import unquote
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
 import django_tables2
-from .models import Course, Section, stats_dict
+from .models import Course, Section
 from .tables import SectionTable, CourseTable, GroupedSectionTable
 from .filters import SectionFilter, CourseFilter, CourseFilterMulti
-from .utils import gen_link, link_reverse, dict_pop
+from .utils import gen_link
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None

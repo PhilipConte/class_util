@@ -1,6 +1,4 @@
-from django.utils.html import format_html
 from django.urls import reverse
-from django_tables2.utils import A
 import django_tables2 as tables
 from . import models as m
 
