@@ -6,6 +6,9 @@ from .models import Course, Section
 from django_filters import rest_framework as filters
 
 class CourseFilter(filters.FilterSet):
+    average_GPA_gte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≥', lookup_expr='gte')
+    average_GPA_lte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≤', lookup_expr='lte')
+    
     class Meta:
         model = Course
         fields = {
