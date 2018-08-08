@@ -2,10 +2,6 @@
 {% load distributions_tags %}
 {% load django_tables2 %}
 
-{% block title %}
-<b>{{ course.no_credits }}:</b> stats
-{% endblock %}
-
 {% block content %}
 <div style="display: flex; justify-content: space-evenly;">
     {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA' %}

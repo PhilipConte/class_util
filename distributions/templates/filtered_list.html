@@ -17,10 +17,6 @@
     <a href='{{ request.path }}' >Clear</a>
 </form>
 
-{% if filter.data.multi and filter.qs.count != filter.queryset.count %}
-<h3>Courses matching <i>"{{ filter.data.multi }}"</i></h3>
-{% endif %}
-
 {% render_table table %}
 
 {% endblock %}
