@@ -47,13 +47,13 @@ class CourseFilteredListView(FilteredSingleTableView):
         context['title'] = 'Filtered Courses'
         return context
 
-    # def get(self, request):
-    #     qs = self.get_table_data()
-    #     if qs.count() == 1:
-    #         print('1 item')
-    #         return HttpResponseRedirect(qs.first().get_absolute_url()) 
-    #     else:
-    #         return super().get(request)
+    def get(self, request):
+        qs = self.get_table_data()
+        if qs.count() == 1:
+            print('1 item')
+            return HttpResponseRedirect(qs.first().get_absolute_url()) 
+        else:
+            return super().get(request)
 
 class CourseListView(CourseFilteredListView):
     filter_class = CourseFilterMulti
