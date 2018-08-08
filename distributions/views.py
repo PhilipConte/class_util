@@ -1,4 +1,4 @@
-from urllib.parse import unquote
+from urllib.parse import unquote, urlencode
 
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
@@ -76,11 +76,11 @@ class CourseSearchView(TemplateView):
 
     def get(self, request):
         def custom_redirect(url_name, *args, **kwargs):
-            import urllib
             url = reverse(url_name, args = args)
-            params = urllib.parse.urlencode(kwargs)
+            params = urlencode(kwargs)
             return HttpResponseRedirect(url + "?%s" % params)
-        if (len(request.GET) and len([c for c in request.GET.values()][0])):
+
+        if (len(request.GET) and len(list(request.GET.values())[0])):
             return custom_redirect('distributions:course_list', **request.GET.dict())
         return super().get(self, request)
 
