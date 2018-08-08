@@ -117,7 +117,7 @@ class Section(models.Model):
         return reverse('distributions:course_instructor_detail', args=[self.course.slug, self.instructor])
 
     def __str__(self):
-        return '{}: CRN: {} ({})'.format(self.course, self.CRN, self.term)
+        return '{} | {} | {} | {}'.format(self.CRN, self.instructor, self.term, self.course.short())
     
     class Meta:
         ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
