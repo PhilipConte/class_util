@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 {% load distributions_tags %}
-{% load django_tables2 %}
 
 {% block content %}
 <div style="display: flex; justify-content: space-evenly;">
     {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA' %}
     {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
 </div>
-
 <form method='GET' style="display: inline-flex; flex-direction:row; border:1px solid grey; padding:2px;">
     {{ filter.form }}
     <label for="mySubmit" class="btn"><span class="glyphicon glyphicon-search"></span></label>
     <input id="mySubmit" type="submit" value="Go" class="hidden" />
 </form>
-
-{% render_table table %}
 {% chart_loader %}
 {% endblock %}

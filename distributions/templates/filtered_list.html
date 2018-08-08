@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
 
 {% block courses_active %}
 {% if 'Sections' in hierarchy %}{% else %}{{ block.super }}{% endif %}
@@ -9,7 +8,6 @@
 {% endblock %}
 
 {% block content %}
-
 <form method='GET'>
     {{ filter.form }}
     <input type='submit' value='Filter' />
@@ -17,7 +15,4 @@
     <h4>Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items |
     <a href='{{ request.path }}' >Clear</a></h4>
 </form>
-
-{% render_table table %}
-
 {% endblock %}

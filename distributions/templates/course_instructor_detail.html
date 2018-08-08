@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load distributions_tags %}
-{% load django_tables2 %}
 
 {% block content %}
 <div style="display: flex; justify-content: space-evenly;">
@@ -8,6 +7,5 @@
     {% chart 'Grade Distribution for '|add:instructor 'distributions-api:course_instructor_stats' course.slug instructor subtitle=sections.stats.average_GPA|floatformat:2|add:' Average GPA' %}
     {% chart 'Grade History for '|add:instructor 'distributions-api:course_instructor_history' course.slug instructor %}
 </div>
-{% render_table table %}
 {% chart_loader %}
 {% endblock %}
