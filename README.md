@@ -9,7 +9,7 @@ A tool to view (Virginia Tech) grade distributions
 With that being said, if you have a PID login to access VT's single sign-on service, you can download distributions [here](https://irweb.ir.vt.edu/webtest/Authenticated/GradeDistribution.aspx)
 
 ### Setup
-1. See: [Installation](#Installation)
+1. See: [Installation](#installation)
 
 2. CSVs should be labeled in the format YYYY_SEMESTER.csv  
     ie: fall 2018 would be 2018_fall.csv
