@@ -9,11 +9,7 @@
 <div class="center-block" style="display: flex; align-items: center; justify-content: center; height: 75vh">
     <div style="max-width: 50%; display: flex; flex-direction: column; align-items: center">
         <h2>Search All Courses</h2>
-        <form method='GET' style="display:flex; flex-direction:row; border:1px solid grey; padding:2px;">
-            {{ filter.form }}
-            <label for="mySubmit" class="btn"><span class="glyphicon glyphicon-search"></span></label>
-            <input id="mySubmit" type="submit" value="Go" class="hidden" />
-        </form>
+        {% include "./search_bar.html" %}
         <div>
             <h3>looking for a different way to browse?</h3>
             <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>

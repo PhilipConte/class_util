@@ -1,6 +1,6 @@
-from urllib.parse import unquote, urlencode
+from urllib.parse import unquote
 
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
@@ -66,23 +66,11 @@ class CourseListView(CourseFilteredListView):
 
 class CourseSearchView(TemplateView):
     template_name = 'course_search.html'
-    filter_class = CourseFilterMulti
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = gen_link('Courses', reverse('distributions:course_list')) + '/Search'
-        context['filter'] = self.filter_class(self.request.GET, queryset=Course.objects.all())
         return context
-
-    def get(self, request):
-        def custom_redirect(url_name, *args, **kwargs):
-            url = reverse(url_name, args = args)
-            params = urlencode(kwargs)
-            return HttpResponseRedirect(url + "?%s" % params)
-
-        if (len(request.GET) and len(list(request.GET.values())[0])):
-            return custom_redirect('distributions:course_list', **request.GET.dict())
-        return super().get(self, request)
 
 class CourseDetailView(FilteredSingleTableView):
     model = Section

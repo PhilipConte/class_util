@@ -1,0 +1,14 @@
+<form class="navbar-form navbar-left" role="search" method="get" action="{% url 'distributions:course_list' %}">
+    <div class="input-group">
+        <input
+            type="text"
+            class="form-control"
+            name="multi"
+            value="{{ request.GET.multi }}"
+            placeholder="Search Courses..."
+        >
+        <span class="input-group-btn">
+            <label class="btn btn-default" type="submit">Search</label>
+        </span>
+    </div>
+</form>
