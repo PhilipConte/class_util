@@ -52,7 +52,29 @@ var horizontalLinePlugin = {
 };
 Chart.pluginService.register(horizontalLinePlugin);
 
+const genColArr = num => {
+    genBaseArr = num => {
+        dynamicBase = () => {
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b;
+        };
+        
+        arr = []
+        for (let i = 0; i < num; i++) arr.push(dynamicBase())
+        return arr
+    }
+    
+    baseArr = genBaseArr(num)
+    return {
+        background: baseArr.map(c => c + ', 0.2)'),
+        border: baseArr.map(c => c + ', 1)'),
+    }
+}
+
 $(document).ready(function(){
+    colArr = genColArr(100)
     $('.templateTagChart').each(function(i, obj) {
         $.ajax({
             method: 'GET',
@@ -60,7 +82,7 @@ $(document).ready(function(){
             success: function(data_obj) {
                 labels = data_obj.labels || []
                 data = data_obj.data || []
-                setChart(obj, data_obj.chartType, labels, data, data_obj.average_GPA || null)
+                setChart(obj, data_obj.chartType, labels, data, data_obj.average_GPA || null, colArr)
             }, error: function(error_info) {
                 console.log('error:')
                 console.log(error_info)
@@ -69,16 +91,7 @@ $(document).ready(function(){
     });
 });
 
-function setChart(tag_obj, chartType, labels, data, average_GPA){
-    dynamicBase = () => {
-        let r = Math.floor(Math.random() * 255);
-        let g = Math.floor(Math.random() * 255);
-        let b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b;
-    };
-
-    colArr = data.map(d => dynamicBase())
-
+function setChart(tag_obj, chartType, labels, data, average_GPA, colArr){
     switch(chartType) {
         case "doughnut":
             options = {
@@ -120,8 +133,8 @@ function setChart(tag_obj, chartType, labels, data, average_GPA){
             labels: labels,
             datasets: [{
                 data: data,
-                backgroundColor: colArr.map(c => c + ', 0.2)'),
-                borderColor: colArr.map(c => c + ', 1)'),
+                backgroundColor: colArr.background,
+                borderColor: colArr.border,
                 borderWidth: 1
             }]
         },
