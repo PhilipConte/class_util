@@ -13,8 +13,9 @@
 <form method='GET'>
     {{ filter.form }}
     <input type='submit' value='Filter' />
-    |Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items.|
-    <a href='{{ request.path }}' >Clear</a>
+    <br>
+    <h4>Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items |
+    <a href='{{ request.path }}' >Clear</a></h4>
 </form>
 
 {% render_table table %}
