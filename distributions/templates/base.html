@@ -38,15 +38,25 @@
             </ul>
         </div>
     </div></nav>
-    <h3>{{ hierarchy|joinBy:" > "|safe }}</h3>
-    {% if title %}
-    <h2>{{ title|safe }}</h2>
-    <hr>
-    {% endif %}
-    <div>{% block content %}{% endblock %}</div>
-    {% if table %}
-    {% render_table table %}
-    {% endif %}
+    <div style="padding: 10px; padding-top: 0px;">
+        <h3>{{ hierarchy|joinBy:" > "|safe }}</h3>
+
+        {% if title %}
+        <h2>{{ title|safe }}</h2>
+        <hr>
+        {% endif %}
+
+        <div>{% block content %}{% endblock %}</div>
+
+        {% if table %}
+            <div class="panel panel-default">
+                {% block  table_content %}{% endblock  %}
+                <div class="panel-body">
+                    {% render_table table %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </body>
 
 </html>

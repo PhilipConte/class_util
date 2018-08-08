@@ -2,14 +2,19 @@
 {% load distributions_tags %}
 
 {% block content %}
-<div style="display: flex; justify-content: space-evenly;">
-    {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA' %}
-    {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
-</div>
-<form method='GET' style="display: inline-flex; flex-direction:row; border:1px solid grey; padding:2px;">
+<div class="panel panel-default"><div class="panel-body">
+    <div style="display: flex; justify-content: space-evenly;">
+        {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug subtitle=course.average_GPA|floatformat:2|add:' Average GPA' %}
+        {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
+    </div>
+</div></div>
+{% chart_loader %}
+{% endblock %}
+
+{% block table_content %}<div class="panel-heading">
+<form method='GET' style="display: inline-flex; flex-direction: row; border: 1px solid grey; padding: 2px; margin-bottom: 0px;">
     {{ filter.form }}
     <label for="mySubmit" class="btn"><span class="glyphicon glyphicon-search"></span></label>
     <input id="mySubmit" type="submit" value="Go" class="hidden" />
 </form>
-{% chart_loader %}
-{% endblock %}
+</div>{% endblock %}
