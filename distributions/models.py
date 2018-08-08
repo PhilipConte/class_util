@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.dispatch import receiver
+from django.utils.safestring import SafeString
+
 from .utils import dict_pop
 
 raw_stats = {'average_GPA': (Avg,'average_GPA'),
@@ -64,6 +66,10 @@ class Course(models.Model):
 
     def __str__(self):
         return self.no_credits() + ' ({} credits)'.format(self.hours)
+
+    def html(self):
+        title_parts = str(self).split(':')
+        return ('<strong>'+title_parts[0]+'</strong>: '+title_parts[1])
 
     class Meta:
         ordering = ['department', 'number', 'title', 'hours']

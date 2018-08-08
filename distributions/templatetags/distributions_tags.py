@@ -20,3 +20,7 @@ def chart(title, url_name, slug, instructor=None, subtitle=None):
 @register.inclusion_tag('tags/chart_loader.html')
 def chart_loader():
     pass
+
+@register.filter
+def joinBy(value, arg):
+    return arg.join(value)

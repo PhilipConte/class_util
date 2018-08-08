@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load render_table from django_tables2 %}
 
-{% block header %}
-{{ header|safe }}
+{% block courses_active %}
+{% if 'Sections' in hierarchy %}{% else %}{{ block.super }}{% endif %}
 {% endblock %}
-
-{% block title %}
-{{ title }}
+{% block sections_active %}
+{% if 'Sections' in hierarchy %}active{% endif %}
 {% endblock %}
 
 {% block content %}
