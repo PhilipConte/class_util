@@ -31,7 +31,7 @@ class SectionFilteredListView(FilteredSingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['hierarchy'] = ['Sections', 'Filtered']
+        context['hierarchy'] = [{'text': 'Sections'}, {'text': 'Filtered'}]
         return context
 
 class CourseFilteredListView(FilteredSingleTableView):
@@ -43,8 +43,8 @@ class CourseFilteredListView(FilteredSingleTableView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [
-            gen_link('Courses', reverse('distributions:course_list')),
-            'Filtered',
+            {'text': 'Courses', 'link': reverse('distributions:course_list')},
+            {'text': 'Filtered'},
         ]
         return context
 
@@ -62,7 +62,7 @@ class CourseListView(CourseFilteredListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['hierarchy'] = ['Courses']
+        context['hierarchy'] = [{'text': 'Courses'}]
         return context
 
 class CourseSearchView(TemplateView):
@@ -71,9 +71,9 @@ class CourseSearchView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [
-            gen_link('Courses', reverse('distributions:course_list')),
-            'Search',
-            ]
+            {'text': 'Courses', 'link': reverse('distributions:course_list')},
+            {'text': 'Search'},
+        ]
         return context
 
 class CourseDetailView(FilteredSingleTableView):
@@ -102,8 +102,8 @@ class CourseDetailView(FilteredSingleTableView):
 
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [
-            gen_link('Courses', reverse('distributions:course_list')),
-            self.course.short(),
+            {'text': 'Courses', 'link': reverse('distributions:course_list')},
+            {'text': self.course.short()},
         ]
         context['title'] = self.course.html()
         context['course'] =  self.course
@@ -136,9 +136,9 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
 
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [
-            gen_link('Courses', reverse('distributions:course_list')),
-            gen_link(self.course.short(), self.course.get_absolute_url()),
-            self.instructor,
+            {'text': 'Courses', 'link': reverse('distributions:course_list')},
+            {'text': self.course.short(), 'link': self.course.get_absolute_url()},
+            {'text': self.instructor},
         ]
         context['title'] = '<strong>' + self.course.short() \
             + '</strong>: Statistics for Professor ' + self.instructor

@@ -24,3 +24,14 @@ def chart_loader():
 @register.filter
 def joinBy(value, arg):
     return arg.join(value)
+
+@register.filter
+def dictGet(dictionary, args):
+    args = args.split(',')
+    key = args[0]
+    try:
+        fallback = args[1]
+    except:
+        fallback = None
+
+    return dictionary.get(key, fallback)

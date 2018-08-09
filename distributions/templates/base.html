@@ -1,5 +1,6 @@
+<!DOCTYPE html>
 {% load render_table from django_tables2 %}
-{% load joinBy from distributions_tags %}
+{% load dictGet from distributions_tags %}
 
 <html lang="en-US">
 
@@ -9,10 +10,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="icon" href="https://www.python.org/static/favicon.ico">
     {% include "./js.html" %}
+    <!-- http://jsfiddle.net/zessx/r9yEU/6/ -->
 </head>
 
-<body>
-    <nav class="navbar navbar-inverse" style="border-radius: 0;"><div class="container-fluid">
+<body style="background-color: #f2f2f2; height: 100vh;">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="border-radius: 0; margin: 0; border-bottom-width: 0px;"><div class="container-fluid">
         <!-- Header -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -24,9 +26,16 @@
         </div>
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
-            <ul class="nav navbar-nav">
-                <li class="{% block courses_active %}active{% endblock %}"><a href="{% url 'distributions:course_filtered_list' %}">Courses</a></li>
-                <li class="{% block sections_active %}{% endblock %}"><a href="{% url 'distributions:section_filtered_list' %}">Sections</a></li>
+            <ul class="breadcrumb list-inline" style="float: left; margin: 7px 10px;">
+                {% for crumb in hierarchy %}
+                    {% if crumb|dictGet:'link' %}
+                        <li class="active"><a href="{{ crumb|dictGet:'link' }}">
+                        {{ crumb|dictGet:'text' }}
+                        </a></li>
+                    {% else %}
+                        <li>{{ crumb|dictGet:'text' }}</li>
+                    {% endif %}
+                {% endfor %}
             </ul>
             {% include "./search_bar.html" %}
             <ul class="nav navbar-nav navbar-right">
@@ -38,15 +47,13 @@
             </ul>
         </div>
     </div></nav>
-    <div style="padding: 10px; padding-top: 0px;">
-        <h3>{{ hierarchy|joinBy:" > "|safe }}</h3>
-
+    <div style="padding: 10px; padding-top: 60px; height: 100%">
         {% if title %}
-        <h2>{{ title|safe }}</h2>
-        <hr>
+            <h2>{{ title|safe }}</h2>
+            <hr>
         {% endif %}
 
-        <div>{% block content %}{% endblock %}</div>
+        {% block content %}{% endblock %}
 
         {% if table %}
             <div class="panel panel-default">
