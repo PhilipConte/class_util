@@ -28,13 +28,15 @@
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="breadcrumb list-inline" style="float: left; margin: 7px 10px;">
                 {% for crumb in hierarchy %}
+                    <li {% if forloop.last %} class='active'{% endif %}>
                     {% if crumb|dictGet:'link' %}
-                        <li class="active"><a href="{{ crumb|dictGet:'link' }}">
+                        <a href="{{ crumb|dictGet:'link' }}">
                         {{ crumb|dictGet:'text' }}
-                        </a></li>
+                        </a>
                     {% else %}
-                        <li>{{ crumb|dictGet:'text' }}</li>
+                        {{ crumb|dictGet:'text' }}
                     {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
             {% include "./search_bar.html" %}
