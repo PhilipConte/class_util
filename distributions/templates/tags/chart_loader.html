@@ -47,15 +47,11 @@ Chart.pluginService.register(horizontalLinePlugin);
 const genColArr = num => {
     genBaseArr = num => {
         dynamicBase = () => {
-            let r = Math.floor(Math.random() * 255);
-            let g = Math.floor(Math.random() * 255);
-            let b = Math.floor(Math.random() * 255);
-            return "rgb(" + r + "," + g + "," + b;
+            c = () => Math.floor(Math.random() * 255);
+            return "rgb(" + c() + "," + c() + "," + c();
         };
         
-        arr = []
-        for (let i = 0; i < num; i++) arr.push(dynamicBase())
-        return arr
+        return Array.apply(null, Array(num)).map(dynamicBase)
     }
     
     baseArr = genBaseArr(num)
@@ -64,26 +60,10 @@ const genColArr = num => {
         border: baseArr.map(c => c + ', 1)'),
     }
 }
+colArr = genColArr(100)
 
-$(document).ready(function(){
-    colArr = genColArr(100)
-    $('.templateTagChart').each(function(i, obj) {
-        $.ajax({
-            method: 'GET',
-            url: obj.getAttribute("url-path"),
-            success: function(data_obj) {
-                labels = data_obj.labels || []
-                data = data_obj.data || []
-                setChart(obj, data_obj.chartType, labels, data, data_obj.average_GPA || null, colArr)
-            }, error: function(error_info) {
-                console.log('error:')
-                console.log(error_info)
-            },
-        });
-    });
-});
-
-function setChart(tag_obj, chartType, labels, data, average_GPA, colArr){
+function instantiateChart(chart_tag, data_obj) {
+function setChart(tag_obj, chartType, labels, data, average_GPA, colArr) {
     switch(chartType) {
         case "doughnut":
             options = {
@@ -133,4 +113,25 @@ function setChart(tag_obj, chartType, labels, data, average_GPA, colArr){
         options: options
     });
 }
+
+    setChart(
+        chart_tag,
+        data_obj.chartType,
+        data_obj.labels || [],
+        data_obj.data || [],
+        data_obj.average_GPA || null,
+        colArr
+    )
+}
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    document.querySelectorAll('.templateTagChart').forEach(function(chart_tag) {
+        fetch(chart_tag.getAttribute("url-path"))
+        .then(response => 
+            response.ok ? response.json() : Promise.reject(response.status)
+        )
+        .then(data => instantiateChart(chart_tag, data))
+        .catch(error => console.log('error:', error));
+    });
+});
 </script>
