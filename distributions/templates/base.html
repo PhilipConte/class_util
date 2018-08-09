@@ -14,7 +14,7 @@
 </head>
 
 <body style="background-color: #f2f2f2; height: 100vh;">
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="border-radius: 0; margin: 0; border-bottom-width: 0px;"><div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-static-top" style="border-radius: 0; margin: 0; border-bottom-width: 0px;"><div class="container-fluid">
         <!-- Header -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -47,7 +47,7 @@
             </ul>
         </div>
     </div></nav>
-    <div style="padding: 10px; padding-top: 60px; height: 100%">
+    <div style="padding: 10px; height: calc(100%-50px)">
         {% if title %}
             <h2>{{ title|safe }}</h2>
             <hr>
