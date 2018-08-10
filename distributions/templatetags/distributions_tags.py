@@ -8,13 +8,12 @@ def stat_view(stats, title):
     return {'title': title + ' Distribution', 'stats': stats}
 
 @register.inclusion_tag('tags/chart.html')
-def chart(title, url_name, slug, instructor=None, subtitle=None):
+def chart(title, url_name, slug, instructor=None):
     return {
         'title': title,
         'url_name': url_name,
         'slug': slug,
         'instructor': instructor,
-        'subtitle': subtitle
     }
 
 @register.inclusion_tag('tags/chart_loader.html')
