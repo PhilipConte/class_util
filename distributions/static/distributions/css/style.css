@@ -7,3 +7,10 @@
         margin: 7px 10px;
     }
 }
+
+.centered-parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

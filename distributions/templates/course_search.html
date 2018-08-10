@@ -2,14 +2,16 @@
 {% load render_table from django_tables2 %}
 
 {% block content %}
-<div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-    <div style="max-width: 50%; display: flex; flex-direction: column; align-items: center">
-        <h2>Search All Courses</h2>
-        {% include "./search_bar.html" %}
-        <div>
-            <h3>looking for a different way to browse?</h3>
-            <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
-            <h4><a href={% url 'distributions:section_filtered_list' %}>Filter all sections</a></h4>
+<div class="centered-parent">
+    <div class="panel panel-default" style="max-width: 50%;">
+        <div class="panel-body" style="display: flex; flex-direction: column; align-items: center">
+            <h2>Search All Courses</h2>
+            {% include "./search_bar.html" %}
+            <div>
+                <h3>looking for a different way to browse?</h3>
+                <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
+                <h4><a href={% url 'distributions:section_filtered_list' %}>Filter all sections</a></h4>
+            </div>
         </div>
     </div>
 </div>
