@@ -1,0 +1,9 @@
+.navbar .collapse .breadcrumb {
+    margin: 0 7px;
+}
+@media (min-width: 768px) {
+    .navbar .collapse .breadcrumb {
+        float: left;
+        margin: 7px 10px;
+    }
+}
