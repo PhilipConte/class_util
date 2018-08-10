@@ -1,3 +1,4 @@
+{% load form_button from distributions_tags %}
 <form
     class="navbar-form navbar-left"
     role="search"
@@ -12,10 +13,6 @@
             value="{{ request.GET.multi }}"
             placeholder="Search Courses..."
         >
-        <span class="input-group-btn">
-            <label class="btn btn-primary" type="submit">
-                <span class="glyphicon glyphicon-search"></span>
-            </label>
-        </span>
+        {% form_button 'search' %}
     </div>
 </form>

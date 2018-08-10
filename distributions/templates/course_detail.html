@@ -12,9 +12,8 @@
 {% endblock %}
 
 {% block table_content %}<div class="panel-heading" style="background-color: white">
-<form method='GET' style="display: inline-flex; flex-direction: row; border: 1px solid grey; padding: 2px; margin-bottom: 0px;">
+<form method='GET' style="max-width: 35%"><div class="input-group">
     {{ filter.form }}
-    <label for="mySubmit" class="btn"><span class="glyphicon glyphicon-search"></span></label>
-    <input id="mySubmit" type="submit" value="Go" class="hidden" />
-</form>
+    {% form_button 'filter' %}
+</div></form>
 </div>{% endblock %}

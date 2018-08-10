@@ -5,6 +5,9 @@ from django import forms
 from .models import Course, Section
 from django_filters import rest_framework as filters
 
+def form_control(placeholder):
+    return forms.TextInput(attrs={'placeholder': placeholder, 'class': 'form-control'})
+
 class CourseFilter(filters.FilterSet):
     average_GPA_gte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≥', lookup_expr='gte')
     average_GPA_lte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≤', lookup_expr='lte')
@@ -19,9 +22,12 @@ class CourseFilter(filters.FilterSet):
         }
 
 class SectionGroupedByInstructorFilter(filters.FilterSet):
-    instructor = filters.CharFilter(field_name='instructor', label='', lookup_expr='icontains', widget=
-        forms.TextInput(attrs={'placeholder': 'Instructor Search', 
-            'style': 'flex-grow:2; border:none;'}))
+    instructor = filters.CharFilter(
+        field_name='instructor',
+        label='',
+        lookup_expr='icontains',
+        widget= form_control('Filter by instructor...')
+    )
 
 class SectionFilter(filters.FilterSet):
     class Meta:
@@ -39,9 +45,11 @@ class SectionFilter(filters.FilterSet):
         }
 
 class CourseFilterMulti(filters.FilterSet):
-    multi = filters.CharFilter(label='', method='filter_multi', widget=
-        forms.TextInput(attrs={'placeholder': 'Search', 
-            'style': 'flex-grow:2; border:none;'}))
+    multi = filters.CharFilter(
+        label='',
+        method='filter_multi',
+        widget= form_control('Search...')
+    )
     search_fields = ['department', 'number', 'title']
 
     def filter_multi(self, qs, name, value):
