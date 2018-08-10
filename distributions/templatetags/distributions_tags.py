@@ -3,10 +3,6 @@ from django import template
 
 register = template.Library()
 
-@register.inclusion_tag('tags/stat_view.html')
-def stat_view(stats, title):
-    return {'title': title + ' Distribution', 'stats': stats}
-
 @register.inclusion_tag('tags/form_button.html')
 def form_button(glyph):
     return {'glyph': glyph}
