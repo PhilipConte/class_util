@@ -23,7 +23,7 @@ body {
 
 #underNav {
     padding: 10px;
-    height: fill
+    height: calc(100% - 50px)
 }
 
 .navbar .collapse .breadcrumb {
