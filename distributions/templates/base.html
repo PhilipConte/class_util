@@ -12,8 +12,8 @@
     {% include "./js.html" %}
 </head>
 
-<body style="background-color: #f2f2f2; height: 100vh;">
-    <nav class="navbar navbar-inverse navbar-static-top" style="border-radius: 0; margin: 0; border-bottom-width: 0px;"><div class="container-fluid">
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top" id=topNav><div class="container-fluid">
         <!-- Header -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -48,7 +48,7 @@
             </ul>
         </div>
     </div></nav>
-    <div style="padding: 10px; height: calc(100% - 50px)">
+    <div id=underNav>
         {% if title %}
             <h2>{{ title|safe }}</h2>
             <hr>

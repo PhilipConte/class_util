@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="panel panel-default"><div class="panel-body">
-    <div style="display: flex; justify-content: space-evenly;">
+    <div class="evenly-spaced-row">
         {% chart 'Overall Grade Distribution' 'distributions-api:course_stats' course.slug %}
         {% chart 'Grade Distribution for '|add:instructor 'distributions-api:course_instructor_stats' course.slug instructor %}
         {% chart 'Grade History for '|add:instructor 'distributions-api:course_instructor_history' course.slug instructor %}
