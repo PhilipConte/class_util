@@ -10,10 +10,14 @@
 <script>
 $(document).ready(function(){
     document.documentElement.setAttribute('theme', localStorage.getItem('theme'));
-    $(".queryString").click(function() {
+    $(".theme-switch").click(function() {
         let theme = $(this).text().toLowerCase();
         localStorage.setItem('theme', theme);
-        document.documentElement.setAttribute('theme', theme);
+        document.documentElement.classList.add('color-theme-in-transition')
+        document.documentElement.setAttribute('theme', theme)
+        window.setTimeout(function() {
+            document.documentElement.classList.remove('color-theme-in-transition')
+        }, 1000)
     });
 });
 </script>
