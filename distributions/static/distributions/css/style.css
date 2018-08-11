@@ -8,10 +8,10 @@ html {
 
 html[theme='dark'] {
     --background-color: #2b3137;
-    --background-text: lightgrey;
+    --background-text: white;
 
-    --foreground-color: white;
-    --foreground-text: black;
+    --foreground-color:black;
+    --foreground-text: lightgrey;
 }
 
 html,
@@ -21,12 +21,19 @@ body {
     background-color: var(--background-color);
 }
 
-.title {
-    color: var(--background-text)
+.bg-text {
+    color: var(--background-text);
 }
 
-.panel-default .panel-heading {
-    background-color: var(--foreground-color)
+.fg-text {
+    color: var(--foreground-text);
+}
+
+
+.panel-default,
+.panel-default>.panel-heading {
+    background-color: var(--foreground-color);
+    color: var(--foreground-text);
 }
 
 .centered-parent {
