@@ -48,7 +48,7 @@ class CourseFilterMulti(filters.FilterSet):
     multi = filters.CharFilter(
         label='',
         method='filter_multi',
-        widget= form_control('Search...')
+        widget= form_control('Search All Courses...')
     )
     search_fields = ['department', 'number', 'title']
 

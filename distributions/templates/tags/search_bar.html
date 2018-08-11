@@ -6,13 +6,7 @@
     action="{% url 'distributions:course_list' %}"
 >
     <div class="input-group">
-        <input
-            type="text"
-            class="form-control"
-            name="multi"
-            value="{{ request.GET.multi }}"
-            placeholder="Search Courses..."
-        >
+        {{ form }}
         {% form_button 'search' %}
     </div>
 </form>

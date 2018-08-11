@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load render_table from django_tables2 %}
 {% load dictGet from distributions_tags %}
+{% load search_bar from distributions_tags %}
 
 <html lang="en-US">
 
@@ -38,7 +39,7 @@
                     </li>
                 {% endfor %}
             </ul>
-            {% include "./search_bar.html" %}
+            {% search_bar %}
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a

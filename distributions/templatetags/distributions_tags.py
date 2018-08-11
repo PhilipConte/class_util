@@ -20,6 +20,11 @@ def chart(title, url_name, slug, instructor=None):
 def chart_loader():
     pass
 
+@register.inclusion_tag('tags/search_bar.html')
+def search_bar():
+    from ..filters import CourseFilterMulti
+    return {'form': CourseFilterMulti().form }
+
 @register.filter
 def joinBy(value, arg):
     return arg.join(value)

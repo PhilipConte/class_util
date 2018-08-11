@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
+{% load search_bar from distributions_tags %}
 
 {% block content %}
 <div class="centered-parent">
     <div class="panel panel-default" style="max-width: 50%;">
         <div class="panel-body fg-text" style="display: flex; flex-direction: column; align-items: center">
             <h2>Search All Courses</h2>
-            {% include "./search_bar.html" %}
+            {% search_bar %}
             <div>
                 <h3>looking for a different way to browse?</h3>
                 <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
