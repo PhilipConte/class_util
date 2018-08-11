@@ -2,7 +2,7 @@
 
 {% block table_content %}
 {% if filter.data.multi and filter.qs.count != filter.queryset.count %}
-<div class="panel-heading" style="background-color: white">
+<div class="panel-heading">
 <h4>{{ filter.qs.count }} courses out of {{ filter.queryset.count }} matching <i>"{{ filter.data.multi }}"</i> | <a href='{{ request.path }}' >Clear</a></h4>
 </div>
 {% endif %}

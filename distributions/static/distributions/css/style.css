@@ -1,9 +1,34 @@
+html {
+    --background-color: #f2f2f2;
+    --background-text: black;
+
+    --foreground-color: white;
+    --foreground-text: black;
+}
+
+html[theme='dark'] {
+    --background-color: #2b3137;
+    --background-text: lightgrey;
+
+    --foreground-color: white;
+    --foreground-text: black;
+}
+
 html,
 body {
     width: 100%;
     height: 100%;
-    background-color: #f2f2f2;
+    background-color: var(--background-color);
 }
+
+.title {
+    color: var(--background-text)
+}
+
+.panel-default .panel-heading {
+    background-color: var(--foreground-color)
+}
+
 .centered-parent {
     display: flex;
     align-items: center;
