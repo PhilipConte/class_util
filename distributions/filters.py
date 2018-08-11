@@ -3,6 +3,7 @@ import itertools
 from django.db.models import Q
 from django import forms
 from .models import Course, Section
+from .forms import CSSForm
 from django_filters import rest_framework as filters
 
 def form_control(placeholder):
@@ -20,6 +21,7 @@ class CourseFilter(filters.FilterSet):
             'title': ['icontains'],
             'hours': ['exact'],
         }
+        form = CSSForm
 
 class SectionGroupedByInstructorFilter(filters.FilterSet):
     instructor = filters.CharFilter(
@@ -43,6 +45,7 @@ class SectionFilter(filters.FilterSet):
             'term__semester__name': ['iexact'],
             'term__year': ['exact'],
         }
+        form = CSSForm
 
 class CourseFilterMulti(filters.FilterSet):
     multi = filters.CharFilter(

@@ -56,6 +56,11 @@ body {
     justify-content: space-evenly;
 }
 
+.bulk-input {
+    display: inline;
+    width: fit-content;
+}
+
 #topNav {
     margin: 0;
     border-bottom-width: 0px;

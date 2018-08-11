@@ -10,7 +10,7 @@
 {% block table_content %}<div class="panel-heading">
 <form method='GET'>
     {{ filter.form }}
-    <input class="btn btn-default" type='submit' value='Filter' />
+    <input class="btn btn-primary" type='submit' value='Filter' />
     <br>
     <h4>Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items |
     <a href='{{ request.path }}' >Clear</a></h4>
