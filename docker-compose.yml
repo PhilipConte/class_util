@@ -6,3 +6,9 @@ services:
       - "8000:8000"
     volumes:
       - .:/code
+    environment:
+      - DATABASE_URL=postgres://postgres@db/class_util_db
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=class_util_db
