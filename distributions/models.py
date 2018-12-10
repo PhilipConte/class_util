@@ -44,10 +44,10 @@ class CourseManager(models.Manager):
 class Course(models.Model):
     department = models.CharField(max_length=8)
     number = models.PositiveIntegerField()
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=200)
     hours = models.PositiveIntegerField()
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=200)
     
     objects = CourseManager()
 
@@ -115,7 +115,7 @@ class Section(models.Model):
     withdrawals = models.PositiveIntegerField()
     class_size = models.PositiveIntegerField()
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=200)
 
     objects = SectionQueryset.as_manager()
 
