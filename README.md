@@ -25,31 +25,20 @@ With that being said, if you have a PID login to access VT's single sign-on serv
 
 3. The Desired CSVs should be placed in the /distributions/data folder.
 
-4. Once this is done, cd into the parent class_util folder and run ```python manage.py load_section_data```
+4. Once this is done, cd into the parent class_util folder and run ```docker-compose exec web python manage.py load_section_data```
 
 ### Usage
-With the server running, you can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
+The containers can be started with `docker-compose start`
+
+You can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
 ## Installation
-Requires Python 3, pip, and preferably virtualenv
+Requires Docker and docker-compose
 ```bash
 # Clone the repository
 git clone https://github.com/PhilipConte/class_util
 cd class_util
 
-# Using virtualenv is recommended but not required
-virtualenv env
-source env/bin/activate # *nix
-# OR
-env\Scripts\activate # Windows
-
-# Install packages
-pip install -r requirements.txt
-
-# Start the server
-python manage.py runserver
-
-# Migrate (note: server needs to be run at least once prior to migration)
-python manage.py makemigrations
-python manage.py migrate
+# Build and start the containers
+docker-compose up -d
 ```
