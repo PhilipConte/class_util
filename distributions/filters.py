@@ -16,8 +16,8 @@ class CourseFilter(filters.FilterSet):
     class Meta:
         model = Course
         fields = {
-            'department': ['icontains'],
-            'number': ['contains'],
+            'department': ['iexact'],
+            'number': ['gt', 'lt'],
             'title': ['icontains'],
             'hours': ['exact'],
         }
@@ -35,8 +35,8 @@ class SectionFilter(filters.FilterSet):
     class Meta:
         model = Section
         fields = {
-            'course__department': ['icontains'],
-            'course__number': ['contains'],
+            'course__department': ['iexact'],
+            'course__number': ['gt'],
             'course__title': ['icontains'],
             'course__hours': ['exact'],
             'instructor': ['icontains'],
