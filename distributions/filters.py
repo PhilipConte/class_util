@@ -20,6 +20,7 @@ class CourseFilter(filters.FilterSet):
             'number': ['gt', 'lt'],
             'title': ['icontains'],
             'hours': ['exact'],
+            'pathways': ['exact']
         }
         form = CSSForm
 

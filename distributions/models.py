@@ -74,6 +74,17 @@ class Course(models.Model):
     class Meta:
         ordering = ['department', 'number', 'title', 'hours']
 
+class Pathway(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
+    courses = models.ManyToManyField(Course, related_name='pathways')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name', 'description',)
+
 class SectionQueryset(models.QuerySet):
     def stats(self):
         def safe_round(val):

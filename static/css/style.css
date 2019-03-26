@@ -80,4 +80,8 @@ body {
         float: left;
         margin: 7px 10px;
     }
+    .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

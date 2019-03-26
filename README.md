@@ -8,11 +8,17 @@ A tool to view (Virginia Tech) grade distributions
 
 With that being said, if you have a PID login to access VT's single sign-on service, you can download distributions [here](https://irweb.ir.vt.edu/webtest/Authenticated/GradeDistribution.aspx)
 
+## Usage
+The containers can be started with `docker-compose start`
+
+You can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
+
 ### Setup
-1. See: [Installation](#installation)
+1. See [Installation](#installation)
 
 2. CSVs should be labeled in the format YYYY_SEMESTER.csv  
     ie: fall 2018 would be 2018_fall.csv
+
     valid semester names:
 
     1. spring
@@ -25,14 +31,10 @@ With that being said, if you have a PID login to access VT's single sign-on serv
 
 3. The Desired CSVs should be placed in the /distributions/data folder.
 
-4. Once this is done, cd into the parent class_util folder and run ```docker-compose exec web python manage.py load_section_data```
+4. Run ```docker-compose exec web python manage.py load_section_data```
+5. See [Pathways](#pathways) to enable filtering by CLE area or Pathway
 
-### Usage
-The containers can be started with `docker-compose start`
-
-You can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
-
-## Installation
+### Installation
 Requires Docker and docker-compose
 ```bash
 # Clone the repository
@@ -42,3 +44,8 @@ cd class_util
 # Build and start the containers
 docker-compose up -d
 ```
+
+### Pathways
+1. See: [pathways_scraper](https://github.com/PhilipConte/pathways_scraper) to create areas.json
+2. Copy areas.json to /distributions/data
+3. Run ```docker-compose exec web python manage.py load_pathways```
