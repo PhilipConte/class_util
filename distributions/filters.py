@@ -2,7 +2,7 @@ import itertools
 
 from django.db.models import Q
 from django import forms
-from .models import Course, Section
+from .models import Course, Section, Pathway
 from .forms import CSSForm
 from django_filters import rest_framework as filters
 
@@ -10,9 +10,9 @@ def form_control(placeholder):
     return forms.TextInput(attrs={'placeholder': placeholder, 'class': 'form-control'})
 
 class CourseFilter(filters.FilterSet):
-    average_GPA_gte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≥', lookup_expr='gte')
-    average_GPA_lte = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≤', lookup_expr='lte')
-    
+    average_GPA = filters.NumberFilter(field_name='average_GPA', label='Average GPA ≥', lookup_expr='gte')
+    pathways = filters.ModelChoiceFilter(queryset=Pathway.objects.all())
+
     class Meta:
         model = Course
         fields = {
@@ -20,7 +20,6 @@ class CourseFilter(filters.FilterSet):
             'number': ['gt', 'lt'],
             'title': ['icontains'],
             'hours': ['exact'],
-            'pathways': ['exact']
         }
         form = CSSForm
 
