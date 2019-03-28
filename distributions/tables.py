@@ -1,8 +1,8 @@
+from urllib.parse import quote
+from django.utils.html import format_html
 from django.urls import reverse
 import django_tables2 as tables
 from . import models as m
-
-from .utils import gen_link, quote
 
 GRADES = ['average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs']
 
@@ -55,5 +55,9 @@ class GroupedSectionTable(tables.Table):
     Cs = RoundColumn(verbose_name='C%')
     Ds = RoundColumn(verbose_name='D%')
     Fs = RoundColumn(verbose_name='F%')
+
     def render_instructor(self, value):
-        return gen_link(value, reverse('distributions:course_instructor_detail', args=[*self.course_args, quote(value)]))
+        return format_html('<a href={}>{}</a>',
+            reverse('distributions:course_instructor_detail', args=[
+                *self.course_args, quote(value, safe='')]),
+            value)

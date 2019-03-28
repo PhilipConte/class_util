@@ -8,7 +8,6 @@ import django_tables2
 from .models import Course, Section
 from .tables import SectionTable, CourseTable, GroupedSectionTable
 from .filters import SectionFilter, CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
-from .utils import gen_link
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
