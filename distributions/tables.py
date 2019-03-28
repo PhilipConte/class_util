@@ -4,6 +4,8 @@ from . import models as m
 
 from .utils import gen_link, quote
 
+GRADES = ['average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs']
+
 class RoundColumn(tables.Column):
     def __init__(self, decimals=1, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -16,7 +18,7 @@ class CourseTable(tables.Table):
     class Meta:
         model = m.Course
         template_name = 'django_tables2/bootstrap.html'
-        exclude = ['id', 'slug']
+        fields = ['department', 'number', 'title', 'hours', *GRADES]
     
     title = tables.LinkColumn()
     average_GPA = RoundColumn(2)
@@ -30,7 +32,7 @@ class SectionTable(tables.Table):
     class Meta:
         model = m.Section
         template_name = 'django_tables2/bootstrap.html'
-        exclude= ['id', 'slug']
+        fields= ['term', 'course', 'CRN', 'instructor', *GRADES, 'withdrawals', 'class_size']
 
     course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
     instructor = tables.LinkColumn()
@@ -44,8 +46,7 @@ class GroupedSectionTable(tables.Table):
     class Meta:
         template_name = 'django_tables2/bootstrap.html'
         model = m.Section
-        exclude = ['id', 'course', 'class_size', 'CRN', 'term']
-        sequence = ['instructor', 'sections_taught', 'withdrawals', 'average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs', '...']
+        fields = ['instructor', 'sections_taught', 'withdrawals', *GRADES]
     
     term = tables.Column()
     instructor = tables.Column()
