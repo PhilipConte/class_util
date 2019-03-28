@@ -20,7 +20,7 @@ class CourseTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         fields = ['department', 'number', 'title', 'hours', *GRADES]
     
-    title = tables.LinkColumn()
+    title = tables.Column(linkify=True)
     average_GPA = RoundColumn(2)
     As = RoundColumn(verbose_name='A%')
     Bs = RoundColumn(verbose_name='B%')
@@ -34,8 +34,8 @@ class SectionTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         fields= ['term', 'course', 'CRN', 'instructor', *GRADES, 'withdrawals', 'class_size']
 
-    course = tables.RelatedLinkColumn(attrs={'target': '_blank'})
-    instructor = tables.LinkColumn()
+    course = tables.Column(linkify=True)
+    instructor = tables.Column(linkify=True)
 
 class GroupedSectionTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -48,9 +48,7 @@ class GroupedSectionTable(tables.Table):
         model = m.Section
         fields = ['instructor', 'sections_taught', 'withdrawals', *GRADES]
     
-    term = tables.Column()
     instructor = tables.Column()
-    sections_taught = tables.Column()
     average_GPA = RoundColumn(2)
     As = RoundColumn(verbose_name='A%')
     Bs = RoundColumn(verbose_name='B%')
