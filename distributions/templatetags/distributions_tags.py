@@ -16,10 +16,6 @@ def chart(title, url_name, slug, instructor=None):
         'instructor': instructor,
     }
 
-@register.inclusion_tag('tags/chart_loader.html')
-def chart_loader():
-    pass
-
 @register.inclusion_tag('tags/search_bar.html')
 def search_bar():
     from ..filters import CourseFilterMulti

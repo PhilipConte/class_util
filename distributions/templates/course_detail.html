@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load distributions_tags %}
+{% load static %}
 
 {% block content %}
 <div class="panel panel-default"><div class="panel-body">
@@ -8,7 +9,7 @@
         {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
     </div>
 </div></div>
-{% chart_loader %}
+<script src="{% static 'js/chartLoader.js' %}"></script>
 {% endblock %}
 
 {% block table_content %}<div class="panel-heading">

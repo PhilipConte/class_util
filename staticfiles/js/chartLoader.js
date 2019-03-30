@@ -1,4 +1,3 @@
-<script>
 var horizontalLinePlugin = {
     afterDraw: function(chartInstance) {
         var yValue, index, line, style;
@@ -122,4 +121,3 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .catch(error => console.log('error:', error));
     });
 });
-</script>
