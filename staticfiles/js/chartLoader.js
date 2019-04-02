@@ -7,7 +7,6 @@ var horizontalLinePlugin = {
         var yAxe = chart.scales[chart.config.options.scales.yAxes[0].id];
         
         if(yAxe.min != 0) return;
-        console.log('got here')
         ctxPlugin.strokeStyle = "red";
         ctxPlugin.beginPath();
         lineAt = (lineAt - yAxe.min) * (100 / yAxe.max);
