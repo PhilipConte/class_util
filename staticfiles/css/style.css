@@ -75,6 +75,13 @@ body {
     margin: 0 7px;
 }
 
+.chart-div {
+    position: relative;
+    margin: auto;
+    height: 30vh;
+    width: 30vw;
+}
+
 @media (min-width: 768px) {
     .navbar .collapse .breadcrumb {
         float: left;

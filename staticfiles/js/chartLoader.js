@@ -41,6 +41,7 @@ function instantiateChart(chart_tag, data_obj, colors) {
         switch(chartType) {
             case "doughnut":
                 options = {
+                    maintainAspectRatio: false,
                     plugins: {
                         doughnutlabel: { labels: [
                             { text: 'Average GPA', font: { size: '50' } },
@@ -51,6 +52,7 @@ function instantiateChart(chart_tag, data_obj, colors) {
                 break;
             case "bar":
                 options = {
+                    maintainAspectRatio: false,
                     legend: { display: false },
                     scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
                     lineAt: average_GPA
