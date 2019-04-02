@@ -1,5 +1,6 @@
 {% load form_button from distributions_tags %}
 <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'distributions:course_list' %}">
+  {% csrf_token %}
   <div class="input-group">
     {{ form }}
     {% form_button 'search' %}

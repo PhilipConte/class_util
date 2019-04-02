@@ -26,7 +26,7 @@ class SectionFilteredListView(FilteredSingleTableView):
     model = Section
     table_class = SectionTable
     filter_class = SectionFilter
-    template_name = 'filtered_list.html'
+    template_name = 'course_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,7 +37,7 @@ class CourseFilteredListView(FilteredSingleTableView):
     model = Course
     table_class = CourseTable
     filter_class = CourseFilter
-    template_name ='filtered_list.html'
+    template_name ='course_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,6 +62,7 @@ class CourseListView(CourseFilteredListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [{'text': 'Courses'}]
+        print(len(self.filter.filters))
         return context
 
 class CourseSearchView(TemplateView):
