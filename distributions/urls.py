@@ -5,6 +5,7 @@ from . import views
 app_name = 'distributions'
 
 urlpatterns = [
+    path('set_term/<int:term_id>/', views.set_term, name='set_term'),
     path('', RedirectView.as_view(url='courses/search/', permanent=False), name='index'),
     path('courses/', views.CourseListView.as_view(), name='course_list'),
     path('courses/search/', views.CourseSearchView.as_view(), name = 'course_search'),

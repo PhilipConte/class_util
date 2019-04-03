@@ -20,4 +20,11 @@ $(document).ready(function(){
         }, 1000)
     });
 });
+function setTerm(selectObj) {
+    let e = document.getElementById('termSelect');
+    let val = e.options[e.selectedIndex].value
+    window.location.replace(
+        "{% url 'distributions:set_term' term_id=123 %}".replace(/123/, val)
+    )
+}
 </script>

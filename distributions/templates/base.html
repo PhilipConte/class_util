@@ -25,12 +25,25 @@
         </div>
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
-            <form class="navbar-form navbar-left" role="search" method="get" action="{{ request.path }}">
-            {% csrf_token %}
-            {% get_terms as terms %}
-            <select class="form-control">{% for t in terms %}
-                <option value="{{ t.id }}">{{ t }}</option>
-            {% endfor %}</select>
+            <form
+                class="navbar-form navbar-left"
+                role="search" method="get"
+                action="javascript:setTerm();"
+            >
+                {% csrf_token %}
+                {% get_terms as terms %}
+                <select class="form-control"  id="termSelect" onchange="this.form.submit()">
+                {% for t in terms %}
+                    <option
+                        value="{{ t.id }}"
+                        {% if request.session|dictGet:'term_id' == t.id %}
+                        selected="selected"
+                        {% endif %}
+                    >
+                        since {{ t }}
+                    </option>
+                {% endfor %}
+                </select>
             </form>
             <ul class="breadcrumb list-inline">
                 {% for crumb in hierarchy %}

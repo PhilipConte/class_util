@@ -1,11 +1,11 @@
 from urllib.parse import unquote
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
 import django_tables2
-from .models import Course, Section
+from .models import Course, Section, Term
 from .tables import SectionTable, CourseTable, GroupedSectionTable
 from .filters import SectionFilter, CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
 
@@ -74,6 +74,7 @@ class CourseSearchView(TemplateView):
             {'text': 'Courses', 'link': reverse('distributions:course_list')},
             {'text': 'Search'},
         ]
+        print("TERM ID" + str(self.request.session.get('term_id', 'fail')))
         return context
 
 class CourseDetailView(FilteredSingleTableView):
@@ -147,3 +148,7 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
         context['instructor'] = self.instructor
         context['sections'] =  self.sections
         return context
+
+def set_term(request, term_id):
+    request.session['term_id'] = get_object_or_404(Term, id=term_id).id
+    return redirect(request.META.get('HTTP_REFERER'))
