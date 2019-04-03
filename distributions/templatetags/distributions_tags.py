@@ -1,6 +1,8 @@
 from django.template.loader import get_template
 from django import template
 
+from distributions.models import Term
+
 register = template.Library()
 
 @register.inclusion_tag('tags/form_button.html')
@@ -35,3 +37,7 @@ def dictGet(dictionary, args):
         fallback = None
 
     return dictionary.get(key, fallback)
+
+@register.simple_tag(takes_context=False)
+def get_terms():
+    return Term.objects.all()

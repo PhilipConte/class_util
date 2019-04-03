@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 {% load render_table from django_tables2 %}
-{% load dictGet from distributions_tags %}
-{% load search_bar from distributions_tags %}
+{% load distributions_tags %}
 
 <html lang="en-US">
 
@@ -26,6 +25,13 @@
         </div>
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
+            <form class="navbar-form navbar-left" role="search" method="get" action="{{ request.path }}">
+            {% csrf_token %}
+            {% get_terms as terms %}
+            <select class="form-control">{% for t in terms %}
+                <option value="{{ t.id }}">{{ t }}</option>
+            {% endfor %}</select>
+            </form>
             <ul class="breadcrumb list-inline">
                 {% for crumb in hierarchy %}
                     <li {% if forloop.last %} class='active'{% endif %}>

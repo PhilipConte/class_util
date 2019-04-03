@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Sum, Avg, Count
+from django.db.models import F, Q, Sum, Avg, Count
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
@@ -36,10 +36,17 @@ class Term(models.Model):
         ordering = ['year', 'semester']
 
 class CourseManager(models.Manager):
-    def get_queryset(self, **kwargs):
+    def get_queryset(self):
         base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
         to_annotate = {k: t[0]('sections__'+t[1]) for k, t in base_dict.items()}
-        return super().get_queryset(**kwargs).annotate(**to_annotate)
+        return super().get_queryset().annotate(**to_annotate)
+
+    def from_term(self, term):
+        base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
+        to_annotate = {
+            k: t[0]('sections__'+t[1], filter=Q(sections__term__gte=term))
+            for k, t in base_dict.items()}
+        return super().get_queryset().annotate(**to_annotate)
 
 class Course(models.Model):
     department = models.CharField(max_length=8)
@@ -54,22 +61,14 @@ class Course(models.Model):
     def get_absolute_url(self):
         return reverse('distributions:course_detail', args=[self.slug])
 
-    @property
-    def stats(self):
-        return self.sections.stats()
-
     def short(self):
         return '{} {}'.format(self.department, self.number)
 
-    def no_credits(self):
-        return self.short() + ': {}'.format(self.title)
-
     def __str__(self):
-        return self.no_credits() + ' ({} credits)'.format(self.hours)
+        return '{}: {} ({} credits)'.format(self.short(), self.title, self.hours)
 
     def html(self):
-        title_parts = str(self).split(':')
-        return ('<strong>'+title_parts[0]+'</strong>: '+title_parts[1])
+        return '<strong>{}</strong>: {}'.format(*str(self).split(':'))
 
     class Meta:
         ordering = ['department', 'number', 'title', 'hours']
