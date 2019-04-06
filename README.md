@@ -1,6 +1,8 @@
 # class_util
 website containing a collection of tools related to classes
 
+[Click here to check it out!](https://class-util.herokuapp.com)
+
 ## distributions
 A tool to view (Virginia Tech) grade distributions
 
