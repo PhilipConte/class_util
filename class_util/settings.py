@@ -14,7 +14,7 @@ SECRET_KEY = os.environ['CLASS_UTIL_SECRET_KEY']
 
 DEBUG = os.environ.get('CLASS_UTIL_DEBUG', '0') == '1'
 
-ALLOWED_HOSTS = os.environ['CLASS_UTIL_ALLOWED_HOSTS'].split(',')
+ALLOWED_HOSTS = os.environ.get('CLASS_UTIL_ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
