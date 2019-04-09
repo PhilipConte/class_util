@@ -1,7 +1,7 @@
 # class_util
 website containing a collection of tools related to classes
 
-[Click here to check it out!](http://distributions.pconte.com)
+[Click here to check it out!](http://distributions.pconte.me)
 
 ## distributions
 A tool to view (Virginia Tech) grade distributions
