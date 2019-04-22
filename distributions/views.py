@@ -50,7 +50,6 @@ class CourseFilteredListView(FilteredSingleTableView):
     def get(self, request):
         qs = self.get_table_data()
         if qs.count() == 1:
-            print('1 item')
             return HttpResponseRedirect(qs.first().get_absolute_url()) 
         else:
             return super().get(request)
@@ -62,7 +61,6 @@ class CourseListView(CourseFilteredListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['hierarchy'] = [{'text': 'Courses'}]
-        print(len(self.filter.filters))
         return context
 
 class CourseSearchView(TemplateView):
