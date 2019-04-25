@@ -3,9 +3,6 @@ from django import template
 
 register = template.Library()
 
-@register.inclusion_tag('tags/form_button.html')
-def form_button(glyph):
-    return {'glyph': glyph}
 
 @register.inclusion_tag('tags/chart.html')
 def chart(title, url_name, slug, instructor=None):

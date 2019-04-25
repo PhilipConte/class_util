@@ -1,6 +1,6 @@
 from django import forms
 
-css_classes = 'form-control bulk-input'
+css_classes = 'form-control'
 
 class CSSForm(forms.Form):
     def __init__(self, *args, **kwargs):

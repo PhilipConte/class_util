@@ -9,11 +9,11 @@
 
 {% block table_content %}
 {% if filter.data.multi and filter.qs.count != filter.queryset.count %}
-<div class="panel-heading">
+<div class="card-header">
 <h4>{{ filter.qs.count }} courses out of {{ filter.queryset.count }} matching <i>"{{ filter.data.multi }}"</i> | <a href='{{ request.path }}' >Clear</a></h4>
 </div>
 {% elif filter and filter.filters|length > 1 %}
-<div class="panel-heading"><form method='GET'>
+<div class="card-header"><form method='GET'>
     {% csrf_token %}
     <div class=filter-grid>
         {{ filter.form.as_p }}

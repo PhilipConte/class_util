@@ -37,9 +37,8 @@ body {
     color: var(--foreground-text);
 }
 
-
-.panel-default,
-.panel-default>.panel-heading {
+.card,
+.card>.card-header {
     background-color: var(--foreground-color);
     color: var(--foreground-text);
 }
@@ -56,35 +55,27 @@ body {
     justify-content: space-evenly;
 }
 
-.bulk-input {
-    width: fit-content;
-}
-
-#topNav {
-    margin: 0;
-    border-bottom-width: 0px;
-}
-
-#underNav {
-    padding: 10px;
-    height: calc(100% - 50px)
-}
-
-.navbar .collapse .breadcrumb {
-    margin: 0 7px;
+.search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .chart-div {
     position: relative;
     margin: auto;
-    height: 35vh;
-    width: 30vw;
+    height: 31vmin;
+    width: 31vmin;
 }
 
 .filter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 2em;
+}
+
+.navbar .collapse .breadcrumb {
+    margin: 0 7px;
 }
 
 @media (min-width: 768px) {

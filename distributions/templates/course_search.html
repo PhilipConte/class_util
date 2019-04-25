@@ -3,14 +3,14 @@
 
 {% block content %}
 <div class="centered-parent">
-    <div class="panel panel-default" style="max-width: 50%;">
-        <div class="panel-body fg-text" style="display: flex; flex-direction: column; align-items: center">
+    <div class="card">
+        <div class="card-body fg-text search-box">
             <h2>Search All Courses</h2>
-            {% search_bar %}
+            <div class="pb-2">{% search_bar %}</div>
             <div>
-                <h3>looking for a different way to browse?</h3>
-                <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
-                <h4><a href={% url 'distributions:section_filtered_list' %}>Filter all sections</a></h4>
+                <h4>looking for a different way to browse?</h3>
+                <h5><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h5>
+                <h5><a href={% url 'distributions:section_filtered_list' %}>Filter all sections</a></h5>
             </div>
         </div>
     </div>

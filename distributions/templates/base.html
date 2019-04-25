@@ -2,72 +2,83 @@
 {% load render_table from django_tables2 %}
 {% load dictGet from distributions_tags %}
 {% load search_bar from distributions_tags %}
+{% load static %}
 
 <html lang="en-US">
 
 <head>
     <meta charset="UTF-8">
     <title>Distributions - Class Util</title>
-    <link rel="icon" href="https://www.python.org/static/favicon.ico">
-    {% include "./css.html" %}
-    {% include "./js.html" %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function(){
+        document.documentElement.setAttribute('theme', localStorage.getItem('theme'));
+        $(".theme-switch").click(function() {
+            let theme = $(this).text().toLowerCase();
+            localStorage.setItem('theme', theme);
+            document.documentElement.classList.add('color-theme-in-transition')
+            document.documentElement.setAttribute('theme', theme)
+            window.setTimeout(function() {
+                document.documentElement.classList.remove('color-theme-in-transition')
+            }, 1000)
+        });
+    });
+    </script>
 </head>
 
-<body>
-    <nav class="navbar navbar-inverse navbar-static-top" id=topNav><div class="container-fluid">
-        <!-- Header -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{% url 'distributions:index' %}">Class Util: Distributions</a>
-        </div>
-        <!-- Items -->
-        <div class="collapse navbar-collapse" id="topNavBar">
-            <ul class="breadcrumb list-inline">
-                {% for crumb in hierarchy %}
-                    <li {% if forloop.last %} class='active'{% endif %}>
-                    {% if crumb|dictGet:'link' %}
-                        <a href="{{ crumb|dictGet:'link' }}">
-                        {{ crumb|dictGet:'text' }}
-                        </a>
-                    {% else %}
-                        {{ crumb|dictGet:'text' }}
-                    {% endif %}
-                    </li>
-                {% endfor %}
+<body class="d-flex flex-column">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark flex-grow-0">
+        <a class="navbar-brand" href="{% url 'distributions:index' %}">Class Util: Distributions</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><nav aria-label="breadcrumb">
+                    <ol class="breadcrumb p-2">
+                        {% for crumb in hierarchy %}
+                            <li class=' breadcrumb-item {% if forloop.last %}active{% endif %}'>
+                            {% if crumb|dictGet:'link' %}
+                                <a href="{{ crumb|dictGet:'link' }}">
+                                {{ crumb|dictGet:'text' }}
+                                </a>
+                            {% else %}
+                                {{ crumb|dictGet:'text' }}
+                            {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </nav></li>
             </ul>
             {% search_bar %}
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown show">
                     <a
                         href="#"
-                        class="dropdown-toggle"
+                        class="nav-link dropdown-toggle"
                         data-toggle="dropdown"
                         role="button"
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        <span class="glyphicon glyphicon-text-color"></span>
                         Theme
-                        <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="theme-switch" href="#">Light</a></li>
-                        <li><a class="theme-switch" href="#">Dark</a></li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item theme-switch" href="#">Light</a>
+                        <a class="dropdown-item theme-switch" href="#">Dark</a>
+                    </div>
                 </li>
-                <li>
-                    <a href="https://github.com/PhilipConte/class_util">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/PhilipConte/class_util">
                         Homepage
                     </a>
                 </li>
             </ul>
         </div>
-    </div></nav>
-    <div id=underNav>
+    </nav>
+    <div id=underNav class="p-2 flex-grow-1">
         {% if title %}
             <h2 class="bg-text">{{ title|safe }}</h2>
         {% endif %}
@@ -75,14 +86,17 @@
         {% block content %}{% endblock %}
 
         {% if table %}
-            <div class="panel panel-default">
+            <div class="card">
                 {% block  table_content %}{% endblock  %}
-                <div class="panel-body">
+                <div class="card-body">
                     {% render_table table %}
                 </div>
             </div>
         {% endif %}
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 </html>

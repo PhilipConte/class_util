@@ -115,5 +115,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
+
 # Activate Django-Heroku.
 django_heroku.settings(locals(), staticfiles=False)

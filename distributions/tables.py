@@ -17,7 +17,6 @@ class RoundColumn(tables.Column):
 class CourseTable(tables.Table):
     class Meta:
         model = m.Course
-        template_name = 'django_tables2/bootstrap-responsive.html'
         fields = ['department', 'number', 'title', 'hours', *GRADES]
     
     title = tables.Column(linkify=True)
@@ -31,7 +30,6 @@ class CourseTable(tables.Table):
 class SectionTable(tables.Table):
     class Meta:
         model = m.Section
-        template_name = 'django_tables2/bootstrap-responsive.html'
         fields= ['term', 'course', 'CRN', 'instructor', *GRADES, 'withdrawals', 'class_size']
 
     course = tables.Column(linkify=True)
@@ -44,7 +42,6 @@ class GroupedSectionTable(tables.Table):
         self.course_args = temp_course_args
     
     class Meta:
-        template_name = 'django_tables2/bootstrap-responsive.html'
         model = m.Section
         fields = ['instructor', 'sections_taught', 'withdrawals', *GRADES]
     

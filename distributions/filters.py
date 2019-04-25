@@ -47,18 +47,20 @@ class SectionFilter(filters.FilterSet):
         }
         form = CSSForm
 
+
 class CourseFilterMulti(filters.FilterSet):
     multi = filters.CharFilter(
         label='',
         method='filter_multi',
-        widget= form_control('Search All Courses...')
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Search All Courses...', 'class': 'form-control mr-sm-2'})
     )
     search_fields = ['department', 'number', 'title']
 
     def filter_multi(self, qs, name, value):
         if value:
             q_parts = value.split()
-            
+
             q_totals = Q()
             
             combinatorics = itertools.product([True, False], repeat=len(q_parts) - 1)
@@ -68,7 +70,7 @@ class CourseFilterMulti(filters.FilterSet):
                 one_such_combination = [q_parts[i]]
                 for slab in combination:
                     i += 1
-                    if not slab: # there is a join
+                    if not slab:  # there is a join
                         one_such_combination[-1] += ' ' + q_parts[i]
                     else:
                         one_such_combination += [q_parts[i]]
