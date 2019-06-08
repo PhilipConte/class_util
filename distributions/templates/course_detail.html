@@ -14,7 +14,6 @@
 
 {% block table_content %}<div class="panel-heading">
 <form method='GET' style="max-width: 35%"><div class="input-group">
-    {% csrf_token %}
     {{ filter.form }}
     {% form_button 'filter' %}
 </div></form>

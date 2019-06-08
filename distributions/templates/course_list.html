@@ -14,7 +14,6 @@
 </div>
 {% elif filter and filter.filters|length > 1 %}
 <div class="panel-heading"><form method='GET'>
-    {% csrf_token %}
     <div class=filter-grid>
         {{ filter.form.as_p }}
     </div>
