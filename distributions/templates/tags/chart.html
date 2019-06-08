@@ -2,7 +2,6 @@
     <h3>{{ title }}</h3>
     <div class="chart-div"><canvas
         class="templateTagChart"
-        width="400" height="400"
         {% if instructor %}
         url-path="{% url url_name slug=slug instructor=instructor %}"
         {% else %}

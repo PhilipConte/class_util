@@ -22,11 +22,11 @@ html.color-theme-in-transition *:after {
     transition-delay: 0 !important;
 }
 
-html,
 body {
-    width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
 }
 
 .bg-text {
@@ -36,7 +36,6 @@ body {
 .fg-text {
     color: var(--foreground-text);
 }
-
 
 .panel-default,
 .panel-default>.panel-heading {
@@ -67,7 +66,7 @@ body {
 
 #underNav {
     padding: 10px;
-    height: calc(100% - 50px)
+    height: -webkit-fill-available;
 }
 
 .navbar .collapse .breadcrumb {
@@ -77,14 +76,21 @@ body {
 .chart-div {
     position: relative;
     margin: auto;
-    height: 35vh;
-    width: 30vw;
+    height: 31vmin;
+    width: 31vmin;
 }
 
 .filter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 2em;
+}
+
+.search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--foreground-text);
 }
 
 @media (min-width: 768px) {

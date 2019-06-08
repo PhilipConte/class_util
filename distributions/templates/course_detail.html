@@ -9,6 +9,8 @@
         {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
     </div>
 </div></div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
+<script src="{% static "vendor/js/chartjs-plugin-doughnutlabel.min.js" %}"></script>
 <script src="{% static 'js/chartLoader.js' %}"></script>
 {% endblock %}
 

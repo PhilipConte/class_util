@@ -2,20 +2,35 @@
 {% load render_table from django_tables2 %}
 {% load dictGet from distributions_tags %}
 {% load search_bar from distributions_tags %}
+{% load static %}
 
 <html lang="en-US">
 
 <head>
     <meta charset="UTF-8">
     <title>Distributions - Class Util</title>
-    <link rel="icon" href="https://www.python.org/static/favicon.ico">
-    {% include "./css.html" %}
-    {% include "./js.html" %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            document.documentElement.setAttribute('theme', localStorage.getItem('theme'));
+            $(".theme-switch").click(function() {
+                let theme = $(this).text().toLowerCase();
+                localStorage.setItem('theme', theme);
+                document.documentElement.classList.add('color-theme-in-transition')
+                document.documentElement.setAttribute('theme', theme)
+                window.setTimeout(function() {
+                    document.documentElement.classList.remove('color-theme-in-transition')
+                }, 1000)
+            });
+        });
+    </script>
 </head>
 
 <body>
     <nav class="navbar navbar-inverse navbar-static-top" id=topNav><div class="container-fluid">
-        <!-- Header -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
                 <span class="icon-bar"></span>
@@ -24,7 +39,6 @@
             </button>
             <a class="navbar-brand" href="{% url 'distributions:index' %}">Class Util: Distributions</a>
         </div>
-        <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="breadcrumb list-inline">
                 {% for crumb in hierarchy %}
