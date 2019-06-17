@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 import django_tables2
 from .models import Course, Section
 from .tables import SectionTable, CourseTable, GroupedSectionTable
-from .filters import SectionFilter, CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
+from .filters import CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
@@ -22,16 +22,6 @@ class FilteredSingleTableView(django_tables2.SingleTableView):
         context['filter'] = self.filter
         return context
 
-class SectionFilteredListView(FilteredSingleTableView):
-    model = Section
-    table_class = SectionTable
-    filter_class = SectionFilter
-    template_name = 'course_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hierarchy'] = [{'text': 'Sections'}, {'text': 'Filtered'}]
-        return context
 
 class CourseFilteredListView(FilteredSingleTableView):
     model = Course

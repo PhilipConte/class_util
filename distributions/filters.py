@@ -31,21 +31,6 @@ class SectionGroupedByInstructorFilter(filters.FilterSet):
         widget= form_control('Filter by instructor...')
     )
 
-class SectionFilter(filters.FilterSet):
-    class Meta:
-        model = Section
-        fields = {
-            'course__department': ['iexact'],
-            'course__number': ['gt'],
-            'course__title': ['icontains'],
-            'course__hours': ['exact'],
-            'instructor': ['icontains'],
-            'CRN': ['contains'],
-            'average_GPA': ['exact', 'lt', 'gt'],
-            'term__semester__name': ['iexact'],
-            'term__year': ['exact'],
-        }
-        form = CSSForm
 
 class CourseFilterMulti(filters.FilterSet):
     multi = filters.CharFilter(
