@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 import django_tables2
 from .models import Course, Section
 from .tables import SectionTable, CourseTable, GroupedSectionTable
-from .filters import CourseFilter, CourseFilterMulti, SectionGroupedByInstructorFilter
+from .filters import CourseFilter, CourseFilterMulti, GroupedSectionFilter
 
 class FilteredSingleTableView(django_tables2.SingleTableView):
     filter_class = None
@@ -67,7 +67,7 @@ class CourseSearchView(TemplateView):
 class CourseDetailView(FilteredSingleTableView):
     model = Section
     table_class = GroupedSectionTable
-    filter_class = SectionGroupedByInstructorFilter
+    filter_class = GroupedSectionFilter
     template_name = 'course_detail.html'    
 
     def parse_params(self):

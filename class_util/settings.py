@@ -112,7 +112,8 @@ STATIC_URL = '/static/'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'distributions.api.paginators.DistributionsLimitOffsetPaginator',
 }
 
 DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'

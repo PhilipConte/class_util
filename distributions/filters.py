@@ -23,7 +23,7 @@ class CourseFilter(filters.FilterSet):
         }
         form = CSSForm
 
-class SectionGroupedByInstructorFilter(filters.FilterSet):
+class GroupedSectionFilter(filters.FilterSet):
     instructor = filters.CharFilter(
         field_name='instructor',
         label='',

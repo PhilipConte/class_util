@@ -1,7 +1,5 @@
-from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
+from rest_framework.pagination import LimitOffsetPagination
 
 class DistributionsLimitOffsetPaginator(LimitOffsetPagination):
-    default_limit = 50
-
-class DistributionsPageNumberPaginator(PageNumberPagination):
-    page_size = 50
+    default_limit = 25
+    max_limit = 50

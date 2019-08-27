@@ -1,14 +1,7 @@
 import decimal
-from rest_framework.serializers import (
-    ModelSerializer,
-    HyperlinkedIdentityField,
-    SerializerMethodField,
-    SlugRelatedField,
-    DecimalField,
-    CharField,
-)
-
+from rest_framework.serializers import ModelSerializer, DecimalField, CharField, IntegerField
 from distributions.models import Term, Section, Course
+
 
 class TermSerializer(ModelSerializer):
     semester = CharField(source='semester.name', read_only=True)
@@ -17,7 +10,26 @@ class TermSerializer(ModelSerializer):
         model = Term
         fields = ['year', 'semester']
 
-class SectionBaseSerializer(ModelSerializer):
+
+class GroupedSectionSerializer(ModelSerializer):
+    sections_taught = IntegerField()
+
+    class Meta:
+        model = Section
+        fields = [
+            'instructor',
+            'sections_taught',
+            'withdrawals',
+            'average_GPA',
+            'As',
+            'Bs',
+            'Cs',
+            'Ds',
+            'Fs',
+        ]
+
+
+class SectionSerializer(ModelSerializer):
     term = TermSerializer()
 
     class Meta:
@@ -34,67 +46,16 @@ class SectionBaseSerializer(ModelSerializer):
             'Fs',
             'withdrawals',
             'class_size',
+            'slug',
         ]
 
-class CourseBaseSerializer(ModelSerializer):
-    url = HyperlinkedIdentityField(
-        view_name='distributions-api:course_detail',
-        lookup_field='slug'
-    )
-
-    class Meta:
-        model = Course
-        fields = [
-            'department',
-            'number',
-            'title',
-            'hours',
-            'url',
-        ]
-
-class SectionInstructorSerializer(SectionBaseSerializer):
-    class Meta:
-        model = Section
-        fields = [
-            'term',
-            'CRN',
-            'average_GPA',
-            'As',
-            'Bs',
-            'Cs',
-            'Ds',
-            'Fs',
-            'withdrawals',
-            'class_size',
-        ]
-
-class SectionSerializer(SectionBaseSerializer):
-    course = SlugRelatedField(read_only=True, slug_field='slug')
-    class Meta:
-        model = Section
-        fields = [
-            'term',
-            'course',
-            'CRN',
-            'instructor',
-            'average_GPA',
-            'As',
-            'Bs',
-            'Cs',
-            'Ds',
-            'Fs',
-            'withdrawals',
-            'class_size',
-        ]
-
-class CourseSerializer(CourseBaseSerializer):
+class CourseSerializer(ModelSerializer):
     average_GPA = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
     As = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
     Bs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
     Cs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
     Ds = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
     Fs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    sections = SlugRelatedField(many=True, read_only=True, slug_field='slug')
 
     class Meta:
         model = Course
@@ -109,6 +70,5 @@ class CourseSerializer(CourseBaseSerializer):
             'Cs',
             'Ds',
             'Fs',
-            'sections',
-            'url',
+            'slug',
         ]
