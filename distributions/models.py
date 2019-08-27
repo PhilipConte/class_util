@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Sum, Avg, Count
+from django.db.models import F, Sum, Avg, Count, Func
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
@@ -8,12 +8,23 @@ from django.utils.safestring import SafeString
 
 from .utils import dict_pop
 
+
+class Round(Func):
+    function = 'ROUND'
+    arity = 2
+    # Only works as the arity is 2
+    arg_joiner = '::numeric, '
+
+    def as_sqlite(self, compiler, connection, **extra_context):
+        return super().as_sqlite(compiler, connection, arg_joiner=", ", **extra_context)
+
+
 raw_stats = {'average_GPA': (Avg,'average_GPA'),
             'As': (Avg,'As'), 'Bs': (Avg,'Bs'),
             'Cs': (Avg,'Cs'), 'Ds': (Avg,'Ds'), 'Fs': (Avg,'Fs'),
             'students': (Sum,'class_size'),
             'withdrawals': (Sum,'withdrawals')}
-stats_dict = {key: t[0](t[1]) for key, t in raw_stats.items()}
+stats_dict = {key: Round(t[0](t[1]), 2) for key, t in raw_stats.items()}
 
 class Semester(models.Model):
     name = models.CharField(max_length=20)
@@ -38,7 +49,7 @@ class Term(models.Model):
 class CourseManager(models.Manager):
     def get_queryset(self, **kwargs):
         base_dict = dict_pop(raw_stats, ['students', 'withdrawals'])
-        to_annotate = {k: t[0]('sections__'+t[1]) for k, t in base_dict.items()}
+        to_annotate = {k: Round(t[0]('sections__'+t[1]), 2) for k, t in base_dict.items()}
         return super().get_queryset(**kwargs).annotate(**to_annotate)
 
 class Course(models.Model):
@@ -87,12 +98,7 @@ class Pathway(models.Model):
 
 class SectionQueryset(models.QuerySet):
     def stats(self):
-        def safe_round(val):
-            return round(val, 2) if (type(val) is float) else val
-        
-        data = self.aggregate(**stats_dict)
-        
-        return {key: safe_round(value) for key, value in data.items()}
+        return self.aggregate(**stats_dict)
     
     def group_by_instructor(self):
         stats = dict_pop(stats_dict, ['students'])
@@ -100,15 +106,8 @@ class SectionQueryset(models.QuerySet):
         return self.values('instructor').annotate(**stats).order_by('instructor')
 
     def group_by_term(self):
-        group = self.values('term').annotate(
-            average_GPA=stats_dict['average_GPA'])
-        
-        for item in group:
-            item['average_GPA'] = round(item['average_GPA'], 2)
-            item['term'] = Term.objects.get(pk=item['term'])
-        
-        group = {item['term']: item['average_GPA'] for item in group}
-        return group
+        semesters = self.values('term').annotate(average_GPA=stats_dict['average_GPA'])
+        return {str(Term.objects.get(pk=sem['term'])): sem['average_GPA'] for sem in semesters}
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE, related_name='sections')

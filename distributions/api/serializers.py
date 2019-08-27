@@ -1,4 +1,3 @@
-import decimal
 from rest_framework.serializers import ModelSerializer, DecimalField, CharField, IntegerField
 from distributions.models import Term, Section, Course
 
@@ -50,12 +49,12 @@ class SectionSerializer(ModelSerializer):
         ]
 
 class CourseSerializer(ModelSerializer):
-    average_GPA = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    As = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    Bs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    Cs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    Ds = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
-    Fs = DecimalField(max_digits=None, decimal_places=2, rounding=decimal.ROUND_HALF_UP)
+    average_GPA = DecimalField(max_digits=None, decimal_places=2)
+    As = DecimalField(max_digits=None, decimal_places=2)
+    Bs = DecimalField(max_digits=None, decimal_places=2)
+    Cs = DecimalField(max_digits=None, decimal_places=2)
+    Ds = DecimalField(max_digits=None, decimal_places=2)
+    Fs = DecimalField(max_digits=None, decimal_places=2)
 
     class Meta:
         model = Course
