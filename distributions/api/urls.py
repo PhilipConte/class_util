@@ -4,6 +4,7 @@ from . import views
 app_name = 'distributions-api'
 
 urlpatterns = [
+    path('pathways/', views.PathwaysAPIView.as_view(), name='pathways_list'),
     path('courses/', views.CourseListAPIView.as_view(), name = 'course_list'),
     path('courses/search/', views.CourseSearchListAPIView.as_view(), name = 'course_search'),
     path('courses/<str:slug>/', views.CourseDetailAPIView.as_view(), name='course_detail'),

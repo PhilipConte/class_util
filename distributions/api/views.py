@@ -2,9 +2,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
-from distributions.models import Section, Course
+from distributions.models import Section, Course, Pathway
 from distributions.filters import CourseFilter, CourseFilterMulti, GroupedSectionFilter
-from .serializers import CourseSerializer, SectionSerializer, GroupedSectionSerializer
+from .serializers import CourseSerializer, SectionSerializer, GroupedSectionSerializer, PathwaySerializer
+
+
+class PathwaysAPIView(ListAPIView):
+    queryset = Pathway.objects.all()
+    serializer_class = PathwaySerializer
 
 
 class CourseListAPIView(ListAPIView):

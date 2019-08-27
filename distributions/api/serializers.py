@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, DecimalField, CharField, IntegerField
-from distributions.models import Term, Section, Course
+from distributions.models import Term, Section, Course, Pathway
 
 
 class TermSerializer(ModelSerializer):
@@ -71,3 +71,9 @@ class CourseSerializer(ModelSerializer):
             'Fs',
             'slug',
         ]
+
+
+class PathwaySerializer(ModelSerializer):
+    class Meta:
+        model = Pathway
+        fields = ['pk', 'name']
