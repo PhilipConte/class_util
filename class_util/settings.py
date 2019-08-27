@@ -24,10 +24,12 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -92,6 +94,8 @@ REST_FRAMEWORK = {
 }
 
 DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Activate Django-Heroku.
 django_heroku.settings(locals(), staticfiles=False)
