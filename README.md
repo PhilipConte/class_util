@@ -9,9 +9,9 @@ A tool to view (Virginia Tech) grade distributions
 *note: This project is not affiliated wih Virginia Tech in any way*
 
 ## Dev Usage
-Start the server by running `python manage.py runserver`
+Start the containers with `docker-compose start`
 
-You can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
+Navigate to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
 ## Dev Setup
 1. See [Installation](#installation)
@@ -19,36 +19,20 @@ You can get started by navigating to [127.0.0.1:8000](http://127.0.0.1:8000/)
 3. See [Pathways](#pathways)
 
 ### Installation
-Requires Python 3
+Requires Docker and docker-compose
 ```bash
 # Clone the repository
-git clone https://github.com/PhilipConte/class_util && cd class_util
-
-# Set up the virtual environment
-python3 -m venv env
+git clone https://github.com/PhilipConte/class_util
+cd class_util
 ```
-
-Copy the following values into env/bin/activate
+create ```.env``` with the following contents:
 ```bash
-export CLASS_UTIL_SECRET_KEY="437n29c384xdz8t4z53itgukwszrenhtvgcukzsejhrdgn"
-export CLASS_UTIL_DEBUG="1"
-export CLASS_UTIL_ALLOWED_HOSTS="localhost,127.0.0.1"
+CLASS_UTIL_ALLOWED_HOSTS=localhost,127.0.0.1
+CLASS_UTIL_DEBUG=1
+CLASS_UTIL_SECRET_KEY=super_secure_tm
 ```
 
-Setup Django
-```bash
-# Activate the virtual environment
-source env/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Start Django
-python manage.py runserver
-
-# Migrate DB
-python manage.py migrate
-```
+Build and start the containers with ```docker-compose up -d```
 
 ### Sections
 CSVs should be labeled in the format YYYY_SEMESTER.csv  
@@ -65,9 +49,9 @@ valid semester names:
 1. Download distributions [here](https://irweb.ir.vt.edu/webtest/Authenticated/GradeDistribution.aspx)
 2. Rename them as described above
 3. Place the CSVs in /distributions/data/
-4. Run ```python manage.py load_section_data```
+4. Run ```docker-compose exec web python manage.py load_section_data```
 
 ### Pathways
 1. See [pathways_scraper](https://github.com/PhilipConte/pathways_scraper) to create areas.json
 2. Copy areas.json to /distributions/data/
-3. Run ```python manage.py load_pathways```
+3. Run ```docker-compose exec web python manage.py load_pathways```

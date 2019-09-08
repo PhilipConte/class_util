@@ -5,16 +5,16 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 """
 
-import os
-import django_heroku
+from os import environ, path
+import dj_database_url
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
-SECRET_KEY = os.environ['CLASS_UTIL_SECRET_KEY']
+SECRET_KEY = environ.get('CLASS_UTIL_SECRET_KEY')
 
-DEBUG = os.environ.get('CLASS_UTIL_DEBUG', '0') == '1'
+DEBUG = int(environ.get('CLASS_UTIL_DEBUG'))
 
-ALLOWED_HOSTS = os.environ.get('CLASS_UTIL_ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = environ.get('CLASS_UTIL_ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
@@ -57,10 +57,7 @@ WSGI_APPLICATION = 'class_util.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 # Internationalization
@@ -68,23 +65,18 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
+USE_TZ = True
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
+USE_I18N = False
+USE_L10N = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-LOCKDOWN_ADMIN = False
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',  'rest_framework.filters.OrderingFilter',),
@@ -95,8 +87,5 @@ REST_FRAMEWORK = {
 DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
 
 CORS_ORIGIN_ALLOW_ALL = True
-
 CORS_ALLOW_METHODS = ('GET', 'OPTIONS',)
 
-# Activate Django-Heroku.
-django_heroku.settings(locals(), staticfiles=False)
