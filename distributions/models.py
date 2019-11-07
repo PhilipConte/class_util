@@ -59,7 +59,7 @@ class Course(models.Model):
     hours = models.PositiveIntegerField()
 
     slug = models.SlugField(unique=True, max_length=200)
-    
+
     objects = CourseManager()
 
     def get_absolute_url(self):
@@ -99,21 +99,22 @@ class Pathway(models.Model):
 class SectionQueryset(models.QuerySet):
     def stats(self):
         return self.aggregate(**stats_dict)
-    
+
     def group_by_instructor(self):
         stats = dict_pop(stats_dict, ['students'])
         stats['sections_taught'] = Count('instructor')
         return self.values('instructor').annotate(**stats).order_by('instructor')
 
     def group_by_term(self):
-        semesters = self.values('term').annotate(average_GPA=stats_dict['average_GPA'])
-        return {str(Term.objects.get(pk=sem['term'])): sem['average_GPA'] for sem in semesters}
+        semesters = self.prefetch_related('term', 'term__semester').annotate(group_GPA=stats_dict['average_GPA'])
+        return {'{} {}'.format(s.term.semester.name, s.term.year):\
+                s.group_GPA for s in semesters}
 
 class Section(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE, related_name='sections')
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
-    
+
     CRN = models.PositiveIntegerField()
     instructor = models.CharField(max_length=30)
     average_GPA = models.DecimalField(max_digits=4, decimal_places=2)
@@ -134,7 +135,7 @@ class Section(models.Model):
 
     def __str__(self):
         return '{} | {} | {} | {}'.format(self.CRN, self.instructor, self.term, self.course.short())
-    
+
     class Meta:
         ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
 
@@ -149,7 +150,7 @@ def pre_save_course_receiver(sender, instance, *args, **kwargs):
             new_slug = '{}-{}'.format(slug, qs.first().id)
             return create_slug(instance, new_slug=new_slug)
         return slug
-    
+
     if not instance.slug:
         instance.slug = create_slug(instance)
 
@@ -164,6 +165,7 @@ def pre_save_section_receiver(sender, instance, *args, **kwargs):
             new_slug = '{}-{}'.format(slug, qs.first().id)
             return create_slug(instance, new_slug=new_slug)
         return slug
-    
+
     if not instance.slug:
         instance.slug = create_slug(instance)
+
