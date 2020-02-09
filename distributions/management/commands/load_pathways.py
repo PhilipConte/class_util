@@ -28,7 +28,10 @@ class Command(BaseCommand):
     help = "Annotates Courses with Pathways areas"
 
     def handle(self, *args, **options):
-        with open(Path('distributions/data/areas.json'), 'r') as f:
+        if Pathway.objects.exists():
+            return
+
+        with open(Path('data/areas.json'), 'r') as f:
             data = json.load(f)
 
             for path_key, arr in PATHWAY_DICT.items():
@@ -52,7 +55,7 @@ class Command(BaseCommand):
                         ))
                         print('I do not yet support non-numeric numbers')
                         continue
-                           
+
                     courses = Course.objects.filter(
                         department=department,
                         number=number
@@ -62,7 +65,8 @@ class Command(BaseCommand):
                             department, number, title
                         ))
                         continue
-                    
+
                     pathway.courses.add(*list(courses))
-        
+
         print('done')
+

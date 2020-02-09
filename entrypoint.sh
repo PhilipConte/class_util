@@ -32,6 +32,8 @@ done
 >&2 echo "Postgres ready - continuing"
 
 python manage.py migrate
+python manage.py load_section_data
+python manage.py load_pathways
 
 # Start Gunicorn processes
 echo Starting Gunicorn.

@@ -6,12 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 SEMESTER_DICT = {'winter': 1, 'spring': 2, 'summer1': 3, 'summer2': 4, 'fall': 5}
 
-ALREADY_LOADED_ERROR_MESSAGE = """
-If you need to reload the section data from the CSV file,
-first delete the db.sqlite3 file to destroy the database.
-Then, run `python manage.py migrate` for a new empty
-database with tables\n"""
-
 INVALID_CSV_NAME_ERROR_MESSAGE = """
 CSVs must be in the format YYYY_SEMESTER.csv
 ie: fall 2018 would be 2018_fall.csv
@@ -26,8 +20,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if Section.objects.exists():
-            print('Section data already loaded...exiting.')
-            print(ALREADY_LOADED_ERROR_MESSAGE)
             return
 
         for name, ordering in SEMESTER_DICT.items():
@@ -37,11 +29,11 @@ class Command(BaseCommand):
             semester.save()
 
         print("Loading section data...\n")
-        for path in Path('distributions/data').iterdir():
+        for path in Path('data').iterdir():
             path_str = str(path).lower()
             if path_str[-4:] != '.csv':
                 continue
-            
+
             print('loading ' + path_str)
 
             filename = path.parts[-1].split('.')[0]
@@ -58,7 +50,7 @@ class Command(BaseCommand):
                 print('invalid semester in csv: ' + path_str)
                 print(INVALID_SEMESTER_DICT_ERROR_MESSAGE)
                 continue
-            
+
             if year.isdigit():
                 year = int(year)
             else:
@@ -99,3 +91,4 @@ class Command(BaseCommand):
                 section.class_size = row['number']
                 section.save()
         print('done')
+
