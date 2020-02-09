@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = "Loads data from distributions/data/*.csv into the Sections model"
 
     def handle(self, *args, **options):
-        if Section.objects.exists():
+        if Section.objects.exists() or not Path('data').is_dir():
             return
 
         for name, ordering in SEMESTER_DICT.items():

@@ -28,7 +28,7 @@ class Command(BaseCommand):
     help = "Annotates Courses with Pathways areas"
 
     def handle(self, *args, **options):
-        if Pathway.objects.exists():
+        if Pathway.objects.exists() or not Path('data/areas.json').is_file():
             return
 
         with open(Path('data/areas.json'), 'r') as f:

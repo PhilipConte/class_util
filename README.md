@@ -1,10 +1,8 @@
 # class_util
-website containing a collection of tools related to classes
+A tool to view Virginia Tech grade distributions
 
 [Click here to check it out!](http://distributions.pconte.me)
 
-## distributions
-A tool to view (Virginia Tech) grade distributions
 
 *note: This project is not affiliated wih Virginia Tech in any way*
 
@@ -13,26 +11,17 @@ Start the containers with `docker-compose start`
 
 Navigate to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
-## Dev Setup
-1. See [Installation](#installation)
-2. See [Sections](#Sections)
-3. See [Pathways](#pathways)
-
-### Installation
+## Installation
 Requires Docker and docker-compose
 ```bash
 # Clone the repository
 git clone https://github.com/PhilipConte/class_util
 cd class_util
-```
-create ```.env``` with the following contents:
-```bash
-CLASS_UTIL_ALLOWED_HOSTS=localhost,127.0.0.1
+mkdir data
+echo "CLASS_UTIL_ALLOWED_HOSTS=localhost,127.0.0.1
 CLASS_UTIL_DEBUG=1
-CLASS_UTIL_SECRET_KEY=super_secure_tm
+CLASS_UTIL_SECRET_KEY=super_secure_tm" > .env
 ```
-
-Build and start the containers with ```docker-compose up -d```
 
 ### Sections
 CSVs should be labeled in the format YYYY_SEMESTER.csv  
@@ -55,3 +44,6 @@ valid semester names:
 1. See [pathways_scraper](https://github.com/PhilipConte/pathways_scraper) to create areas.json
 2. Copy areas.json to /distributions/data/
 3. Run ```docker-compose exec web python manage.py load_pathways```
+
+### Build and Start
+Build and start the containers with ```docker-compose up -d```
