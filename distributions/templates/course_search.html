@@ -2,17 +2,13 @@
 {% load search_bar from distributions_tags %}
 
 {% block content %}
-<div class="centered-parent">
-    <div class="panel panel-default">
-        <div class="panel-body search-box">
-            <h2>Search All Courses</h2>
-            {% search_bar %}
-            <div>
-                <h3>looking for a different way to browse?</h3>
-                <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
-                <p>(You can do cool stuff like filter by CLE/Pathway)</p>
-            </div>
-        </div>
+<div class="centered search-box">
+    <h2>Search All Courses</h2>
+    {% search_bar %}
+    <div>
+        <h3>Looking for a different way to browse?</h3>
+        <h4><a href={% url 'distributions:course_filtered_list' %}>Filter all courses</a></h4>
+        <p>(You can do cool stuff like filter by CLE/Pathway)</p>
     </div>
 </div>
 {% endblock %}

@@ -1,53 +1,55 @@
-html {
-    --background-color: #f2f2f2;
-    --background-text: black;
+:root {
+    --background: #073642;
+    --foreground: #fdf6e3;
 
-    --foreground-color: white;
-    --foreground-text: black;
+    --color0: #073642;
+    --color1: #dc322f;
+    --color2: #859900;
+    --color3: #b58900;
+    --color4: #268bd2;
+    --color5: #d33682;
+    --color6: #2aa198;
+    --color7: #eee8d5;
+    --color8: #6c7c80;
 }
 
-html[theme='dark'] {
-    --background-color: #2b3137;
-    --background-text: white;
-
-    --foreground-color:black;
-    --foreground-text: lightgrey;
-}
-
-html.color-theme-in-transition,
-html.color-theme-in-transition *,
-html.color-theme-in-transition *:before,
-html.color-theme-in-transition *:after {
-    transition: all 750ms !important;
-    transition-delay: 0 !important;
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #eee8d5;
+        --foreground: #002b36;
+    
+        --color0: #eee8d5;
+        --color1: #dc322f;
+        --color2: #859900;
+        --color3: #b58900;
+        --color4: #268bd2;
+        --color5: #d33682;
+        --color6: #2aa198;
+        --color7: #073642;
+        --color8: #6c7c80;
+    }
 }
 
 body {
-    min-height: 100vh;
-    background-color: var(--background-color);
+    background-color: var(--background);
+    color: var(--foreground);
+    padding: 0.5em;
 }
 
-.bg-text {
-    color: var(--background-text);
+a {
+    color: var(--color6);
+    text-decoration: none;
 }
 
-.fg-text {
-    color: var(--foreground-text);
+a:visited {
+    color: var(--color5);
 }
 
-.panel-default,
-.panel-default>.panel-heading {
-    background-color: var(--foreground-color);
-    color: var(--foreground-text);
-}
-
-.centered-parent {
-    position: fixed;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+.centered {
+    position: absolute;
+    top:  50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .evenly-spaced-row {
@@ -55,17 +57,21 @@ body {
     justify-content: space-evenly;
 }
 
-#topNav {
-    margin: 0;
-    border-bottom-width: 0px;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--color8);
 }
 
-#underNav {
-    padding: 0.5rem;
+.navbar a {
+    color: var(--foreground);
+    font-size: x-large;
 }
 
-.navbar .collapse .breadcrumb {
-    margin: 0 7px;
+.pb {
+    padding-bottom: 2em;
 }
 
 .chart-div {
@@ -85,12 +91,90 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--foreground-text);
+    min-width: 25em;
 }
 
-@media (min-width: 768px) {
-    .navbar .collapse .breadcrumb {
-        float: left;
-        margin: 7px 10px;
-    }
+select,
+input,
+textarea,
+button {
+    padding: 0.5em;
+    border: 1px solid var(--color8);
+    color: var(--foreground);
+    background: var(--background);
+    border-width: 1px;
+    border-radius: 0.25em;
+    box-sizing: border-box;
+}
+
+select,
+input:not([type="submit"]),
+textarea {
+    width: 100%;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    white-space: nowrap;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th {
+    border-bottom: 2px solid var(--color8);
+    padding: 1em;
+    text-align: left;
+}
+
+td {
+    border-bottom: 1px solid var(--color8);
+    padding: 0.5em;
+}
+
+th::before,
+th::after
+td::before,
+td::after {
+    box-sizing: border-box;
+}
+
+.pagination {
+    display: inline-block;
+    list-style-type: none;
+  }
+  
+.pagination li {
+    display: inline;
+}
+
+.pagination .active a {
+    background-color: var(--color5);
+    border-color: var(--color5);
+}
+
+.pagination a {
+    color: var(--foreground);
+
+    float: left;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    border: 1px solid var(--color8);
+}
+
+.pagination li:hover:not(.active) a {
+    background-color: var(--color8);
+}
+
+.pagination li:first-child a {
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+}
+
+.pagination li:last-child a {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
 }

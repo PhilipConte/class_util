@@ -84,8 +84,6 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
-DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
-
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = ('GET', 'OPTIONS',)
 
