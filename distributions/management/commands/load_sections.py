@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = "Loads data from distributions/data/*.csv into the Sections model"
 
     def handle(self, *args, **options):
-        if Section.objects.exists() or not Path('data').is_dir():
+        if Section.objects.exists() or not Path('/data').is_dir():
             return
 
         for name, ordering in SEMESTER_DICT.items():
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             semester.save()
 
         print("Loading section data...\n")
-        for path in Path('data').iterdir():
+        for path in Path('/data').iterdir():
             path_str = str(path).lower()
             if path_str[-4:] != '.csv':
                 continue
