@@ -1,4 +1,3 @@
-from django.utils.html import format_html
 from django.urls import reverse
 import django_tables2 as tables
 from . import models as m
@@ -20,6 +19,11 @@ class SectionTable(tables.Table):
         fields= ['term', 'CRN', *GRADES, 'withdrawals', 'class_size']
 
 
+def instructor_url(table, value):
+    return reverse('distributions:course_instructor_detail', args=[
+        table.slug, value])
+
+
 class GroupedSectionTable(tables.Table):
     def __init__(self, *args, **kwargs):
         slug = kwargs.pop("slug")
@@ -30,8 +34,4 @@ class GroupedSectionTable(tables.Table):
         model = m.Section
         fields = ['instructor', 'sections_taught', 'withdrawals', *GRADES]
 
-    def render_instructor(self, value):
-        return format_html('<a href={}>{}</a>',
-            reverse('distributions:course_instructor_detail', args=[
-                self.slug, value]),
-            value)
+    instructor = tables.Column(linkify=instructor_url)
