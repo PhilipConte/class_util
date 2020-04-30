@@ -1,8 +1,6 @@
 """
-Django settings for class_util project.
 https://docs.djangoproject.com/en/2.0/topics/settings/
 https://docs.djangoproject.com/en/2.0/ref/settings/
-https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 """
 
 from os import environ, path
@@ -53,27 +51,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'class_util.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-USE_TZ = True
-TIME_ZONE = 'UTC'
-
+USE_TZ = False
 USE_I18N = False
 USE_L10N = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
 
 STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
@@ -86,50 +73,3 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = ('GET', 'OPTIONS',)
-
-LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse',
-		},
-		'require_debug_true': {
-			'()': 'django.utils.log.RequireDebugTrue',
-		},
-	},
-	'formatters': {
-		'django.server': {
-			'()': 'django.utils.log.ServerFormatter',
-			'format': '[%(server_time)s] %(message)s',
-		}
-	},
-	'handlers': {
-		'console': {
-			'level': 'INFO',
-			'filters': ['require_debug_true'],
-			'class': 'logging.StreamHandler',
-		},
-		'console_debug_false': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'logging.StreamHandler',
-		},
-		'django.server': {
-			'level': 'INFO',
-			'class': 'logging.StreamHandler',
-			'formatter': 'django.server',
-		}
-	},
-	'loggers': {
-		'django': {
-			'handlers': ['console', 'console_debug_false'],
-			'level': 'INFO',
-		},
-		'django.server': {
-			'handlers': ['django.server'],
-			'level': 'INFO',
-			'propagate': False,
-		}
-	}
-}
