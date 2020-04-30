@@ -4,13 +4,16 @@ from . import models as m
 
 GRADES = ['average_GPA', 'As', 'Bs', 'Cs', 'Ds', 'Fs']
 
+def course_url(record):
+        return reverse('distributions:course_detail', args=[record.slug])
+
 
 class CourseTable(tables.Table):
     class Meta:
         model = m.Course
         fields = ['department', 'number', 'title', 'hours', *GRADES]
     
-    title = tables.Column(linkify=True)
+    title = tables.Column(linkify=course_url)
 
 
 class SectionTable(tables.Table):

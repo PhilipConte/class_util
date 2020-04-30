@@ -1,22 +1,18 @@
 from django.db import models
-from django.db.models import F, Sum, Avg, Count, Func
-from django.urls import reverse
+from django.db.models import Sum, Avg, Count, Func
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.dispatch import receiver
-from django.utils.safestring import SafeString
 
-from .utils import dict_pop
+
+def dict_pop(d, to_pop):
+    return {k: v for k, v in d.items() if k not in to_pop}
 
 
 class Round(Func):
     function = 'ROUND'
     arity = 2
-    # Only works as the arity is 2
     arg_joiner = '::numeric, '
-
-    def as_sqlite(self, compiler, connection, **extra_context):
-        return super().as_sqlite(compiler, connection, arg_joiner=", ", **extra_context)
 
 
 raw_stats = {'average_GPA': (Avg,'average_GPA'),
@@ -61,13 +57,6 @@ class Course(models.Model):
     slug = models.SlugField(unique=True, max_length=200)
 
     objects = CourseManager()
-
-    def get_absolute_url(self):
-        return reverse('distributions:course_detail', args=[self.slug])
-
-    @property
-    def stats(self):
-        return self.sections.stats()
 
     def short(self):
         return '{} {}'.format(self.department, self.number)
