@@ -20,29 +20,21 @@ cd class_util
 mkdir data
 echo "CLASS_UTIL_ALLOWED_HOSTS=localhost,127.0.0.1
 CLASS_UTIL_DEBUG=1
-CLASS_UTIL_SECRET_KEY=super_secure_tm" > .env
+CLASS_UTIL_SECRET_KEY=super_secure_tm
+DATABASE_URL=postgres://postgres:temp@db/class_util_db
+POSTGRES_PASSWORD=temp
+" > .env
 ```
 
 ### Sections
-CSVs should be labeled in the format YYYY_SEMESTER.csv  
-ie: fall 2018 would be 2018_fall.csv
-
-valid semester names:
-1. spring
-1. summer1
-1. summer2
-1. fall
-1. winter
-
-(you can add your override the defaults in  the `SEMESTER_DICT` constant defined in `load_section_data.py`)
-1. Download distributions [here](https://irweb.ir.vt.edu/webtest/Authenticated/GradeDistribution.aspx)
-2. Rename them as described above
-3. Place the CSVs in /distributions/data/
+3. `mkdir data`
+1. Download distributions [here](https://udc.aie.vt.edu/irdata/data/Grade)
+3. Place 'Grade Distribution.csv' in ./data/
 4. Run ```docker-compose exec web python manage.py load_section_data```
 
 ### Pathways
-1. See [pathways_scraper](https://github.com/PhilipConte/pathways_scraper) to create areas.json
-2. Copy areas.json to /distributions/data/
+1. See [pathways_scraper](https://github.com/PhilipConte/pathways_scraper) to get or create areas.json
+2. Copy areas.json to ./data/
 3. Run ```docker-compose exec web python manage.py load_pathways```
 
 ### Build and Start

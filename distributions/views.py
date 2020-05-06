@@ -50,7 +50,7 @@ class CourseDetailView(FilteredSingleTableView):
     model = Section
     table_class = GroupedSectionTable
     filter_class = GroupedSectionFilter
-    template_name = 'course_detail.html'    
+    template_name = 'course_detail.html'
 
     def get_queryset(self):
         self.course = get_object_or_404(Course, slug=self.kwargs['slug'])
@@ -70,7 +70,7 @@ class CourseDetailView(FilteredSingleTableView):
 class CourseInstructorDetailView(django_tables2.SingleTableView):
     model = Section
     table_class = SectionTable
-    template_name = 'course_instructor_detail.html'    
+    template_name = 'course_instructor_detail.html'
 
     def get_queryset(self):
         self.course = get_object_or_404(Course, slug=self.kwargs['slug'])

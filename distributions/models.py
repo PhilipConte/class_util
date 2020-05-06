@@ -128,7 +128,7 @@ class Section(models.Model):
 @receiver(pre_save, sender=Course)
 def pre_save_course_receiver(sender, instance, *args, **kwargs):
     def create_slug(instance, new_slug=None):
-        slug = slugify('_'.join([instance.department, instance.number, instance.title, instance.hours]))
+        slug = slugify('_'.join(map(str, [instance.department, instance.number, instance.title, instance.hours])))
         if new_slug is not None:
             slug = new_slug
         qs = sender.objects.filter(slug=slug).order_by("-id")
@@ -143,7 +143,7 @@ def pre_save_course_receiver(sender, instance, *args, **kwargs):
 @receiver(pre_save, sender=Section)
 def pre_save_section_receiver(sender, instance, *args, **kwargs):
     def create_slug(instance, new_slug=None):
-        slug = slugify('_'.join([str(instance.term), instance.course.short(), instance.instructor, str(instance.CRN)]))
+        slug = slugify('_'.join(map(str, [instance.term, instance.course.short(), instance.instructor, instance.CRN])))
         if new_slug is not None:
             slug = new_slug
         qs = sender.objects.filter(slug=slug).order_by("-id")
@@ -154,4 +154,3 @@ def pre_save_section_receiver(sender, instance, *args, **kwargs):
 
     if not instance.slug:
         instance.slug = create_slug(instance)
-
