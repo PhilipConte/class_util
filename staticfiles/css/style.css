@@ -1,32 +1,32 @@
 :root {
-    --background: #073642;
-    --foreground: #fdf6e3;
+    --background: #1c2023;
+    --foreground: #c7ccd1;
 
-    --color0: #073642;
-    --color1: #dc322f;
-    --color2: #859900;
-    --color3: #b58900;
-    --color4: #268bd2;
-    --color5: #d33682;
-    --color6: #2aa198;
-    --color7: #eee8d5;
-    --color8: #6c7c80;
+    --color0: #1c2023;
+    --color1: #c7ae95;
+    --color2: #95c7ae;
+    --color3: #aec795;
+    --color4: #ae95c7;
+    --color5: #c795ae;
+    --color6: #95aec7;
+    --color7: #c7ccd1;
+    --color8: #747c84;
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --background: #eee8d5;
-        --foreground: #002b36;
-    
-        --color0: #eee8d5;
-        --color1: #dc322f;
-        --color2: #859900;
-        --color3: #b58900;
-        --color4: #268bd2;
-        --color5: #d33682;
-        --color6: #2aa198;
-        --color7: #073642;
-        --color8: #6c7c80;
+        --background: #ffffff;
+        --foreground: #404040;
+
+        --color0: #ffffff;
+        --color1: #c41a15;
+        --color2: #007400;
+        --color3: #826b28;
+        --color4: #0000ff;
+        --color5: #a90d91;
+        --color6: #318495;
+        --color7: #404040;
+        --color8: #808080;
     }
 }
 
@@ -146,7 +146,7 @@ td::after {
     display: inline-block;
     list-style-type: none;
   }
-  
+
 .pagination li {
     display: inline;
 }
