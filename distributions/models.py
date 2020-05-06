@@ -125,32 +125,25 @@ class Section(models.Model):
     class Meta:
         ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
 
+
+def create_slug(instance, fields, sender, new_slug=None):
+    slug = slugify('_'.join(map(str, fields)))
+    if new_slug is not None:
+        slug = new_slug
+    qs = sender.objects.filter(slug=slug).order_by("-id")
+    if qs.exists():
+        new_slug = '{}-{}'.format(slug, qs.first().id)
+        return create_slug(instance, fields, sender, new_slug=new_slug)
+    return slug
+
 @receiver(pre_save, sender=Course)
 def pre_save_course_receiver(sender, instance, *args, **kwargs):
-    def create_slug(instance, new_slug=None):
-        slug = slugify('_'.join(map(str, [instance.department, instance.number, instance.title, instance.hours])))
-        if new_slug is not None:
-            slug = new_slug
-        qs = sender.objects.filter(slug=slug).order_by("-id")
-        if qs.exists():
-            new_slug = '{}-{}'.format(slug, qs.first().id)
-            return create_slug(instance, new_slug=new_slug)
-        return slug
-
     if not instance.slug:
-        instance.slug = create_slug(instance)
+        fields = [instance.department, instance.number, instance.title, instance.hours]
+        instance.slug = create_slug(instance, fields, sender)
 
 @receiver(pre_save, sender=Section)
 def pre_save_section_receiver(sender, instance, *args, **kwargs):
-    def create_slug(instance, new_slug=None):
-        slug = slugify('_'.join(map(str, [instance.term, instance.course.short(), instance.instructor, instance.CRN])))
-        if new_slug is not None:
-            slug = new_slug
-        qs = sender.objects.filter(slug=slug).order_by("-id")
-        if qs.exists():
-            new_slug = '{}-{}'.format(slug, qs.first().id)
-            return create_slug(instance, new_slug=new_slug)
-        return slug
-
     if not instance.slug:
-        instance.slug = create_slug(instance)
+        fields = [instance.term, instance.course.short(), instance.instructor, instance.CRN]
+        instance.slug = create_slug(instance, fields, sender)
