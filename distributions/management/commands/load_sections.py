@@ -2,7 +2,6 @@ from pathlib import Path
 from csv import reader
 from django.core.management import BaseCommand
 from distributions.models import Term, Course, Section, Semester
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 SEMESTER = [ # True if in first year, false if in second
     ('Winter', False),
