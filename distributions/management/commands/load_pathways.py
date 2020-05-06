@@ -2,11 +2,10 @@ import json
 from pathlib import Path
 from django.core.management import BaseCommand
 from distributions.models import Course, Pathway
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 PATHWAY_DICT = {
     'AR01': ['CLE Area 1', 'Writing and Discourse'],
-    'AR02': ['CLE Area 2', 'Ideas, Cultural, Traditions, and Values'], 
+    'AR02': ['CLE Area 2', 'Ideas, Cultural, Traditions, and Values'],
     'AR03': ['CLE Area 3', 'Society and Human Behavior'],
     'AR04': ['CLE Area 4', 'Scientific Reasoning and Discovery'],
     'AR05': ['CLE Area 5', 'Quantitative and Symbolic Reasoning'],
@@ -34,39 +33,32 @@ class Command(BaseCommand):
         with open(Path('/data/areas.json'), 'r') as f:
             data = json.load(f)
 
+            print("Loading pathways...")
             for path_key, arr in PATHWAY_DICT.items():
-                if Pathway.objects.filter(name=arr[0]).count():
-                    print('Pathway {} already exists'.format(arr[0]))
-                    pathway = Pathway.objects.get(name=arr[0])
-                else:
-                    pathway = Pathway()
-                    pathway.name = arr[0]
-                    pathway.description = arr[1]
-                    pathway.save()
+                pathway = Pathway()
+                pathway.name = arr[0]
+                pathway.description = arr[1]
+                pathway.save()
 
                 for string in data[path_key]:
-                    parts = string.split('|')
-                    department, number = parts[0].split(' ')
-                    title = parts[1]
+                    parts, title = string.split('|')[:2]
+                    department, number = parts.split(' ')
 
                     if not number.isnumeric():
-                        print('Could not add {} {}'.format(
+                        print('Could not add {} {}: non-numeric number'.format(
                             department, number
                         ))
-                        print('I do not yet support non-numeric numbers')
                         continue
 
                     courses = Course.objects.filter(
                         department=department,
                         number=number
                     )
-                    if (not courses.count()):
+                    if not courses.exists():
                         print('No course found for {} {}: {}'.format(
                             department, number, title
                         ))
                         continue
 
                     pathway.courses.add(*list(courses))
-
         print('done')
-
