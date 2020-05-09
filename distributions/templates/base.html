@@ -7,27 +7,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Distributions - Class Util</title>
+    <title>distributions</title>
     <link rel="stylesheet" href="{% static "css/style.css" %}" />
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="{% url 'distributions:index' %}">class_util</a>
+        <a href="{% url 'distributions:index' %}">distributions</a>
         {% search_bar %}
     </nav>
-    {% if title %}
-        <h2 class="text">{{ title|safe }}</h2>
-    {% endif %}
+    <div>
+        {% if title %}
+            <h2 class="text">{{ title|safe }}</h2>
+        {% endif %}
 
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
 
-    {% if table %}
-        {% block  table_content %}{% endblock  %}
-        <div class="table-container">
-            {% render_table table %}
-        </div>
-    {% endif %}
+        {% if table %}
+            {% block  table_content %}{% endblock  %}
+            <div class="table-container">
+                {% render_table table %}
+            </div>
+        {% endif %}
+    </div>
 </body>
 
 </html>

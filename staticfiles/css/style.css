@@ -1,7 +1,6 @@
 :root {
     --background: #1c2023;
     --foreground: #c7ccd1;
-
     --color0: #1c2023;
     --color1: #c7ae95;
     --color2: #95c7ae;
@@ -14,10 +13,9 @@
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
+     :root {
         --background: #ffffff;
         --foreground: #404040;
-
         --color0: #ffffff;
         --color1: #c41a15;
         --color2: #007400;
@@ -33,65 +31,76 @@
 body {
     background-color: var(--background);
     color: var(--foreground);
-    padding: 0.5em;
-}
-
-a {
-    color: var(--color6);
-    text-decoration: none;
-}
-
-a:visited {
-    color: var(--color5);
-}
-
-.centered {
-    position: absolute;
-    top:  50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-}
-
-.evenly-spaced-row {
-    display: flex;
-    justify-content: space-evenly;
+    margin: 0;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.5em;
+    padding: 0.4em 0.8em;
     border-bottom: 1px solid var(--color8);
 }
 
 .navbar a {
-    color: var(--foreground);
+    color: inherit;
+    text-decoration: none;
     font-size: x-large;
 }
 
-.pb {
+body>div {
+    padding: 0 1em;
+}
+
+body>div a {
+    color: var(--color6);
+    text-decoration: none;
+}
+
+body>div a:visited {
+    color: var(--color5);
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.evenly-spaced-row {
+    display: flex;
+    justify-content: space-evenly;
     padding-bottom: 2em;
+}
+
+.evenly-spaced-row>div {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .chart-div {
     position: relative;
     margin: auto;
-    height: 31vmin;
-    width: 31vmin;
+    height: 40vh;
+    width: 95%;
 }
 
 .filter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-    grid-gap: 2em;
+    column-gap: 2em;
 }
 
 .search-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 25em;
+    text-align: center;
+}
+
+.search-bar {
+    width: 25em;
 }
 
 select,
@@ -100,9 +109,8 @@ textarea,
 button {
     padding: 0.5em;
     border: 1px solid var(--color8);
-    color: var(--foreground);
-    background: var(--background);
-    border-width: 1px;
+    color: inherit;
+    background: inherit;
     border-radius: 0.25em;
     box-sizing: border-box;
 }
@@ -135,18 +143,6 @@ td {
     padding: 0.5em;
 }
 
-th::before,
-th::after
-td::before,
-td::after {
-    box-sizing: border-box;
-}
-
-.pagination {
-    display: inline-block;
-    list-style-type: none;
-  }
-
 .pagination li {
     display: inline;
 }
@@ -158,10 +154,8 @@ td::after {
 
 .pagination a {
     color: var(--foreground);
-
     float: left;
     padding: 0.5em 1em;
-    text-decoration: none;
     border: 1px solid var(--color8);
 }
 

@@ -3,18 +3,15 @@
 {% load static %}
 
 {% block content %}
-<div class="pb evenly-spaced-row">
+<div class="evenly-spaced-row">
     {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug %}
-    {% chart  'Grade History' 'distributions-api:course_history' course.slug %}
+    {% chart 'Grade History' 'distributions-api:course_history' course.slug %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-<!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script> -->
 <script src="{% static "vendor/js/chartjs-plugin-doughnutlabel.min.js" %}"></script>
 <script src="{% static 'js/chartLoader.js' %}"></script>
 {% endblock %}
 
 {% block table_content %}
-<div class="pb">
-    <form method='GET' style="max-width: 35%">{{ filter.form }}</form>
-</div>
+<form method='GET' style="max-width: 35%">{{ filter.form }}</form>
 {% endblock %}

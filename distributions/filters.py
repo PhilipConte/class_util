@@ -26,7 +26,7 @@ class GroupedSectionFilter(filters.FilterSet):
         field_name='instructor',
         label='',
         lookup_expr='icontains',
-        widget= form_control('Filter by instructor...')
+        widget= form_control('filter by instructor...')
     )
 
 
@@ -34,16 +34,15 @@ class CourseFilterMulti(filters.FilterSet):
     multi = filters.CharFilter(
         label='',
         method='filter_multi',
-        widget= form_control('Search All Courses...')
+        widget= form_control('search all courses...')
     )
     search_fields = ['department', 'number', 'title']
 
     def filter_multi(self, qs, name, value):
         if value:
             q_parts = value.split()
-            
             q_totals = Q()
-            
+
             combinatorics = itertools.product([True, False], repeat=len(q_parts) - 1)
             possibilities = []
             for combination in combinatorics:
@@ -61,7 +60,7 @@ class CourseFilterMulti(filters.FilterSet):
                 list1=self.search_fields
                 list2=p
                 perms = [zip(x,list2) for x in itertools.permutations(list1,len(list2))]
-            
+
                 for perm in perms:
                     q_part = Q()
                     for p in perm:
@@ -69,9 +68,9 @@ class CourseFilterMulti(filters.FilterSet):
                     q_totals = q_totals | q_part
 
             qs = qs.filter(q_totals)
-            
+
         return qs
-        
+
     class Meta:
         model = Course
         fields = ['multi']
