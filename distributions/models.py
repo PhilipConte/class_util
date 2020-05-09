@@ -58,18 +58,8 @@ class Course(models.Model):
 
     objects = CourseManager()
 
-    def short(self):
-        return '{} {}'.format(self.department, self.number)
-
-    def no_credits(self):
-        return self.short() + ': {}'.format(self.title)
-
     def __str__(self):
-        return self.no_credits() + ' ({} credits)'.format(self.hours)
-
-    def html(self):
-        title_parts = str(self).split(':')
-        return ('<strong>'+title_parts[0]+'</strong>: '+title_parts[1])
+        return '{} {}: {} ({} hours)'.format(self.department, self.number, self.title, self.hours)
 
     class Meta:
         ordering = ['department', 'number', 'title', 'hours']
@@ -120,7 +110,7 @@ class Section(models.Model):
     objects = SectionQueryset.as_manager()
 
     def __str__(self):
-        return '{} | {} | {} | {}'.format(self.CRN, self.instructor, self.term, self.course.short())
+        return '{} | {} | {} | {} {}'.format(self.CRN, self.instructor, self.term, self.course.department, self.course.number)
 
     class Meta:
         ordering = ['term', 'course', 'CRN', 'instructor', 'average_GPA']
@@ -145,5 +135,5 @@ def pre_save_course_receiver(sender, instance, *args, **kwargs):
 @receiver(pre_save, sender=Section)
 def pre_save_section_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        fields = [instance.term, instance.course.short(), instance.instructor, instance.CRN]
+        fields = [instance.term, instance.course.department, instance.course.number, instance.instructor, instance.CRN]
         instance.slug = create_slug(instance, fields, sender)

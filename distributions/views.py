@@ -32,7 +32,7 @@ class CourseFilteredListView(FilteredSingleTableView):
     def get(self, request):
         qs = self.get_table_data()
         if qs.count() == 1:
-            return HttpResponseRedirect(qs.first().get_absolute_url()) 
+            return HttpResponseRedirect(qs.first().get_absolute_url())
         else:
             return super().get(request)
 
@@ -63,7 +63,6 @@ class CourseDetailView(FilteredSingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = self.course.html()
         context['course'] =  self.course
         return context
 
@@ -79,8 +78,6 @@ class CourseInstructorDetailView(django_tables2.SingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = '<strong>' + self.course.short() \
-            + '</strong>: Statistics for Professor ' + self.instructor
         context['course'] =  self.course
         context['instructor'] = self.instructor
         return context

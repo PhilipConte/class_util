@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+<h2><strong>{{ course.department }} {{ course.number }}</strong>: {{ course.title }} ({{course.hours }} hour{{ course.hours|pluralize }})</h2>
 <div class="evenly-spaced-row">
     {% chart 'Grade Distribution' 'distributions-api:course_stats' course.slug %}
     {% chart 'Grade History' 'distributions-api:course_history' course.slug %}

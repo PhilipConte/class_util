@@ -17,12 +17,7 @@
         {% search_bar %}
     </nav>
     <div>
-        {% if title %}
-            <h2 class="text">{{ title|safe }}</h2>
-        {% endif %}
-
         {% block content %}{% endblock %}
-
         {% if table %}
             {% block  table_content %}{% endblock  %}
             <div class="table-container">
