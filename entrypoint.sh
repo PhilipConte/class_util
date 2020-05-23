@@ -1,9 +1,5 @@
 #!/bin/bash
 
-function test_postgresql {
-  pg_isready -h "${db_server}" -d "${db}" -U "${db_user}"
-}
-
 cd /code
 
 regex="^postgres:\/\/([^:]+)(:(.+))?@(.+)\/(.+)$"
@@ -17,26 +13,23 @@ else
   exit 1
 fi
 
-# wait for postgres to be ready
+>&2 echo "waiting for postgres"
 count=0
-until ( test_postgresql ) do
+until ( pg_isready -h "${db_server}" -d "${db}" -U "${db_user}" ) do
   ((count++))
-  if [ ${count} -gt 100 ]
+  if [ ${count} -gt 20 ]
   then
-    >&2 echo "Services didn't become ready in time"
+    >&2 echo "postgres unavailable"
     exit 1
   fi
-  >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done
->&2 echo "Postgres ready - continuing"
+>&2 echo "postgres ready"
 
 python manage.py migrate
 python manage.py load_sections
 python manage.py load_pathways
 
-# Start Gunicorn processes
-echo Starting Gunicorn.
 exec gunicorn class_util.wsgi:application \
  --name class_util \
  --bind 0.0.0.0:8000 \
