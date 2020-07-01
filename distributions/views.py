@@ -29,13 +29,6 @@ class CourseFilteredListView(FilteredSingleTableView):
     filter_class = CourseFilter
     template_name ='course_list.html'
 
-    def get(self, request):
-        qs = self.get_table_data()
-        if qs.count() == 1:
-            return HttpResponseRedirect(qs.first().get_absolute_url())
-        else:
-            return super().get(request)
-
 
 class CourseListView(CourseFilteredListView):
     filter_class = CourseFilterMulti
